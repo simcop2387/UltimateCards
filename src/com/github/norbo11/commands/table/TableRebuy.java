@@ -40,9 +40,9 @@ public class TableRebuy extends PluginCommand {
                     if (!cardsTable.isInProgress()) {
                         amount = NumberMethods.getDouble(getArgs()[1]);
                         if (amount != -99999) {
-                            if (UltimateCards.getEconomy().has(getPlayer().getName(), amount)) return true;
+                            if (UltimateCards.getEconomy().has(getPlayer(), amount)) return true;
                             else {
-                                ErrorMessages.notEnoughMoney(getPlayer(), amount, UltimateCards.getEconomy().getBalance(getPlayer().getName()));
+                                ErrorMessages.notEnoughMoney(getPlayer(), amount, UltimateCards.getEconomy().getBalance(getPlayer()));
                             }
                         } else {
                             ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
@@ -66,7 +66,7 @@ public class TableRebuy extends PluginCommand {
     @Override
     public void perform() throws Exception {
         // Withdraw the desired amount from the ECONOMY, add it to their stack, then display the message
-        MoneyMethods.withdrawMoney(getPlayer().getName(), amount);
+        MoneyMethods.withdrawMoney(getPlayer(), amount);
         cardsPlayer.setMoney(cardsPlayer.getMoney() + amount);
 
         cardsTable.sendTableMessage("&6" + getPlayer().getName() + "&f has added &6" + Formatter.formatMoney(amount) + "&f to his stack. New balance: &6" + Formatter.formatMoney(cardsPlayer.getMoney()));

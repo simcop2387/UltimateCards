@@ -40,14 +40,14 @@ public class TableCreate extends PluginCommand {
                 if (CardsTable.isGameType(gameType)) {
                     buyin = NumberMethods.getDouble(getArgs()[2]);
                     if (buyin != -99999) {
-                        if (UltimateCards.getEconomy().has(getPlayer().getName(), buyin)) {
+                        if (UltimateCards.getEconomy().has(getPlayer(), buyin)) {
                             tableName = getArgs()[1];
                             if (!CardsTable.doesTableExist(tableName)) return true;
                             else {
                                 ErrorMessages.tableNameAlreadyExists(getPlayer());
                             }
                         } else {
-                            ErrorMessages.notEnoughMoney(getPlayer(), buyin, UltimateCards.getEconomy().getBalance(getPlayer().getName()) - buyin);
+                            ErrorMessages.notEnoughMoney(getPlayer(), buyin, UltimateCards.getEconomy().getBalance(getPlayer()) - buyin);
                         }
                     } else {
                         ErrorMessages.invalidNumber(getPlayer(), getArgs()[2]);
@@ -80,7 +80,7 @@ public class TableCreate extends PluginCommand {
         Messages.sendMessage(getPlayer(), "Edit the rules of your table with " + PluginExecutor.tableSet.getCommandString() + "&f, and open it with " + PluginExecutor.tableOpen.getCommandString() + "&f when ready!");
 
         // Take money
-        UltimateCards.getEconomy().withdrawPlayer(getPlayer().getName(), buyin);
+        UltimateCards.getEconomy().withdrawPlayer(getPlayer(), buyin);
         Log.addToLog(DateMethods.getDate() + " [ECONOMY] Withdrawing " + buyin + " from " + getPlayer().getName());
     }
 }

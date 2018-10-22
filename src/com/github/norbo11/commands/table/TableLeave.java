@@ -51,7 +51,7 @@ public class TableLeave extends PluginCommand {
     public void perform() throws Exception {
         cardsTable.playerLeave(cardsPlayer);
 
-        MoneyMethods.depositMoney(getPlayer().getName(), money);
+        MoneyMethods.depositMoney(getPlayer(), money);
 
         // Message
         cardsTable.sendTableMessage("&6" + getPlayer().getName() + "&f has left the table with " + "&6" + Formatter.formatMoney(money));

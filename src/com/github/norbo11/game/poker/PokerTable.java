@@ -368,7 +368,7 @@ public class PokerTable extends CardsTable {
         sendTableMessage("&6" + pokerPlayer + " &fhas been kicked from the table!", player.getPlayerName());
         if (pokerPlayer.isOnline()) {
             pokerPlayer.getPlayer().teleport(pokerPlayer.getStartLocation());
-            UltimateCards.getEconomy().depositPlayer(pokerPlayer.getPlayerName(), pokerPlayer.getMoney());
+            UltimateCards.getEconomy().depositPlayer(pokerPlayer.getPlayer(), pokerPlayer.getMoney());
             Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(pokerPlayer.getMoney() + pokerPlayer.getTotalBet()) + " to " + pokerPlayer);
             Messages.sendMessage(pokerPlayer.getPlayer(), "&cYou have been kicked from the table! You receive your remaining stack of &6" + Formatter.formatMoney(pokerPlayer.getMoney()));
         }
@@ -670,7 +670,7 @@ public class PokerTable extends CardsTable {
             pokerPlayer.getPlayer().teleport(pokerPlayer.getStartLocation());
             Messages.sendMessage(pokerPlayer.getPlayer(), "You have been paid your remaining stack of &6" + Formatter.formatMoney(pokerPlayer.getMoney() + pokerPlayer.getTotalBet()));
         }
-        UltimateCards.getEconomy().depositPlayer(cardsPlayer.getPlayerName(), pokerPlayer.getMoney() + pokerPlayer.getTotalBet());
+        UltimateCards.getEconomy().depositPlayer(cardsPlayer.getPlayer(), pokerPlayer.getMoney() + pokerPlayer.getTotalBet());
         Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(pokerPlayer.getMoney() + pokerPlayer.getTotalBet()) + " to " + pokerPlayer);
     }
 
