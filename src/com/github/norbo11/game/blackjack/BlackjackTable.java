@@ -388,7 +388,7 @@ public class BlackjackTable extends CardsTable {
             blackjackPlayer.getPlayer().teleport(blackjackPlayer.getStartLocation());
             Messages.sendMessage(blackjackPlayer.getPlayer(), "You have been paid your remaining stack of &6" + Formatter.formatMoney(blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()));
         }
-        UltimateCards.getEconomy().depositPlayer(blackjackPlayer.getPlayerName(), blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet());
+        UltimateCards.getEconomy().depositPlayer(blackjackPlayer.getPlayer(), blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet());
         Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()) + " to " + blackjackPlayer.getPlayerName());
     }
 }

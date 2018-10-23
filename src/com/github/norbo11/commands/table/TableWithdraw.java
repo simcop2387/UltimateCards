@@ -64,7 +64,7 @@ public class TableWithdraw extends PluginCommand {
     @Override
     public void perform() throws Exception {
         cardsPlayer.setMoney(cardsPlayer.getMoney() - amountToWithdraw);
-        MoneyMethods.depositMoney(getPlayer().getName(), amountToWithdraw);
+        MoneyMethods.depositMoney(getPlayer(), amountToWithdraw);
         cardsTable.sendTableMessage("&6" + getPlayer().getName() + "&f withdraws " + "&6" + Formatter.formatMoney(amountToWithdraw) + "&f New balance: " + "&6" + Formatter.formatMoney(cardsPlayer.getMoney()));
     }
 }
