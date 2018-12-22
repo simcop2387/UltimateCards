@@ -26,7 +26,6 @@ public class TableInvite extends PluginCommand {
 
     CardsPlayer cardsPlayer;
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean conditions() {
         if (getArgs().length == 2) {

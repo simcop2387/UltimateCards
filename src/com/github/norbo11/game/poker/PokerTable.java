@@ -25,7 +25,7 @@ import com.github.norbo11.util.Messages;
 import com.github.norbo11.util.Timers;
 
 public class PokerTable extends CardsTable {
-    @SuppressWarnings("deprecation")
+
     public PokerTable(String owner, String name, int id, Location location, double buyin) throws Exception {
         super(owner, name, id);
         

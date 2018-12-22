@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapRenderer;
@@ -289,12 +290,15 @@ public class MapMethods {
         }
 
         // Give map
-        ItemStack mapItem = new ItemStack(Material.MAP, 1, map.getId());
+        ItemStack mapItem = new ItemStack(Material.MAP, 1);
+        MapMeta meta = (MapMeta) mapItem.getItemMeta();
+        meta.setMapId(map.getId());
+        mapItem.setItemMeta(meta);
 
         // Add to lists
         redrawsNeeded.put(player.getName(), true);
         savedMaps.put(player.getName(), mapItem);
-        createdMaps.add(map.getId());
+        createdMaps.add((short) map.getId());
 
         // Schedule task
         redrawTasks.put(player.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new Runnable() {

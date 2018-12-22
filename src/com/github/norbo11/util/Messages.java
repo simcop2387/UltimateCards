@@ -40,7 +40,6 @@ public class Messages {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static void sendMessage(String player, String message) {
         sendMessage(Bukkit.getPlayer(player), message);
     }
