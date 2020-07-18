@@ -9,19 +9,6 @@
 	<description>UltimateCards plugin for Bukkit</description>
 	
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-            <resource>
-            <directory>src</directory>
-            <includes>
-                <include>plugin.yml</include>
-                <include>config.yml</include>
-                <include>tables.yml</include>
-                <include>images/</include>
-            </includes>
-            </resource>
-        </resources>
-        
         <pluginManagement>
             <plugins>
                 <plugin>
