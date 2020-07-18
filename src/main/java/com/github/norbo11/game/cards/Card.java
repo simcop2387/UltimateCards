@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import com.github.norbo11.util.ResourceManager;
+import com.github.norbo11.UltimateCards;
 
 public class Card {
     public Card(int i, int j) {
@@ -25,7 +25,7 @@ public class Card {
                 for (int j = 0; j <= 3; j++) {
                     String rank = Integer.toString(i);
                     String suit = Integer.toString(j);
-                    cardImages.put(rank + suit, ImageIO.read(ResourceManager.getResource("images/card" + rank + suit + ".png")));
+                    cardImages.put(rank + suit, ImageIO.read(UltimateCards.getInstance().getResource("images/card" + rank + suit + ".png")));
                 }
             }
         } catch (IOException e) {

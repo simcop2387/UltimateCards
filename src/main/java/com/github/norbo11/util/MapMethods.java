@@ -3,6 +3,7 @@ package com.github.norbo11.util;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -200,7 +201,7 @@ public class MapMethods {
         }
     }
 
-    public static UltimateCards p;
+    public static UltimateCards p = UltimateCards.getInstance();
     private static BufferedImage poker_base = null;
     private static BufferedImage blackjack_base = null;
     private static BufferedImage blackjack_base_split = null;
@@ -213,16 +214,17 @@ public class MapMethods {
 
     static {
         try {
-            poker_base = ImageIO.read(ResourceManager.getResource("images/poker_base.png"));
-            blackjack_base = ImageIO.read(ResourceManager.getResource("images/blackjack_base.png"));
-            blackjack_base_split = ImageIO.read(ResourceManager.getResource("images/blackjack_base_split.png"));
-            status_normal = ImageIO.read(ResourceManager.getResource("images/player_box_normal.png"));
-            status_folded = ImageIO.read(ResourceManager.getResource("images/player_box_folded.png"));
-            status_action = ImageIO.read(ResourceManager.getResource("images/player_box_action.png"));
-            card_facedown = ImageIO.read(ResourceManager.getResource("images/card_facedown.png"));
-            card_empty = ImageIO.read(ResourceManager.getResource("images/card_empty.png"));
-            button = ImageIO.read(ResourceManager.getResource("images/button.png"));
-        } catch (Exception e) {
+
+            
+            blackjack_base = ImageIO.read(p.getResource("images/blackjack_base.png"));
+            blackjack_base_split = ImageIO.read(p.getResource("images/blackjack_base_split.png"));
+            status_normal = ImageIO.read(p.getResource("images/player_box_normal.png"));
+            status_folded = ImageIO.read(p.getResource("images/player_box_folded.png"));
+            status_action = ImageIO.read(p.getResource("images/player_box_action.png"));
+            card_facedown = ImageIO.read(p.getResource("images/card_facedown.png"));
+            card_empty = ImageIO.read(p.getResource("images/card_empty.png"));
+            button = ImageIO.read(p.getResource("images/button.png"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
