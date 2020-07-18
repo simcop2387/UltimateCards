@@ -26,9 +26,6 @@ public class UltimateCards extends JavaPlugin {
     public static final String LINE_STRING = "---------------------------------------";
     
     private static UltimateCards instance;
-    
-    // Listeners
-    private PluginExecutor pluginExecutor;
 
     // Classes
     private SavedTables savedTables;
@@ -39,7 +36,6 @@ public class UltimateCards extends JavaPlugin {
     // Misc
     private String version;
     private Economy economy;
-    private boolean tagApiEnabled;
 
 
     public UltimateCards() {
@@ -71,20 +67,12 @@ public class UltimateCards extends JavaPlugin {
         return fileSavedTables;
     }
 
-    public PluginExecutor getPluginExecutor() {
-        return pluginExecutor;
-    }
-
     public SavedTables getSavedTables() {
         return savedTables;
     }
 
     public String getVersion() {
         return version;
-    }
-
-    public boolean isTagApiEnabled() {
-        return tagApiEnabled;
     }
 
     public void addPermissions() {
@@ -145,7 +133,6 @@ public class UltimateCards extends JavaPlugin {
         fileSavedTables = new File(filePluginDir, "tables.yml");
 
         // Set all listeners and create classes
-        pluginExecutor = new PluginExecutor();
         ResourceManager.p = this;
         MapMethods.p = this;
         Timers.p = this;
@@ -168,6 +155,7 @@ public class UltimateCards extends JavaPlugin {
         }
 
         // Set all commands to the command executor
+        PluginExecutor pluginExecutor = new PluginExecutor();
         getCommand("cards").setExecutor(pluginExecutor);
         getCommand("table").setExecutor(pluginExecutor);
         getCommand("poker").setExecutor(pluginExecutor);
