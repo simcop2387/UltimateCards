@@ -201,7 +201,7 @@ public class MapMethods {
         }
     }
 
-    public static UltimateCards p = UltimateCards.getInstance();
+    public static UltimateCards plugin = UltimateCards.getInstance();
     private static BufferedImage poker_base = null;
     private static BufferedImage blackjack_base = null;
     private static BufferedImage blackjack_base_split = null;
@@ -214,16 +214,14 @@ public class MapMethods {
 
     static {
         try {
-
-            
-            blackjack_base = ImageIO.read(p.getResource("images/blackjack_base.png"));
-            blackjack_base_split = ImageIO.read(p.getResource("images/blackjack_base_split.png"));
-            status_normal = ImageIO.read(p.getResource("images/player_box_normal.png"));
-            status_folded = ImageIO.read(p.getResource("images/player_box_folded.png"));
-            status_action = ImageIO.read(p.getResource("images/player_box_action.png"));
-            card_facedown = ImageIO.read(p.getResource("images/card_facedown.png"));
-            card_empty = ImageIO.read(p.getResource("images/card_empty.png"));
-            button = ImageIO.read(p.getResource("images/button.png"));
+            blackjack_base = ImageIO.read(plugin.getResource("images/blackjack_base.png"));
+            blackjack_base_split = ImageIO.read(plugin.getResource("images/blackjack_base_split.png"));
+            status_normal = ImageIO.read(plugin.getResource("images/player_box_normal.png"));
+            status_folded = ImageIO.read(plugin.getResource("images/player_box_folded.png"));
+            status_action = ImageIO.read(plugin.getResource("images/player_box_action.png"));
+            card_facedown = ImageIO.read(plugin.getResource("images/card_facedown.png"));
+            card_empty = ImageIO.read(plugin.getResource("images/card_empty.png"));
+            button = ImageIO.read(plugin.getResource("images/button.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -303,7 +301,7 @@ public class MapMethods {
         createdMaps.add((short) map.getId());
 
         // Schedule task
-        redrawTasks.put(player.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new Runnable() {
+        redrawTasks.put(player.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 
             @Override
             public void run() {

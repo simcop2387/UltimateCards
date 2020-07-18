@@ -12,12 +12,12 @@ import com.github.norbo11.game.cards.CardsTable;
 import com.github.norbo11.Sounds;
 
 public class Sound {
-    public static UltimateCards p;
-    public static HashMap<String, BukkitTask> soundTasks = new HashMap<String, BukkitTask>();
+    private static UltimateCards plugin = UltimateCards.getInstance();
+    private static HashMap<String, BukkitTask> soundTasks = new HashMap<String, BukkitTask>();
 
     public static void lost(final Player player) {
         if (player != null) {
-            soundTasks.put(player.getName(), Bukkit.getScheduler().runTaskTimerAsynchronously(p, new Runnable() {
+            soundTasks.put(player.getName(), Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
                 int i = 0;
                 float pitch = 2.0F;
 
@@ -59,7 +59,7 @@ public class Sound {
 
     public static void won(final Player player) {
         if (player != null) {
-            soundTasks.put(player.getName(), Bukkit.getScheduler().runTaskTimerAsynchronously(p, new Runnable() {
+            soundTasks.put(player.getName(), Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
                 int i = 0;
                 float pitch = 1.0F;
 

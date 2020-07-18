@@ -14,8 +14,6 @@ import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.listeners.CardsListener;
 import com.github.norbo11.util.MapMethods;
 import com.github.norbo11.util.MoneyMethods;
-import com.github.norbo11.util.Sound;
-import com.github.norbo11.util.Timers;
 import com.github.norbo11.util.config.PluginConfig;
 import com.github.norbo11.util.config.SavedTables;
 
@@ -117,9 +115,6 @@ public class UltimateCards extends JavaPlugin {
         fileSavedTables = new File(filePluginDir, "tables.yml");
 
         // Set all listeners and create classes
-        MapMethods.p = this;
-        Timers.p = this;
-        Sound.p = this;
         getServer().getPluginManager().registerEvents(new CardsListener(), this);
         addPermissions();
 
