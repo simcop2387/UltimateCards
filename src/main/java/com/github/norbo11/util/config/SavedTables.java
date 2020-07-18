@@ -1,5 +1,6 @@
 package com.github.norbo11.util.config;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,14 @@ import com.github.norbo11.game.poker.PokerTableSettings;
 import com.github.norbo11.util.NumberMethods;
 
 public class SavedTables {
+    private static UltimateCards plugin = UltimateCards.getInstance();
+    private static File fileSavedTables = new File(plugin.getDataFolder(), "tables.yml");
+    static {
+        if (!fileSavedTables.exists()) {
+            plugin.saveResource("tables.yml", false);
+        }
+    }
+
     private static FileConfiguration config;
     private static ArrayList<CardsTable> savedTables;
 
@@ -33,7 +42,7 @@ public class SavedTables {
     }
 
     public static void load() throws Exception {
-        config = YamlConfiguration.loadConfiguration(UltimateCards.getInstance().getFileSavedTables());
+        config = YamlConfiguration.loadConfiguration(fileSavedTables);
         loadTables();
     }
 
@@ -117,7 +126,7 @@ public class SavedTables {
     }
 
     public static void save() throws IOException {
-        config.save(UltimateCards.getInstance().getFileSavedTables());
+        config.save(fileSavedTables);
     }
     
     private static Vector<String> saveLocation(Location location) {

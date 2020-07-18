@@ -159,12 +159,8 @@ public class PluginConfig {
     }
 
     public static void load() {
+        UltimateCards.getInstance().reloadConfig();
         config = UltimateCards.getInstance().getConfig();
-        try {
-            config.load(UltimateCards.getInstance().getFilePluginConfig());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         setValues();
     }
 

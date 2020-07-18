@@ -1,6 +1,5 @@
 package com.github.norbo11;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import net.milkbowl.vault.economy.Economy;
@@ -24,12 +23,6 @@ public class UltimateCards extends JavaPlugin {
     
     private static UltimateCards instance;
 
-    // Classes
-    private SavedTables savedTables;
-
-    // Files
-    private File filePluginDir, filePluginConfig, fileSavedTables;
-
     // Misc
     private String version;
     private Economy economy;
@@ -48,22 +41,6 @@ public class UltimateCards extends JavaPlugin {
         return economy;
     }
 
-    public File getFilePluginConfig() {
-        return filePluginConfig;
-    }
-
-    public File getFilePluginDir() {
-        return filePluginDir;
-    }
-
-    public File getFileSavedTables() {
-        return fileSavedTables;
-    }
-
-    public SavedTables getSavedTables() {
-        return savedTables;
-    }
-
     public String getVersion() {
         return version;
     }
@@ -74,26 +51,6 @@ public class UltimateCards extends JavaPlugin {
                 getServer().getPluginManager().addPermission(new Permission(cmd.getPermissionNodes().get(1), PermissionDefault.OP));
             }
         }
-    }
-
-    public boolean createFiles() {
-        try {
-            // Attempt to create the create a config file if one doesn't exist
-            if (filePluginConfig.exists() == false) {
-                getConfig().options().copyDefaults(true).copyHeader(true); // Copies the config in the actual plugin
-                saveDefaultConfig(); // Saves the new config
-                getLogger().info("Created config file");
-            }
-            if (fileSavedTables.exists() == false) {
-                saveResource("tables.yml", false);
-                getLogger().info("Created tables file");
-            }
-        } catch (Exception e) {
-            terminate("Something went wrong when trying to create the config file(s)!", e);
-            return false;
-        }
-
-        return true;
     }
 
     @Override
@@ -109,17 +66,12 @@ public class UltimateCards extends JavaPlugin {
     public void onEnable() {
         version = getDescription().getVersion();
 
-        // Set file variables
-        filePluginDir = getDataFolder();
-        filePluginConfig = new File(filePluginDir, "config.yml");
-        fileSavedTables = new File(filePluginDir, "tables.yml");
-
         // Set all listeners and create classes
         getServer().getPluginManager().registerEvents(new CardsListener(), this);
         addPermissions();
 
         // Creates all files
-        if (!createFiles()) return;
+        saveDefaultConfig();
 
         // Hook into vault economy
         if (!setupEconomy()) return;
