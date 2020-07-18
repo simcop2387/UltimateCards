@@ -51,10 +51,6 @@ public class UltimateCards extends JavaPlugin {
         return economy;
     }
 
-    public File getFileLog() {
-        return fileLog;
-    }
-
     public File getFilePluginConfig() {
         return filePluginConfig;
     }
@@ -100,16 +96,6 @@ public class UltimateCards extends JavaPlugin {
             return false;
         }
 
-        // Attempt to create a log.txt file if it doesnt exist
-        try {
-            if (fileLog.exists() == false) {
-                fileLog.createNewFile();
-            }
-        } catch (Exception e) {
-            terminate("Something went wrong when trying to create the log file!", e);
-            return false;
-        }
-
         return true;
     }
 
@@ -129,7 +115,6 @@ public class UltimateCards extends JavaPlugin {
         // Set file variables
         filePluginDir = getDataFolder();
         filePluginConfig = new File(filePluginDir, "config.yml");
-        fileLog = new File(filePluginDir, "log.txt");
         fileSavedTables = new File(filePluginDir, "tables.yml");
 
         // Set all listeners and create classes
