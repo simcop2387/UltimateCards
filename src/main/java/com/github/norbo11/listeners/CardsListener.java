@@ -1,7 +1,6 @@
 package com.github.norbo11.listeners;
 
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +11,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.MapMeta;
 
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.util.MapMethods;
@@ -107,27 +106,30 @@ public class CardsListener implements Listener {
 
     @EventHandler
     public void onPlayerPickupItem(EntityPickupItemEvent e) {
-        try {
-        	if(e.getEntityType().equals(EntityType.PLAYER)) {
-        		Player player = (Player) e.getEntity();
-        		if (e.getItem().getItemStack().getType() == Material.MAP) // If the item dropped is map that was created by the plugin
-        		{
-        			if (MapMethods.getCreatedMaps().contains(((Damageable) e.getItem().getItemStack().getItemMeta()).getDamage())) {
-        				// If the player trying to pick up the map is NOT the rightful owner, and the map DOES have an owner
-        				String mapOwner = MapMethods.mapExists(e.getItem().getItemStack());
-        				if (mapOwner != player.getName() && mapOwner != "") {
-        					e.setCancelled(true);
-        				} else if (CardsPlayer.getCardsPlayer(player.getName()) == null) {
-        					e.setCancelled(true);
-        					e.getItem().remove();
-        					MapMethods.getCreatedMaps().remove(((Damageable) e.getItem().getItemStack().getItemMeta()).getDamage());
-        				} // This results in maps that are no longer in use being deleted. Maps being picked up, but still in use, are
-        				// not deleted, but simply cancelled. (both of this is in the case if the player is not the owner of the map)
-        			}
-        		}
-        	}
-           
-        } catch (Exception exc) {
+        if (!(e.getEntity() instanceof Player)) {
+            return;
         }
+        Player player = (Player) e.getEntity();
+        if (e.getItem().getItemStack().getType() != Material.MAP) {
+            return;
+        }
+        @SuppressWarnings("deprecation")
+        short mapId = (short) ((MapMeta) e.getItem().getItemStack().getItemMeta()).getMapId();
+        if (!MapMethods.getCreatedMaps().contains(mapId)) {
+            return;
+        }
+        // If the player trying to pick up the map is NOT the rightful owner, and the
+        // map DOES have an owner
+        String mapOwner = MapMethods.mapExists(e.getItem().getItemStack());
+        if (mapOwner != player.getName() && mapOwner != "") {
+            e.setCancelled(true);
+        } else if (CardsPlayer.getCardsPlayer(player.getName()) == null) {
+            e.setCancelled(true);
+            e.getItem().remove();
+            MapMethods.getCreatedMaps().remove(mapId);
+        } // This results in maps that are no longer in use being deleted. Maps being
+          // picked up, but still in use, are
+          // not deleted, but simply cancelled. (both of this is in the case if the player
+          // is not the owner of the map)
     }
 }

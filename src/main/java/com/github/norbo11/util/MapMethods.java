@@ -343,7 +343,7 @@ public class MapMethods {
             player.getInventory().remove(mapItem);
         }
 
-        createdMaps.remove(mapItem);
+        createdMaps.remove((short) ((MapMeta) mapItem.getItemMeta()).getMapId());
         if (remove) savedMaps.remove(playerName);
         Bukkit.getScheduler().cancelTask(redrawTasks.get(playerName));
         redrawTasks.remove(playerName);
