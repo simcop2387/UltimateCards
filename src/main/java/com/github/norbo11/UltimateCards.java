@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.permissions.Permission;
@@ -39,7 +38,6 @@ public class UltimateCards extends JavaPlugin {
     private static Logger log;
     private static String version;
     private static Economy economy;
-    private static Vault vault;
     private static boolean tagApiEnabled;
 
     // Constants
@@ -88,10 +86,6 @@ public class UltimateCards extends JavaPlugin {
 
     public static SavedTables getSavedTables() {
         return savedTables;
-    }
-
-    public static Vault getVault() {
-        return vault;
     }
 
     public static String getVersion() {
@@ -173,8 +167,7 @@ public class UltimateCards extends JavaPlugin {
         // Creates all files
         if (!createFiles()) return;
 
-        // Hook into vault, economy and database
-        if (!setupVault()) return;
+        // Hook into vault economy
         if (!setupEconomy()) return;
 
         // Create/load configs
@@ -208,17 +201,6 @@ public class UltimateCards extends JavaPlugin {
         }
         economy = rsp.getProvider();
         log.info("Hooked into " + economy.getName());
-        return true;
-    }
-
-    public boolean setupVault() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("Vault");
-        vault = (Vault) plugin;
-        if (vault == null) {
-            terminate("Vault plugin not detected! You need Vault to run this plugin! DL at: http://dev.bukkit.org/server-mods/vault/", null);
-            return false;
-        }
-        log.info("Hooked into Vault");
         return true;
     }
 
