@@ -9,3 +9,9 @@ Paintball.iml
 
 # Github stuff
 /.git
+
+# VSCode
+.classpath
+.settings/
+.vscode/
+.project
