@@ -127,15 +127,15 @@ public abstract class CardsTable {
     }
 
     public void displayDetails(Player player) {
-        Messages.sendMessage(player, "&6" + UltimateCards.getLineString());
+        Messages.sendMessage(player, "&6" + UltimateCards.LINE_STRING);
         Messages.sendMessage(player, ChatColor.BOLD + "&6Settings");
         Messages.sendMessage(player, getSettings().listSettings());
 
-        Messages.sendMessage(player, "&6" + UltimateCards.getLineString());
+        Messages.sendMessage(player, "&6" + UltimateCards.LINE_STRING);
         Messages.sendMessage(player, ChatColor.BOLD + "&6Players");
         Messages.sendMessage(player, listPlayers());
 
-        Messages.sendMessage(player, "&6" + UltimateCards.getLineString());
+        Messages.sendMessage(player, "&6" + UltimateCards.LINE_STRING);
         Messages.sendMessage(player,  "&6General Details");
         Messages.sendMessage(player, "Owner: &6" + (getOwner().equals("") == false ? getOwner() : "SERVER"));
         Messages.sendMessage(player, "Hands played: &6" + getHandNumber());

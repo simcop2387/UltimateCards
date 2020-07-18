@@ -2,13 +2,11 @@ package com.github.norbo11;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.github.norbo11.commands.PluginCommand;
@@ -24,75 +22,68 @@ import com.github.norbo11.util.config.SavedTables;
 
 public class UltimateCards extends JavaPlugin {
 
+    public static final String TAG = "[UC]&f";
+    public static final String LINE_STRING = "---------------------------------------";
+    
+    private static UltimateCards instance;
+    
     // Listeners
-    private static PluginExecutor pluginExecutor;
-    private static Plugin pluginInstance;
+    private PluginExecutor pluginExecutor;
 
     // Classes
-    private static SavedTables savedTables;
+    private SavedTables savedTables;
 
     // Files
-    private static File filePluginDir, filePluginConfig, fileLog, fileSavedTables;
+    private File filePluginDir, filePluginConfig, fileLog, fileSavedTables;
 
     // Misc
-    private static Logger log;
-    private static String version;
-    private static Economy economy;
-    private static boolean tagApiEnabled;
+    private String version;
+    private Economy economy;
+    private boolean tagApiEnabled;
 
-    // Constants
-    private static final String PLUGIN_TAG = "[UC]&f";
-    private static final String LINE_STRING = "---------------------------------------";
 
-    public static Plugin getPluginInstance() {
-        return pluginInstance;
+    public UltimateCards() {
+        super();
+        instance = this;
+    }
+
+    public static UltimateCards getInstance() {
+        return instance;
     }
     
-    public static Economy getEconomy() {
+    public Economy getEconomy() {
         return economy;
     }
 
-    public static File getFileLog() {
+    public File getFileLog() {
         return fileLog;
     }
 
-    public static File getFilePluginConfig() {
+    public File getFilePluginConfig() {
         return filePluginConfig;
     }
 
-    public static File getFilePluginDir() {
+    public File getFilePluginDir() {
         return filePluginDir;
     }
 
-    public static File getFileSavedTables() {
+    public File getFileSavedTables() {
         return fileSavedTables;
     }
 
-    public static String getLineString() {
-        return LINE_STRING;
-    }
-
-    public static Logger getLog() {
-        return log;
-    }
-
-    public static PluginExecutor getPluginExecutor() {
+    public PluginExecutor getPluginExecutor() {
         return pluginExecutor;
     }
 
-    public static String getPluginTag() {
-        return PLUGIN_TAG;
-    }
-
-    public static SavedTables getSavedTables() {
+    public SavedTables getSavedTables() {
         return savedTables;
     }
 
-    public static String getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public static boolean isTagApiEnabled() {
+    public boolean isTagApiEnabled() {
         return tagApiEnabled;
     }
 
@@ -110,11 +101,11 @@ public class UltimateCards extends JavaPlugin {
             if (filePluginConfig.exists() == false) {
                 getConfig().options().copyDefaults(true).copyHeader(true); // Copies the config in the actual plugin
                 saveDefaultConfig(); // Saves the new config
-                log.info("Created config file");
+                getLogger().info("Created config file");
             }
             if (fileSavedTables.exists() == false) {
                 saveResource("tables.yml", false);
-                log.info("Created tables file");
+                getLogger().info("Created tables file");
             }
         } catch (Exception e) {
             terminate("Something went wrong when trying to create the config file(s)!", e);
@@ -140,13 +131,11 @@ public class UltimateCards extends JavaPlugin {
             MoneyMethods.returnMoney();
             MapMethods.restoreAllMaps();
         }
-        log.info("UltimateCards v" + version + " plugin disabled!");
+        getLogger().info("UltimateCards v" + version + " plugin disabled!");
     }
 
     @Override
     public void onEnable() {
-        pluginInstance = this;
-        log = getLogger();
         version = getDescription().getVersion();
 
         // Set file variables
@@ -190,7 +179,7 @@ public class UltimateCards extends JavaPlugin {
             return;
         }
 
-        log.info("UltimateCards v" + version + " plugin enabled!");
+        getLogger().info("UltimateCards v" + version + " plugin enabled!");
     }
 
     public boolean setupEconomy() {
@@ -200,13 +189,13 @@ public class UltimateCards extends JavaPlugin {
             return false;
         }
         economy = rsp.getProvider();
-        log.info("Hooked into " + economy.getName());
+        getLogger().info("Hooked into " + economy.getName());
         return true;
     }
 
     // Stops the plugin with the specified message and prints a stack trace of the error
     public void terminate(String message, Exception e) {
-        log.severe(message);
+        getLogger().severe(message);
         if (e != null) {
             e.printStackTrace();
         }

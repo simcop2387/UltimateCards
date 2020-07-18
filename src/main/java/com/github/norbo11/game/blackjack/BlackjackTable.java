@@ -117,7 +117,7 @@ public class BlackjackTable extends CardsTable {
         if (canDeal()) {
             setHandNumber(getHandNumber() + 1);
             sendTableMessage("Dealing hand number &6" + getHandNumber());
-            sendTableMessage("&6" + UltimateCards.getLineString());
+            sendTableMessage("&6" + UltimateCards.LINE_STRING);
 
             setInProgress(true);
             getDeck().shuffle();
@@ -126,7 +126,7 @@ public class BlackjackTable extends CardsTable {
             dealCards();
             displayScores();
 
-            sendTableMessage("&6" + UltimateCards.getLineString());
+            sendTableMessage("&6" + UltimateCards.LINE_STRING);
             nextPersonTurn(getNextPlayer(getButton()));
         }
     }
@@ -244,14 +244,14 @@ public class BlackjackTable extends CardsTable {
     public void handEnd() {
         // If not all players are bust
         if (getBustedPlayers().size() != getPlayersThisHand().size()) {
-            sendTableMessage("&6" + UltimateCards.getLineString());
+            sendTableMessage("&6" + UltimateCards.LINE_STRING);
             dealer.reveal();
             while (dealer.isUnderStayValue()) {
                 dealer.hit();
             }
         }
 
-        sendTableMessage("&6" + UltimateCards.getLineString());
+        sendTableMessage("&6" + UltimateCards.LINE_STRING);
         for (BlackjackPlayer pushingPlayer : payPlayers()) {
             sendTableMessage("&6" + pushingPlayer.getPlayerName() + "&f is pushing for &6" + Formatter.formatMoney(pushingPlayer.getPushingAmount()) + "&f next hand.");
         }
@@ -388,7 +388,7 @@ public class BlackjackTable extends CardsTable {
             blackjackPlayer.getPlayer().teleport(blackjackPlayer.getStartLocation());
             Messages.sendMessage(blackjackPlayer.getPlayer(), "You have been paid your remaining stack of &6" + Formatter.formatMoney(blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()));
         }
-        UltimateCards.getEconomy().depositPlayer(blackjackPlayer.getPlayer(), blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet());
+        UltimateCards.getInstance().getEconomy().depositPlayer(blackjackPlayer.getPlayer(), blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet());
         Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()) + " to " + blackjackPlayer.getPlayerName());
     }
 }

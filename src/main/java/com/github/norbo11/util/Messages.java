@@ -12,7 +12,7 @@ import com.github.norbo11.util.config.PluginConfig;
 
 public class Messages {
     public static String convertColors(String message) {
-        message = PluginConfig.getColorTag() + UltimateCards.getPluginTag() + " " + message;
+        message = PluginConfig.getColorTag() + UltimateCards.TAG + " " + message;
 
         message = message.replace("&l", ChatColor.BOLD + "");
         message = message.replace("&m", ChatColor.STRIKETHROUGH + "");

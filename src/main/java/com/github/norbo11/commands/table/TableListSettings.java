@@ -71,7 +71,7 @@ public class TableListSettings extends PluginCommand {
 
         
                 /*if (cardsTable instanceof PokerTable) {
-                Messages.sendMessage(getPlayer(), "&6" + UltimateCards.getLineString());
+                Messages.sendMessage(getPlayer(), "&6" + UltimateCards.LINE_STRING);
                 Messages.sendMessage(getPlayer(), ");
                 Messages.sendMessage(getPlayer(), );
                 Messages.sendMessage(getPlayer(), );
@@ -80,11 +80,11 @@ public class TableListSettings extends PluginCommand {
                 Messages.sendMessage(getPlayer(), );
                 Messages.sendMessage(getPlayer(), );
             } else if (cardsTable instanceof BlackjackTable) {
-                Messages.sendMessage(getPlayer(), "&6" + UltimateCards.getLineString());
+                Messages.sendMessage(getPlayer(), "&6" + UltimateCards.LINE_STRING);
                 Messages.sendMessage(getPlayer(), );
                 Messages.sendMessage(getPlayer(), );
             }
-            Messages.sendMessage(getPlayer(), "&6" + UltimateCards.getLineString());
+            Messages.sendMessage(getPlayer(), "&6" + UltimateCards.LINE_STRING);
         
             Messages.sendMessage(getPlayer(), );
             Messages.sendMessage(getPlayer(), );

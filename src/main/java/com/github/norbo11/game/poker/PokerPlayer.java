@@ -189,7 +189,7 @@ public class PokerPlayer extends CardsPlayer {
         if (pokerTable.getSettings().rake.getValue() > 0) {
             rake = potToPay * pokerTable.getSettings().rake.getValue();
 
-            UltimateCards.getEconomy().depositPlayer(pokerTable.getOwnerPlayer().getPlayer(), rake);
+            UltimateCards.getInstance().getEconomy().depositPlayer(pokerTable.getOwnerPlayer().getPlayer(), rake);
             Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + rake + " to " + pokerTable.getOwner());
         }
 

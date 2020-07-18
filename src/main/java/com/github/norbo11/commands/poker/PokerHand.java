@@ -42,7 +42,7 @@ public class PokerHand extends PluginCommand {
     @Override
     public void perform() throws Exception {
         Messages.sendMessage(getPlayer(), "Your hand:");
-        Messages.sendMessage(getPlayer(), "&6" + UltimateCards.getLineString());
+        Messages.sendMessage(getPlayer(), "&6" + UltimateCards.LINE_STRING);
         Messages.sendMessage(getPlayer(), new ArrayList<String>(Arrays.asList(pokerPlayer.getHand().getHand())));
     }
 }

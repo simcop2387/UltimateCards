@@ -49,6 +49,7 @@ public class ErrorMessages {
     }
 
     public static void displayHelp(Player player, String command) {
+        final String version = UltimateCards.getInstance().getVersion();
         if (command.equalsIgnoreCase("table") || command.equalsIgnoreCase("t") || command.equalsIgnoreCase("cards") || command.equalsIgnoreCase("c")) {
             for (PluginCommand pluginCommand : PluginExecutor.commandsTable) {
                 if (pluginCommand.hasPermission(player)) {
@@ -57,7 +58,7 @@ public class ErrorMessages {
             }
 
             Messages.sendMessage(player, "&6/table help &b[command]");
-            Messages.sendMessage(player, "&6UltimateCards &bv" + UltimateCards.getVersion() + " &fby &6Norbo11");
+            Messages.sendMessage(player, "&6UltimateCards &bv" + version + " &fby &6Norbo11");
         } else if (command.equalsIgnoreCase("poker") || command.equalsIgnoreCase("p")) {
             for (PluginCommand pluginCommand : PluginExecutor.commandsPoker) {
                 if (pluginCommand.hasPermission(player)) {
@@ -66,7 +67,7 @@ public class ErrorMessages {
             }
 
             Messages.sendMessage(player, "&6/poker help &b[command]");
-            Messages.sendMessage(player, "&6UltimateCards &bv" + UltimateCards.getVersion() + " &fby &6Norbo11");
+            Messages.sendMessage(player, "&6UltimateCards &bv" + version + " &fby &6Norbo11");
         } else if (command.equalsIgnoreCase("blackjack") || command.equalsIgnoreCase("bj")) {
             for (PluginCommand pluginCommand : PluginExecutor.commandsBlackjack) {
                 if (pluginCommand.hasPermission(player)) {
@@ -76,7 +77,7 @@ public class ErrorMessages {
 
             Messages.sendMessage(player, "&6/blackjack help &b[command]");
             Messages.sendMessage(player, "&6/blackjack&b can be replaced with &6/bj&b.");
-            Messages.sendMessage(player, "&6UltimateCards &bv" + UltimateCards.getVersion() + " &fby &6Norbo11");
+            Messages.sendMessage(player, "&6UltimateCards &bv" + version + " &fby &6Norbo11");
         } else {
             for (ArrayList<PluginCommand> commandGroup : PluginExecutor.commands) {
                 for (PluginCommand pluginCommand : commandGroup) {

@@ -33,7 +33,7 @@ public class SavedTables {
     }
 
     public static void load() throws Exception {
-        config = YamlConfiguration.loadConfiguration(UltimateCards.getFileSavedTables());
+        config = YamlConfiguration.loadConfiguration(UltimateCards.getInstance().getFileSavedTables());
         loadTables();
     }
 
@@ -117,7 +117,7 @@ public class SavedTables {
     }
 
     public static void save() throws IOException {
-        config.save(UltimateCards.getFileSavedTables());
+        config.save(UltimateCards.getInstance().getFileSavedTables());
     }
     
     private static Vector<String> saveLocation(Location location) {

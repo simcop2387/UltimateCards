@@ -40,9 +40,9 @@ public class TableRebuy extends PluginCommand {
                     if (!cardsTable.isInProgress()) {
                         amount = NumberMethods.getDouble(getArgs()[1]);
                         if (amount != -99999) {
-                            if (UltimateCards.getEconomy().has(getPlayer(), amount)) return true;
+                            if (UltimateCards.getInstance().getEconomy().has(getPlayer(), amount)) return true;
                             else {
-                                ErrorMessages.notEnoughMoney(getPlayer(), amount, UltimateCards.getEconomy().getBalance(getPlayer()));
+                                ErrorMessages.notEnoughMoney(getPlayer(), amount, UltimateCards.getInstance().getEconomy().getBalance(getPlayer()));
                             }
                         } else {
                             ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);

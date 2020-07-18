@@ -15,12 +15,12 @@ public class Log {
             try {
                 // Attempt to write the supplied message as a new line at the
                 // end of the log
-                FileWriter writer = new FileWriter(UltimateCards.getFileLog(), true);
+                FileWriter writer = new FileWriter(UltimateCards.getInstance().getFileLog(), true);
                 writer.write(DateMethods.getDate() + " " + message + "\r\n");
                 writer.flush();
                 writer.close();
             } catch (Exception e) {
-                UltimateCards.getLog().info("Something went wrong when trying to write to the log file! " + e.getMessage());
+                UltimateCards.getInstance().getLogger().info("Something went wrong when trying to write to the log file! " + e.getMessage());
             }
         }
     }

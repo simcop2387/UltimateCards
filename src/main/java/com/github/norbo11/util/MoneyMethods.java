@@ -8,12 +8,12 @@ import com.github.norbo11.game.cards.CardsTable;
 
 public class MoneyMethods {
     public static void depositMoney(OfflinePlayer user, double amount) {
-        UltimateCards.getEconomy().depositPlayer(user, amount);
+        UltimateCards.getInstance().getEconomy().depositPlayer(user, amount);
         Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + amount + " to " + user);
     }
 
     public static double getMoney(OfflinePlayer owner) {
-        return UltimateCards.getEconomy().getBalance(owner);
+        return UltimateCards.getInstance().getEconomy().getBalance(owner);
     }
 
     // Returns money to EVERYONE that is currently at a table. Should be called
@@ -29,7 +29,7 @@ public class MoneyMethods {
                     Messages.sendMessage(player.getPlayer(), "&cSomething (an error, plugin reload, etc) has caused all tables to be deleted!");
                     Messages.sendMessage(player.getPlayer(), "You have been paid your remaining stack of &6" + Formatter.formatMoney(player.getMoney()));
                 }
-                UltimateCards.getEconomy().depositPlayer(player.getPlayer(), player.getMoney());
+                UltimateCards.getInstance().getEconomy().depositPlayer(player.getPlayer(), player.getMoney());
                 Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + player.getMoney() + " to " + player.getPlayerName());
             }
         }
@@ -48,7 +48,7 @@ public class MoneyMethods {
     }
 
     public static void withdrawMoney(OfflinePlayer user, double amount) {
-        UltimateCards.getEconomy().withdrawPlayer(user, amount);
+        UltimateCards.getInstance().getEconomy().withdrawPlayer(user, amount);
         Log.addToLog(DateMethods.getDate() + " [ECONOMY] Withdrawing " + amount + " from " + user);
     }
 }

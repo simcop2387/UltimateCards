@@ -159,9 +159,9 @@ public class PluginConfig {
     }
 
     public static void load() {
-        config = UltimateCards.getPluginInstance().getConfig();
+        config = UltimateCards.getInstance().getConfig();
         try {
-            config.load(UltimateCards.getFilePluginConfig());
+            config.load(UltimateCards.getInstance().getFilePluginConfig());
         } catch (Exception e) {
             e.printStackTrace();
         }
