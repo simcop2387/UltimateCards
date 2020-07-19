@@ -42,6 +42,7 @@ public abstract class CardsTable {
     private boolean open; // Decides if player can join or not
     private boolean toBeContinued;
     private static ArrayList<String> allowedDetailTypes;
+
     static {
         allowedDetailTypes.add("settings");
         allowedDetailTypes.add("player");
@@ -49,6 +50,7 @@ public abstract class CardsTable {
         allowedDetailTypes.add("general");
         allowedDetailTypes.add("all");
     }
+
     private ArrayList<CardsPlayer> players = new ArrayList<>();
     private ArrayList<String> bannedList = new ArrayList<>();
     private static ArrayList<CardsTable> tables = new ArrayList<>();
@@ -71,7 +73,8 @@ public abstract class CardsTable {
     public static int getFreeTableID() {
         int newID = 0;
         boolean taken = true;
-        whileLoop: while (taken) {
+        whileLoop:
+        while (taken) {
             for (CardsTable table : tables) {
                 if (table.getId() == newID) {
                     newID++;
@@ -118,8 +121,7 @@ public abstract class CardsTable {
     public void deleteTable() {
         sendTableMessage("Table ID '" + "&6" + getName() + "&f', ID #" + "&6" + getId() + " &fhas been deleted!");
         MoneyMethods.returnMoney(this);
-        for (CardsPlayer player : players)
-        {
+        for (CardsPlayer player : players) {
             if (player.getTurnTimer() != null) player.getTurnTimer().cancel();
         }
         CardsTable.getTables().remove(this);
@@ -135,7 +137,7 @@ public abstract class CardsTable {
         Messages.sendMessage(player, listPlayers());
 
         Messages.sendMessage(player, "&6" + UltimateCards.LINE_STRING);
-        Messages.sendMessage(player,  "&6General Details");
+        Messages.sendMessage(player, "&6General Details");
         Messages.sendMessage(player, "Owner: &6" + (!getOwner().equals("") ? getOwner() : "SERVER"));
         Messages.sendMessage(player, "Hands played: &6" + getHandNumber());
         Messages.sendMessage(player, "Open: &6" + isOpen());
@@ -204,13 +206,13 @@ public abstract class CardsTable {
                 newID++;
             }
         } catch (Exception e) // As soon as you try to get a player that
-                              // return null (doesnt exist), this means that
-                              // that ID is free. Therefore, return it
+        // return null (doesnt exist), this means that
+        // that ID is free. Therefore, return it
         {
             return newID;
         }
         return newID; // This doesnt actually do anything but is required so the
-                      // compiler doesnt complain
+        // compiler doesnt complain
     }
 
     public int getHandNumber() {

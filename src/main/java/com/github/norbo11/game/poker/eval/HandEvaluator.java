@@ -8,9 +8,10 @@ package com.github.norbo11.game.poker.eval;
 
  See "Liscence.txt"
  ***************************************************************************/
+
 /**
  * Class for identifying / comparing / ranking Hands.
- * 
+ *
  * @author Aaron Davidson, Darse Billings, Denis Papp
  */
 
@@ -20,15 +21,15 @@ public class HandEvaluator {
     // Example usage
     /*
      * public static void main(String args[]){ Hand hand1 = new Hand("Kc 8c 9c Tc Jc Qc Ac"); Hand hand2 = new Hand("Kc 8c 9c Tc Jc Qc Ad");
-     * 
+     *
      * HandEvaluator handEval = new HandEvaluator();
-     * 
+     *
      * System.out.println(handEval.getBest5CardHand(hand1)); System.out.println(handEval.getBest5CardHand(hand2));
-     * 
+     *
      * System.out.println(handEval.rankHand(hand1)); System.out.println(handEval.rankHand(hand2));
-     * 
+     *
      * System.out.println(handEval.nameHand(hand1)); System.out.println(handEval.nameHand(hand2));
-     * 
+     *
      * }
      */
 
@@ -44,7 +45,9 @@ public class HandEvaluator {
 
     /** ******************************************************************* */
     // MORE HAND COMPARISON STUFF (Adapted from C code by Darse Billings)
-    /** ******************************************************************* */
+    /**
+     * ******************************************************************
+     */
 
     private final static int straight = 5;
 
@@ -55,7 +58,9 @@ public class HandEvaluator {
     private final static int highcard = 1;
     /** ******************************************************************* */
     // DENIS PAPP'S HAND RANK IDENTIFIER CODE:
-    /** ******************************************************************* */
+    /**
+     * ******************************************************************
+     */
 
     private static final int POKER_HAND = 5;
     public static final int HIGH = 0;
@@ -82,9 +87,9 @@ public class HandEvaluator {
 
     private static final int ID_GROUP_SIZE = EvalCard.NUM_RANKS * EvalCard.NUM_RANKS * EvalCard.NUM_RANKS * EvalCard.NUM_RANKS * EvalCard.NUM_RANKS;
 
-    private static final String[] hand_name = { "HIGH", "PAIR", "TWO PAIR", "THREE KIND", "STRAIGHT", "FLUSH", "FULL HOUSE", "FOUR KIND", "STRAIGHT FLUSH", "FIVE KIND" };
+    private static final String[] hand_name = {"HIGH", "PAIR", "TWO PAIR", "THREE KIND", "STRAIGHT", "FLUSH", "FULL HOUSE", "FOUR KIND", "STRAIGHT FLUSH", "FIVE KIND"};
 
-    private static final String[] rank_name = { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace" };
+    private static final String[] rank_name = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 
     private static boolean Check_StrFlush(int[] hand, int[] dist, int[] best) {
         int i, j, suit, strght, strtop;
@@ -112,8 +117,7 @@ public class HandEvaluator {
             }
 
             /* now look for straights */
-            if (suitvector[13] >= 1) /* Ace low straight */
-            {
+            if (suitvector[13] >= 1) /* Ace low straight */ {
                 strght = 1;
             } else {
                 strght = 0;
@@ -214,9 +218,8 @@ public class HandEvaluator {
 
     /**
      * Return a string naming the hand
-     * 
-     * @param rank
-     *            calculated by rankHand_java()
+     *
+     * @param rank calculated by rankHand_java()
      */
     private static String name_hand(int rank) {
 
@@ -285,11 +288,10 @@ public class HandEvaluator {
 
     /**
      * Get a numerical ranking of this hand. Uses java based code, so may be slower than using the native methods, but is more compatible this way.
-     * 
+     * <p>
      * Based on Denis Papp's Loki Hand ID code (id.cpp) Given a 1-9 card hand, will return a unique rank such that any two hands will be ranked with the better hand having a higher rank.
-     * 
-     * @param h
-     *            a 1-9 card hand
+     *
+     * @param h a 1-9 card hand
      * @return a unique number representing the hand strength of the best 5-card poker hand in the given 7 cards. The higher the number, the better the hand is.
      */
     public final static int rankHand(EvalHand h) {
@@ -416,42 +418,40 @@ public class HandEvaluator {
     }
 
     private int Best_Hand(int[] hand1, int[] hand2) { /*
-                                                       * sorted 5-card hands, both same type
-                                                       */
+     * sorted 5-card hands, both same type
+     */
         /* could check for proper hand types... */
 
         /* check value of top cards, then on down */
         if (hand1[1] % 13 > hand2[1] % 13) return 1;
         else if (hand1[1] % 13 < hand2[1] % 13) return 2;
 
-        /* same top, check second */
+            /* same top, check second */
         else if (hand1[2] % 13 > hand2[2] % 13) return 1;
         else if (hand1[2] % 13 < hand2[2] % 13) return 2;
 
-        /* same second, check third */
+            /* same second, check third */
         else if (hand1[3] % 13 > hand2[3] % 13) return 1;
         else if (hand1[3] % 13 < hand2[3] % 13) return 2;
 
-        /* same third, check fourth */
+            /* same third, check fourth */
         else if (hand1[4] % 13 > hand2[4] % 13) return 1;
         else if (hand1[4] % 13 < hand2[4] % 13) return 2;
 
-        /* same fourth, check fifth */
+            /* same fourth, check fifth */
         else if (hand1[5] % 13 > hand2[5] % 13) return 1;
         else if (hand1[5] % 13 < hand2[5] % 13) return 2;
 
         else
-        /* same hands */
-        return 0;
+            /* same hands */
+            return 0;
     }
 
     /**
      * Compares two hands against each other.
-     * 
-     * @param h1
-     *            The first hand
-     * @param h2
-     *            The second hand
+     *
+     * @param h1 The first hand
+     * @param h2 The second hand
      * @return 1 = first hand is best, 2 = second hand is best, 0 = tie
      */
     public int compareHands(EvalHand h1, EvalHand h2) {
@@ -465,11 +465,9 @@ public class HandEvaluator {
 
     /**
      * Compares two 5-7 card hands against each other.
-     * 
-     * @param rank1
-     *            The rank of the first hand
-     * @param h2
-     *            The second hand
+     *
+     * @param rank1 The rank of the first hand
+     * @param h2    The second hand
      * @return 1 = first hand is best, 2 = second hand is best, 0 = tie
      * @noinspection UnnecessaryLocalVariable
      */
@@ -483,9 +481,8 @@ public class HandEvaluator {
 
     /**
      * Get a string from a hand type.
-     * 
-     * @param handtype
-     *            number coding a hand type
+     *
+     * @param handtype number coding a hand type
      * @return name of hand type
      */
     private String drb_Name_Hand(int handtype) {
@@ -516,8 +513,8 @@ public class HandEvaluator {
     }
 
     private void Find_Flush(int[] hand, int[] dist, int[] best) { /*
-                                                                   * finds only the best flush in highest suit
-                                                                   */
+     * finds only the best flush in highest suit
+     */
         int i, j, flushsuit = 0;
         int[] suitvector = new int[14];
         /*
@@ -942,8 +939,7 @@ public class HandEvaluator {
         int i, j, strght, strtop;
 
         /* look for highest straight */
-        if (dist[13] >= 1) /* Ace low straight */
-        {
+        if (dist[13] >= 1) /* Ace low straight */ {
             strght = 1;
         } else {
             strght = 0;
@@ -1113,9 +1109,8 @@ public class HandEvaluator {
 
     /**
      * Get the best 5 card poker hand from a 7 card hand
-     * 
-     * @param h
-     *            Any 7 card poker hand
+     *
+     * @param h Any 7 card poker hand
      * @return A Hand containing the highest ranked 5 card hand possible from the input.
      */
     public EvalHand getBest5CardHand(EvalHand h) {
@@ -1156,13 +1151,10 @@ public class HandEvaluator {
 
     /**
      * Get a numerical ranking of this hand.
-     * 
-     * @param c1
-     *            first hole card
-     * @param c2
-     *            second hole card
-     * @param h
-     *            a 3-5 card hand
+     *
+     * @param c1 first hole card
+     * @param c2 second hole card
+     * @param h  a 3-5 card hand
      * @return a unique number representing the hand strength of the best 5-card poker hand in the given cards and board. The higher the number, the better the hand is.
      */
     public int rankHand(EvalCard c1, EvalCard c2, EvalHand h) {

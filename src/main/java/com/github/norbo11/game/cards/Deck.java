@@ -12,7 +12,7 @@ public class Deck {
 
     private int amountOfDecks;
     private ArrayList<Card> cards = new ArrayList<>(); // Cards left in the
-                                                           // deck
+    // deck
 
     // Goes through ranks and suits, then adds them all to the deck
     private void addCards() {

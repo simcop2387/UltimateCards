@@ -11,11 +11,11 @@ public class PlayerControlled {
     protected PlayerControlled(Player player) {
         uuid = player.getUniqueId();
     }
-    
+
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
-    
+
     public UUID getUuid() {
         return uuid;
     }
@@ -23,13 +23,13 @@ public class PlayerControlled {
     public void sendMessage(String message) {
         Messages.sendMessage(getPlayer(), message);
     }
-    
+
     public String getPlayerName() {
         if (getPlayer() != null) {
             return getPlayer().getName();
         } else return "";
     }
-    
+
     @Override
     public String toString() {
         return getPlayerName();

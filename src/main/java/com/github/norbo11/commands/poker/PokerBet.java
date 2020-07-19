@@ -44,7 +44,8 @@ public class PokerBet extends PluginCommand {
                                             if (pokerPlayer.hasMoney(amountToBet - pokerPlayer.getCurrentBet())) {
                                                 // Raise
                                                 if (amountToBet > pokerTable.getCurrentBet()) {
-                                                    if (amountToBet - pokerTable.getCurrentBet() >= pokerTable.getSettings().minRaise.getValue()) return true;
+                                                    if (amountToBet - pokerTable.getCurrentBet() >= pokerTable.getSettings().minRaise.getValue())
+                                                        return true;
                                                     else {
                                                         ErrorMessages.betBelowMinRaise(getPlayer(), pokerTable.getSettings().minRaise.getValue(), pokerTable.getCurrentBet());
                                                     }

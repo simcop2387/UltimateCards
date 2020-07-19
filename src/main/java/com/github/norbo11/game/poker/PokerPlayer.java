@@ -114,9 +114,9 @@ public class PokerPlayer extends CardsPlayer {
         setTotalBet(0);
         getTable().sendTableMessage("&6" + getPlayerName() + "&f folds.");
         Sound.lost(getPlayer());
-        
+
         cancelTurnTimer();
-        
+
         // If there is only 1 non-folded player left, announce him the winner
         if (getPokerTable().getNonFoldedPlayers().size() == 1) {
             getPokerTable().endPhaseForPlayers();
@@ -286,9 +286,9 @@ public class PokerPlayer extends CardsPlayer {
             }
 
             setTurnTimer(Timers.startTimerAsync(() -> {
-                PokerCheck check = new PokerCheck(getPlayer(), new String[] { "check" });
-                PokerFold fold = new PokerFold(getPlayer(), new String[] { "fold" });
-                PokerReveal reveal = new PokerReveal(getPlayer(), new String[] { "reveal" });
+                PokerCheck check = new PokerCheck(getPlayer(), new String[]{"check"});
+                PokerFold fold = new PokerFold(getPlayer(), new String[]{"fold"});
+                PokerReveal reveal = new PokerReveal(getPlayer(), new String[]{"reveal"});
                 getPokerTable().sendTableMessage("&6" + getPlayerName() + "&f's turn timer has ended!");
 
                 try {

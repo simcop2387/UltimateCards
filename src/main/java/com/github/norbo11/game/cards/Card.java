@@ -32,6 +32,7 @@ public class Card {
             e.printStackTrace();
         }
     }
+
     private byte rank;
     private byte suit;
 

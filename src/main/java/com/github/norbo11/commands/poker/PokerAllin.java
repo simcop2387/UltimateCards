@@ -31,7 +31,7 @@ public class PokerAllin extends PluginCommand {
                 if (!pokerPlayer.isEliminated()) {
                     PokerTable pokerTable = pokerPlayer.getPokerTable();
                     if (pokerTable.isInProgress()) // Check if the table is
-                                                   // in progress
+                    // in progress
                     {
                         if (pokerTable.getCurrentPhase() != PokerPhase.SHOWDOWN) {
                             if (pokerPlayer.isAction()) {

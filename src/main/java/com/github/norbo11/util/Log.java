@@ -16,7 +16,7 @@ public class Log {
 
     private static Logger logger = UltimateCards.getInstance().getLogger();
     private static File fileLog = null;
-    
+
     public static void addToLog(String message) {
         // Only send to the log if it is enabled in the config
         if (PluginConfig.isEnableLog()) {
@@ -36,7 +36,7 @@ public class Log {
     private static File getFileLog() {
         if (fileLog == null) {
             fileLog = new File(UltimateCards.getInstance().getDataFolder(), "log.txt");
-            
+
             if (!fileLog.exists()) {
                 try {
                     fileLog.createNewFile();

@@ -22,7 +22,7 @@ public class PokerReveal extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker");
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
-    
+
     public PokerReveal() {
         this(null, null);
     }

@@ -13,7 +13,7 @@ import java.util.Random;
 
 /**
  * A Deck of 52 Cards which can be dealt and shuffled
- * 
+ *
  * @author Aaron Davidson
  */
 
@@ -31,9 +31,8 @@ class EvalDeck {
 
     /**
      * Constructor w/ shuffle seed.
-     * 
-     * @param seed
-     *            the seed to use in randomly shuffling the deck.
+     *
+     * @param seed the seed to use in randomly shuffling the deck.
      */
     public EvalDeck(long seed) {
         this();
@@ -59,7 +58,7 @@ class EvalDeck {
 
     /**
      * Obtain the next card in the deck. If no cards remain, a null card is returned
-     * 
+     *
      * @return the card dealt
      */
     public synchronized EvalCard deal() {
@@ -68,7 +67,7 @@ class EvalDeck {
 
     /**
      * Obtain the next card in the deck. If no cards remain, a null card is returned
-     * 
+     *
      * @return the card dealt
      */
     public synchronized EvalCard dealCard() {
@@ -77,9 +76,8 @@ class EvalDeck {
 
     /**
      * Remove a card from within the deck.
-     * 
-     * @param c
-     *            the card to remove.
+     *
+     * @param c the card to remove.
      */
     private synchronized void extractCard(EvalCard c) {
         int i = findCard(c);
@@ -138,9 +136,8 @@ class EvalDeck {
 
     /**
      * Obtain the card at a specific index in the deck. Does not matter if card has been dealt or not. If i < topCardIndex it has been dealt.
-     * 
-     * @param i
-     *            the index into the deck (0..51)
+     *
+     * @param i the index into the deck (0..51)
      * @return the card at position i
      */
     public synchronized EvalCard getCard(int i) {
@@ -149,7 +146,7 @@ class EvalDeck {
 
     /**
      * Obtain the position of the top card. (the number of cards dealt from the deck)
-     * 
+     *
      * @return the top card index
      */
     public synchronized int getTopCardIndex() {
@@ -169,9 +166,8 @@ class EvalDeck {
 
     /**
      * Place a card back into the deck.
-     * 
-     * @param c
-     *            the card to insert.
+     *
+     * @param c the card to insert.
      */
     public synchronized void replaceCard(EvalCard c) {
         int i = findDiscard(c);

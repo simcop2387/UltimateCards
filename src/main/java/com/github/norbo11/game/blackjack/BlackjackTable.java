@@ -36,7 +36,7 @@ public class BlackjackTable extends CardsTable {
     public BlackjackTable(String owner, String name, int id, Location location) throws Exception {
         this(owner, name, id, location, 0);
     }
-    
+
     // Generic vars
     private BlackjackDealer dealer = new BlackjackDealer(this);
 
@@ -193,8 +193,10 @@ public class BlackjackTable extends CardsTable {
     // the beginning if the end is reached
     @Override
     public BlackjackPlayer getNextPlayer(int index) {
-        if (index + 1 >= getPlayersThisHand().size()) return getBjPlayersThisHand().get((index + 1) % getBjPlayersThisHand().size()); // If
-        else return getBjPlayersThisHand().get(index + 1); // If the end of the players is not reached simply return the player 1 after the given index
+        if (index + 1 >= getPlayersThisHand().size())
+            return getBjPlayersThisHand().get((index + 1) % getBjPlayersThisHand().size()); // If
+        else
+            return getBjPlayersThisHand().get(index + 1); // If the end of the players is not reached simply return the player 1 after the given index
     }
 
     @Override

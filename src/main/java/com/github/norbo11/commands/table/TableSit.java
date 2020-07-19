@@ -38,19 +38,21 @@ public class TableSit extends PluginCommand {
                 String idString = getArgs()[1];
 
                 int id;
-                 try {
+                try {
                     id = NumberMethods.getPositiveInteger(idString);
-                 } catch (NumberFormatException exc) {
-                     return false;
-                 }
+                } catch (NumberFormatException exc) {
+                    return false;
+                }
 
                 // Check ID isn't a number
                 if (id == -99999) {
                     if (CardsTable.isGameType(idString)) {
                         ArrayList<CardsTable> eligibleTables = new ArrayList<>();
                         for (CardsTable table : CardsTable.getTables()) {
-                            if (table instanceof PokerTable && idString.equalsIgnoreCase("poker")) eligibleTables.add(table);
-                            else if (table instanceof BlackjackTable && (idString.equalsIgnoreCase("bj") || idString.equalsIgnoreCase("blackjack"))) eligibleTables.add(table);
+                            if (table instanceof PokerTable && idString.equalsIgnoreCase("poker"))
+                                eligibleTables.add(table);
+                            else if (table instanceof BlackjackTable && (idString.equalsIgnoreCase("bj") || idString.equalsIgnoreCase("blackjack")))
+                                eligibleTables.add(table);
                         }
                         cardsTable = eligibleTables.get(NumberMethods.getRandomInteger(eligibleTables.size() - 1));
                     } else {
@@ -68,7 +70,8 @@ public class TableSit extends PluginCommand {
                                 if (!cardsTable.isInProgress()) {
                                     // Check if the buy-in is within the bounds of the table
                                     if (buyin >= cardsTable.getSettings().minBuy.getValue() && buyin <= cardsTable.getSettings().maxBuy.getValue()) {
-                                        if (UltimateCards.getInstance().getEconomy().has(getPlayer(), buyin)) return true;
+                                        if (UltimateCards.getInstance().getEconomy().has(getPlayer(), buyin))
+                                            return true;
                                         else {
                                             ErrorMessages.notEnoughMoney(getPlayer(), buyin, UltimateCards.getInstance().getEconomy().getBalance(getPlayer()));
                                         }

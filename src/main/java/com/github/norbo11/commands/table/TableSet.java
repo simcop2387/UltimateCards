@@ -57,6 +57,6 @@ public class TableSet extends PluginCommand {
             String value = getArgs()[2];
             cardsTable.getSettings().setSetting(setting, value);
         }
-        
+
     }
 }

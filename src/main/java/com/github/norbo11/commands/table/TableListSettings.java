@@ -44,7 +44,7 @@ public class TableListSettings extends PluginCommand {
     @Override
     public void perform() {
         TableSetting<?>[] specificSettings = null;
-        
+
         if (cardsTable instanceof PokerTable) {
             Messages.sendMessage(getPlayer(), "&fAvailable poker settings:");
             specificSettings = ((PokerTable) cardsTable).getSettings().allSettings;
@@ -52,18 +52,16 @@ public class TableListSettings extends PluginCommand {
             Messages.sendMessage(getPlayer(), "&fAvailable blackjack settings:");
             specificSettings = ((BlackjackTable) cardsTable).getSettings().allSettings;
         }
-        
-        for (TableSetting<?> setting : specificSettings)
-        {
+
+        for (TableSetting<?> setting : specificSettings) {
             Messages.sendMessage(getPlayer(), setting.getHelpString());
         }
 
         Messages.sendMessage(getPlayer(), "&fAvailable general settings:");
-        for (TableSetting<?> setting : cardsTable.getSettings().allSettings)
-        {
+        for (TableSetting<?> setting : cardsTable.getSettings().allSettings) {
             Messages.sendMessage(getPlayer(), setting.getHelpString());
         }
-        
+
         Messages.sendMessage(getPlayer(), "&cUsage: &6/table set [setting] [value]");
 
         

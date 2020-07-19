@@ -19,14 +19,18 @@ public abstract class CardsTableSettings {
 
         @Override
         public void setValueUsingInput(String value) {
-            try { setValue(checkBoolean(value)); } catch (NumberFormatException e) { return; }
+            try {
+                setValue(checkBoolean(value));
+            } catch (NumberFormatException e) {
+                return;
+            }
             if (getValue()) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has allowed rebuys!");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has disallowed rebuys!");
             }
         }
-        
+
         @Override
         public String toString() {
             return "Allow rebuys: &6" + getValue();
@@ -37,7 +41,7 @@ public abstract class CardsTableSettings {
             return "&6allowRebuys [true|false] - &fIf false, players can't re-buy.";
         }
     }
-    
+
     public class DisplayTurnsPublicly extends TableSetting<Boolean> {
         DisplayTurnsPublicly(Boolean value) {
             super(value, "displayTurnsPublicly");
@@ -45,14 +49,18 @@ public abstract class CardsTableSettings {
 
         @Override
         public void setValueUsingInput(String value) {
-            try { setValue(checkBoolean(value)); } catch (NumberFormatException e) { return; }
+            try {
+                setValue(checkBoolean(value));
+            } catch (NumberFormatException e) {
+                return;
+            }
             if (getValue()) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has made turn messages display publicly!");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has made turn messages display privately!");
             }
         }
-        
+
         @Override
         public String toString() {
             return "Display turns publicly: &6" + getValue();
@@ -63,7 +71,7 @@ public abstract class CardsTableSettings {
             return "&6displayTurnsPublicly [true|false] - &fDisplays player turns publicly.";
         }
     }
-    
+
     public class AutoStart extends TableSetting<Integer> {
         AutoStart(Integer value) {
             super(value, "autoStart");
@@ -72,16 +80,16 @@ public abstract class CardsTableSettings {
         @Override
         public void setValueUsingInput(String value) {
             if (checkInteger(value) == -99999) return;
-            
+
             setValue(checkInteger(value));
             if (getValue() > 0) {
-                getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set round auto-start to &6" + getValue()  + "&f seconds!");
+                getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set round auto-start to &6" + getValue() + "&f seconds!");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has turned off round auto-start.");
                 getTable().cancelTimerTask();
             }
         }
-        
+
         @Override
         public String toString() {
             return "Display turns publicly: &6" + getValue();
@@ -101,11 +109,11 @@ public abstract class CardsTableSettings {
         @Override
         public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
-            
+
             setValue(checkDouble(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Maximum Buy-In" + "&f to &6" + Formatter.formatMoney(getValue()));
         }
-        
+
         @Override
         public String toString() {
             return "Maximum Buy-in: &6" + Formatter.formatMoney(getValue());
@@ -116,7 +124,7 @@ public abstract class CardsTableSettings {
             return "&6maxBuy [number] - &fThe maximum (re)buy-in amount.";
         }
     }
-    
+
     public class MinBuy extends TableSetting<Double> {
         MinBuy(Double value) {
             super(value, "minBuy");
@@ -125,11 +133,11 @@ public abstract class CardsTableSettings {
         @Override
         public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
-            
+
             setValue(checkDouble(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Minimum Buy-In" + "&f to &6" + Formatter.formatMoney(getValue()));
         }
-        
+
         @Override
         public String toString() {
             return "Minimum Buy-in: &6" + Formatter.formatMoney(getValue());
@@ -140,7 +148,7 @@ public abstract class CardsTableSettings {
             return "&6minBuy [number] - &fThe minimum (re)buy-in amount.";
         }
     }
-    
+
     public class PublicChatRange extends TableSetting<Integer> {
         PublicChatRange(Integer value) {
             super(value, "publicChatRange");
@@ -149,15 +157,15 @@ public abstract class CardsTableSettings {
         @Override
         public void setValueUsingInput(String value) {
             if (checkInteger(value) == -99999) return;
-            
+
             setValue(checkInteger(value));
             if (getValue() > 0) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has enabled public display of &6" + value + "&f blocks.");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has turned off the public display.");
-            }        
+            }
         }
-        
+
         @Override
         public String toString() {
             return "Public chat range: &6" + getValue() + " blocks";
@@ -168,7 +176,7 @@ public abstract class CardsTableSettings {
             return "&6publicChatRange [number] - &fSpectator message display range. 0 = OFF";
         }
     }
-    
+
     public class TurnSeconds extends TableSetting<Integer> {
         TurnSeconds(Integer value) {
             super(value, "turnSeconds");
@@ -177,15 +185,15 @@ public abstract class CardsTableSettings {
         @Override
         public void setValueUsingInput(String value) {
             if (checkInteger(value) == -99999) return;
-            
+
             setValue(checkInteger(value));
             if (getValue() > 0) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the turn time limit to &6" + getValue() + "&f seconds!");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has allowed unlimited turn time.");
-            }        
+            }
         }
-        
+
         @Override
         public String toString() {
             return "Turn timer: &6" + getValue() + " seconds";
@@ -196,12 +204,12 @@ public abstract class CardsTableSettings {
             return "&6turnSeconds [number] - &fAllowed player action time. 0 = OFF";
         }
     }
-    
+
     public class LeaveLocation extends TableSetting<Location> {
         LeaveLocation() {
             super("leaveLocation");
         }
-        
+
         @Override
         public String toString() {
             return "Leave location: " + Formatter.formatLocation(getValue());
@@ -217,12 +225,12 @@ public abstract class CardsTableSettings {
             return "&6leaveLocation - &fThe location players will be teleported to after leaving (do not specify a value).";
         }
     }
-    
+
     public class StartLocation extends TableSetting<Location> {
         StartLocation() {
             super("startLocation");
         }
-        
+
         @Override
         public String toString() {
             return "Start location: " + Formatter.formatLocation(getValue());
@@ -238,22 +246,26 @@ public abstract class CardsTableSettings {
             return "&6startLocation - &fThe location players will be teleported to after joining (do not specify a value).";
         }
     }
-    
+
     public class AutoKickOnLeave extends TableSetting<Boolean> {
         AutoKickOnLeave(boolean value) {
             super(value, "autoKickOnLeave");
         }
-        
+
         @Override
         public void setValueUsingInput(String value) {
-            try { setValue(checkBoolean(value)); } catch (NumberFormatException e) { return; }
+            try {
+                setValue(checkBoolean(value));
+            } catch (NumberFormatException e) {
+                return;
+            }
             if (getValue()) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has turned on auto-kick upon leaving the table!");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has turned off auto-kick upon leaving the table!");
             }
         }
-        
+
         @Override
         public String toString() {
             return "Auto-kick on leave: &6" + getValue();
@@ -264,9 +276,9 @@ public abstract class CardsTableSettings {
             return "&6autoKickOnLeave [true|false] - &fAutomatically kicks players who leave the table.";
         }
     }
-    
+
     //--------------------------------------------------------------------------------------------------
-    
+
     protected CardsTableSettings(CardsTable table) {
         this.parentTable = table;
     }
@@ -281,11 +293,11 @@ public abstract class CardsTableSettings {
     public StartLocation startLocation = new StartLocation();
     public LeaveLocation leaveLocation = new LeaveLocation();
     public AutoKickOnLeave autoKickOnLeave = new AutoKickOnLeave(PluginConfig.isAutoKickOnLeave());
-    
+
     public TableSetting<?>[] allSettings = {
-        allowRebuys, displayTurnsPublicly, minBuy, maxBuy, autoStart, publicChatRange, turnSeconds, startLocation, leaveLocation, autoKickOnLeave
+            allowRebuys, displayTurnsPublicly, minBuy, maxBuy, autoStart, publicChatRange, turnSeconds, startLocation, leaveLocation, autoKickOnLeave
     };
-    
+
     private CardsTable parentTable;
 
 
@@ -303,10 +315,9 @@ public abstract class CardsTableSettings {
 
         return list;
     }
-    
+
     protected static boolean setSetting(String inputSetting, String inputValue, TableSetting<?>[] settings) {
-        for (TableSetting<?> setting : settings)
-        {
+        for (TableSetting<?> setting : settings) {
             if (setting.getName().equalsIgnoreCase(inputSetting)) {
                 setting.setValueUsingInput(inputValue);
                 return true;
@@ -314,14 +325,14 @@ public abstract class CardsTableSettings {
         }
         return false;
     }
-    
-    
+
+
     public ArrayList<String> listSettings() {
         ArrayList<String> messages = listSettings(allSettings);
         messages.addAll(listTableSpecificSettings());
         return messages;
     }
-    
+
 
     protected abstract ArrayList<String> listTableSpecificSettings();
 
@@ -332,7 +343,7 @@ public abstract class CardsTableSettings {
     }
 
     protected abstract void setTableSpecificSetting(String setting, String v);
-    
+
     protected boolean checkBoolean(String v) {
         boolean value;
 
@@ -347,7 +358,7 @@ public abstract class CardsTableSettings {
         return value;
     }
 
-    protected double checkDouble(String v)  {
+    protected double checkDouble(String v) {
         try {
             return NumberMethods.getDouble(v);
         } catch (NumberFormatException e) {
@@ -380,7 +391,7 @@ public abstract class CardsTableSettings {
         startLocation.setValue(location);
         startLocation.setValueUsingInput(null);
     }
-    
+
     public void setLeaveLocation(Location location) {
         leaveLocation.setValue(location);
         leaveLocation.setValueUsingInput(null);

@@ -11,13 +11,13 @@ package com.github.norbo11.game.poker.eval;
 
 /**
  * Represents a playing card from a set of cards {0..51} which map to cards having a suit {0..3} <==> {CLUBS,DIAMONDS,HEARTS,SPADES} and a face value {0..12} <==> {2..ACE}
- * 
+ *
  * @author Aaron Davidson
  */
 
 /*
  * fully explicit card to integer conversions :
- * 
+ *
  * 2c = 0 2d = 13 2h = 26 2s = 39 3c = 1 3d = 14 3h = 27 3s = 40 4c = 2 4d = 15 4h = 28 4s = 41 5c = 3 5d = 16 5h = 29 5s = 42 6c = 4 6d = 17 6h = 30 6s = 43 7c = 5 7d = 18 7h = 31 7s = 44 8c = 6 8d = 19 8h = 32 8s = 45 9c = 7 9d = 20 9h = 33 9s = 46 Tc = 8 Td = 21 Th = 34 Ts = 47 Jc = 9 Jd = 22 Jh = 35 Js = 48 Qc = 10 Qd = 23 Qh = 36 Qs = 49 Kc = 11 Kd = 24 Kh = 37 Ks = 50 Ac = 12 Ad = 25 Ah = 38 As = 51
  */
 
@@ -31,11 +31,9 @@ public class EvalCard {
 
     /**
      * Constructor. Creates a card from its character based representation.
-     * 
-     * @param rank
-     *            the character representing the card's rank
-     * @param suit
-     *            the character representing the card's suit
+     *
+     * @param rank the character representing the card's rank
+     * @param suit the character representing the card's suit
      */
     public EvalCard(char rank, char suit) {
         gIndex = chars2index(rank, suit);
@@ -43,9 +41,8 @@ public class EvalCard {
 
     /**
      * Constructor. Creates a Card from an integer index {0..51}
-     * 
-     * @param index
-     *            integer index of card between 0 and 51
+     *
+     * @param index integer index of card between 0 and 51
      */
     public EvalCard(int index) {
         if (index >= 0 && index < NUM_CARDS) {
@@ -57,11 +54,9 @@ public class EvalCard {
 
     /**
      * Constructor.
-     * 
-     * @param rank
-     *            face value of the card
-     * @param suit
-     *            suit of the card
+     *
+     * @param rank face value of the card
+     * @param suit suit of the card
      */
     public EvalCard(int rank, int suit) {
         gIndex = toIndex(rank, suit);
@@ -105,7 +100,7 @@ public class EvalCard {
 
     /**
      * Obtain the rank of this card
-     * 
+     *
      * @return rank
      */
     public static int getRank(int i) {
@@ -139,7 +134,7 @@ public class EvalCard {
 
     /**
      * Obtain the suit of this card
-     * 
+     *
      * @return suit
      */
     public final static int getSuit(int i) {
@@ -148,11 +143,9 @@ public class EvalCard {
 
     /**
      * convert a rank and a suit to an index
-     * 
-     * @param rank
-     *            the rank to convert
-     * @param suit
-     *            the suit to convert
+     *
+     * @param rank the rank to convert
+     * @param suit the suit to convert
      * @return the index calculated from the rank and suit
      */
     private static int toIndex(int rank, int suit) {
@@ -232,7 +225,7 @@ public class EvalCard {
 
     /**
      * Return the integer index for this card.
-     * 
+     *
      * @return the card's index value
      */
     public int getIndex() {
@@ -241,7 +234,7 @@ public class EvalCard {
 
     /**
      * Obtain the rank of this card
-     * 
+     *
      * @return rank
      */
     public int getRank() {
@@ -250,7 +243,7 @@ public class EvalCard {
 
     /**
      * Obtain the suit of this card
-     * 
+     *
      * @return suit
      */
     public int getSuit() {
@@ -259,11 +252,9 @@ public class EvalCard {
 
     /**
      * Change this card to another. This is more practical than creating a new object for optimization reasons.
-     * 
-     * @param rank
-     *            face value of the card
-     * @param suit
-     *            suit of the card
+     *
+     * @param rank face value of the card
+     * @param suit suit of the card
      */
     public void setCard(int rank, int suit) {
         gIndex = toIndex(rank, suit);
@@ -271,9 +262,8 @@ public class EvalCard {
 
     /**
      * Change the index of the card.
-     * 
-     * @param index
-     *            the new index of the card
+     *
+     * @param index the new index of the card
      */
     public void setIndex(int index) {
         gIndex = index;
@@ -281,7 +271,7 @@ public class EvalCard {
 
     /**
      * Obtain a String representation of this Card
-     * 
+     *
      * @return A string for this card
      */
     @Override

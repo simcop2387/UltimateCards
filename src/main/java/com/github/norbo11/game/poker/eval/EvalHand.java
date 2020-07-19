@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 /**
  * Stores a Hand of Cards (up to a maximum of 7)
- * 
+ *
  * @author Aaron Davidson
  */
 
@@ -25,9 +25,8 @@ public class EvalHand {
 
     /**
      * Duplicate an existing hand.
-     * 
-     * @param h
-     *            the hand to clone.
+     *
+     * @param h the hand to clone.
      */
     public EvalHand(EvalHand h) {
         cards = new int[MAX_CARDS + 1];
@@ -36,8 +35,7 @@ public class EvalHand {
     }
 
     /**
-     * @param cs
-     *            A string representing a Hand of cards
+     * @param cs A string representing a Hand of cards
      */
     public EvalHand(String cs) {
         cards = new int[MAX_CARDS + 1];
@@ -60,9 +58,8 @@ public class EvalHand {
 
     /**
      * Add a card to the hand. (if there is room)
-     * 
-     * @param c
-     *            the card to add
+     *
+     * @param c the card to add
      * @return true if the card was added, false otherwise
      */
     public boolean addCard(EvalCard c) {
@@ -75,9 +72,8 @@ public class EvalHand {
 
     /**
      * Add a card to the hand. (if there is room)
-     * 
-     * @param i
-     *            the index value of the card to add
+     *
+     * @param i the index value of the card to add
      * @return true if the card was added, false otherwise
      */
     public boolean addCard(int i) {
@@ -89,9 +85,8 @@ public class EvalHand {
 
     /**
      * Get the a specified card in the hand
-     * 
-     * @param pos
-     *            the position (1..n) of the card in the hand
+     *
+     * @param pos the position (1..n) of the card in the hand
      * @return the card at position pos
      */
     public EvalCard getCard(int pos) {
@@ -101,7 +96,7 @@ public class EvalHand {
 
     /**
      * Obtain the array of card indexes for this hand. First element contains the size of the hand.
-     * 
+     *
      * @return array of card indexs (size = MAX_CARDS+1)
      */
     public int[] getCardArray() {
@@ -110,9 +105,8 @@ public class EvalHand {
 
     /**
      * Get the specified card id
-     * 
-     * @param pos
-     *            the position (1..n) of the card in the hand
+     *
+     * @param pos the position (1..n) of the card in the hand
      * @return the card at position pos
      */
     public int getCardIndex(int pos) {
@@ -137,9 +131,8 @@ public class EvalHand {
 
     /**
      * Add a card to the hand. (if there is room)
-     * 
-     * @param c
-     *            the card to add
+     *
+     * @param c the card to add
      */
     public void setCard(int pos, EvalCard c) {
         if (cards[0] < pos) return;
@@ -148,7 +141,7 @@ public class EvalHand {
 
     /**
      * Get the size of the hand.
-     * 
+     *
      * @return the number of cards in the hand
      */
     public int size() {

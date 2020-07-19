@@ -84,10 +84,10 @@ public abstract class PluginCommand {
 
     public boolean hasPermission(Player player) {
         if (player.hasPermission("ucards")) return true;
-        
+
         for (String node : permissionNodes)
             if (player.hasPermission(node)) return true;
-        
+
         return false;
     }
 

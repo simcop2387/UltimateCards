@@ -39,7 +39,8 @@ public class PokerCall extends PluginCommand {
                                     if (!pokerPlayer.isAllIn()) {
                                         if (pokerPlayer.getCurrentBet() < pokerTable.getCurrentBet()) // Check if the player hasn't already called
                                         {
-                                            if (pokerPlayer.hasMoney(pokerTable.getCurrentBet() - pokerPlayer.getCurrentBet())) return true;
+                                            if (pokerPlayer.hasMoney(pokerTable.getCurrentBet() - pokerPlayer.getCurrentBet()))
+                                                return true;
                                             else {
                                                 ErrorMessages.notEnoughMoney(getPlayer(), pokerTable.getCurrentBet(), pokerPlayer.getMoney());
                                             }

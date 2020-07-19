@@ -35,7 +35,7 @@ public class PokerTableSettings extends CardsTableSettings {
     private double originalSB;
     private double originalBB;
     private double originalAnte;
-    
+
     public SB sb = new SB(PluginConfig.getSb());
     public BB bb = new BB(PluginConfig.getBb());
     public Ante ante = new Ante(PluginConfig.getAnte());
@@ -43,13 +43,13 @@ public class PokerTableSettings extends CardsTableSettings {
     public MinRaise minRaise = new MinRaise(PluginConfig.getMinRaise());
     public DynamicFrequency dynamicFrequency = new DynamicFrequency(PluginConfig.getDynamicFrequency());
     public MinRaiseAlwaysBB minRaiseAlwaysBB = new MinRaiseAlwaysBB(PluginConfig.isMinRaiseAlwaysBB());
-   
+
     private boolean rakeFixed;
 
     public TableSetting<?>[] allSettings = {
-        sb, bb, ante, rake, minRaise, dynamicFrequency, minRaiseAlwaysBB
+            sb, bb, ante, rake, minRaise, dynamicFrequency, minRaiseAlwaysBB
     };
-    
+
     private double getOriginalAnte() {
         return originalAnte;
     }
@@ -79,18 +79,18 @@ public class PokerTableSettings extends CardsTableSettings {
         }
 
         @Override
-        public void setValueUsingInput(String value) {   
+        public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
             setValue(checkDouble(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Big Blind" + "&f to &6" + Formatter.formatMoney(getValue()));
         }
-        
+
         @Override
         public void setValue(Double value) {
             super.setValue(value);
             originalBB = getValue();
         }
-        
+
         @Override
         public String toString() {
             return "Big Blind: &6" + Formatter.formatMoney(getValue());
@@ -101,25 +101,25 @@ public class PokerTableSettings extends CardsTableSettings {
             return "&6bb [number] - &fThe big blind";
         }
     }
-    
+
     public class Ante extends TableSetting<Double> {
         Ante(Double value) {
             super(value, "ante");
         }
 
         @Override
-        public void setValueUsingInput(String value) {    
+        public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
             setValue(checkDouble(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Ante" + "&f to &6" + Formatter.formatMoney(getValue()));
         }
-        
+
         @Override
         public void setValue(Double value) {
             super.setValue(value);
             originalAnte = getValue();
         }
-        
+
         @Override
         public String toString() {
             return "Ante: &6" + Formatter.formatMoney(getValue());
@@ -130,7 +130,7 @@ public class PokerTableSettings extends CardsTableSettings {
             return "&6ante [number] - &fThe ante.";
         }
     }
-    
+
     public class DynamicFrequency extends TableSetting<Integer> {
         DynamicFrequency(Integer value) {
             super(value, "dynamicFrequency");
@@ -139,7 +139,7 @@ public class PokerTableSettings extends CardsTableSettings {
         @Override
         public void setValueUsingInput(String value) {
             if (checkInteger(value) == -99999) return;
-            
+
             // Only allow the player to set the dynamic frequency if the blinds increased on the current hand, or the table is not currently in progress
             if (!getTable().isInProgress() || getTable().getHandNumber() % getValue() == 0) {
                 setValue(checkInteger(value));
@@ -152,14 +152,14 @@ public class PokerTableSettings extends CardsTableSettings {
                 Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cYou may only set the dynamic frequency during a hand where the blinds increased, or if the table is not in progress.");
             }
         }
-        
+
         @Override
         public void setValue(Integer value) {
             if (!getTable().isInProgress() || getTable().getHandNumber() % getValue() == 0) {
                 super.setValue(value);
             }
         }
-        
+
         @Override
         public String toString() {
             if (getValue() > 0) {
@@ -181,9 +181,9 @@ public class PokerTableSettings extends CardsTableSettings {
         }
 
         @Override
-        public void setValueUsingInput(String value) {  
+        public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
-            
+
             if (!minRaiseAlwaysBB.getValue()) {
                 setValue(checkDouble(value));
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the &6Minimum Raise&f to &6" + Formatter.formatMoney(getValue()));
@@ -191,14 +191,14 @@ public class PokerTableSettings extends CardsTableSettings {
                 Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cThis table's minimum raise is currently set to always be equal to the big blind! Change this with &6/table set minRaiseAlwaySBB false.");
             }
         }
-        
+
         @Override
         public void setValue(Double value) {
             if (!minRaiseAlwaysBB.getValue()) {
                 super.setValue(value);
             }
         }
-        
+
         @Override
         public String toString() {
             if (minRaiseAlwaysBB.getValue()) {
@@ -213,22 +213,26 @@ public class PokerTableSettings extends CardsTableSettings {
             return "&6minRaise [number] - &fThe minimum raise at the table.";
         }
     }
-    
+
     public class MinRaiseAlwaysBB extends TableSetting<Boolean> {
         MinRaiseAlwaysBB(Boolean value) {
             super(value, "minRaiseAlwaysBB");
         }
 
         @Override
-        public void setValueUsingInput(String value) {  
-            try { setValue(checkBoolean(value)); } catch (NumberFormatException e) { return; }
+        public void setValueUsingInput(String value) {
+            try {
+                setValue(checkBoolean(value));
+            } catch (NumberFormatException e) {
+                return;
+            }
             if (getValue()) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has made the " + "&6Minimum Raise" + "&f be always equal to the Big Blind!");
             } else {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has made the " + "&6Minimum Raise" + "&f no longer be equal to the Big Blind!");
             }
         }
-        
+
         @Override
         public String toString() {
             return ""; //Handled by MinRaise
@@ -239,16 +243,16 @@ public class PokerTableSettings extends CardsTableSettings {
             return "&6minRaiseAlwaysBB [true|false] - &fIf true, the minimum raise will always be equal big blind.";
         }
     }
-   
+
     public class Rake extends TableSetting<Double> {
         Rake(Double value) {
             super(value, "rake");
         }
 
         @Override
-        public void setValueUsingInput(String value) {    
+        public void setValueUsingInput(String value) {
             if (checkPercentage(value) == -99999) return;
-            
+
             if (!rakeFixed) {
                 setValue(checkPercentage(value));
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Rake" + "&f to &6" + Formatter.convertToPercentage(getValue()));
@@ -257,14 +261,14 @@ public class PokerTableSettings extends CardsTableSettings {
                 Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cThe configuration of the plugin has fixed the rake to &6" + Formatter.convertToPercentage(getValue()) + "&c. Sorry!");
             }
         }
-        
+
         @Override
         public void setValue(Double value) {
             if (!rakeFixed) {
                 super.setValue(value);
             }
         }
-        
+
         @Override
         public String toString() {
             return "Rake: &6" + Formatter.convertToPercentage(getValue());
@@ -282,19 +286,19 @@ public class PokerTableSettings extends CardsTableSettings {
         }
 
         @Override
-        public void setValueUsingInput(String value) { 
+        public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
 
             setValue(checkDouble(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Small Blind" + "&f to &6" + Formatter.formatMoney(getValue()));
         }
-        
+
         @Override
         public void setValue(Double value) {
             super.setValue(value);
             originalSB = getValue();
         }
-        
+
         @Override
         public String toString() {
             return "Small Blind: &6" + Formatter.formatMoney(getValue());
@@ -309,10 +313,10 @@ public class PokerTableSettings extends CardsTableSettings {
     public void updateMinRaise() {
         minRaise.setValue(bb.getValue());
     }
-    
+
     @Override
     public void setTableSpecificSetting(String inputSetting, String inputValue) {
-        if (!setSetting(inputSetting, inputValue, allSettings))        
+        if (!setSetting(inputSetting, inputValue, allSettings))
             Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cInvalid setting. Check available settings with &6/table listsettings.");
     }
 }

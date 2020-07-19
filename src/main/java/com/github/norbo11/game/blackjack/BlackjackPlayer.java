@@ -270,7 +270,7 @@ public class BlackjackPlayer extends CardsPlayer {
             }
 
             setTurnTimer(Timers.startTimerAsync(() -> {
-                BlackjackStand stand = new BlackjackStand(getPlayer(), new String[] { "stand" });
+                BlackjackStand stand = new BlackjackStand(getPlayer(), new String[]{"stand"});
                 getTable().sendTableMessage("&6" + getPlayerName() + "&f's turn timer has ended!");
 
                 try {

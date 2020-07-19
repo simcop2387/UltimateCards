@@ -20,13 +20,12 @@ public class UltimateCards extends JavaPlugin {
 
     public static final String TAG = "[UC]&f";
     public static final String LINE_STRING = "---------------------------------------";
-    
+
     private static UltimateCards instance;
 
     // Misc
     private String version;
     private Economy economy;
-
 
     public UltimateCards() {
         super();
@@ -39,7 +38,7 @@ public class UltimateCards extends JavaPlugin {
         }
         return instance;
     }
-    
+
     public Economy getEconomy() {
         return economy;
     }

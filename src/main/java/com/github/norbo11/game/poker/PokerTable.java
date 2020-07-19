@@ -27,7 +27,7 @@ public class PokerTable extends CardsTable {
 
     public PokerTable(String owner, String name, int id, Location location, double buyin) {
         super(owner, name, id);
-        
+
         if (buyin != 0) {
             if (Bukkit.getPlayer(owner) != null) {
                 setOwnerPlayer(new PokerPlayer(Bukkit.getPlayer(owner), this, buyin));
@@ -291,8 +291,10 @@ public class PokerTable extends CardsTable {
     // Method to get the player 1 after the index specified, and loop back to the beginning if the end is reached
     @Override
     public PokerPlayer getNextPlayer(int index) {
-        if (index + 1 >= getPokerPlayersThisHand().size()) return getPokerPlayersThisHand().get((index + 1) % getPokerPlayersThisHand().size()); // If
-        else return getPokerPlayersThisHand().get(index + 1); // If the end of the players is not reached simply return the player 1 after the given index
+        if (index + 1 >= getPokerPlayersThisHand().size())
+            return getPokerPlayersThisHand().get((index + 1) % getPokerPlayersThisHand().size()); // If
+        else
+            return getPokerPlayersThisHand().get(index + 1); // If the end of the players is not reached simply return the player 1 after the given index
     }
 
     // Returns a list of non folded players sitting at the table
@@ -495,18 +497,17 @@ public class PokerTable extends CardsTable {
     public void phaseHandEnd() {
         setCurrentPhase(PokerPhase.HAND_END);
 
-        if (getPlayersThisHand().size() > 1)
-        {
+        if (getPlayersThisHand().size() > 1) {
             /* Evaluate all hands */
             HashMap<PokerPlayer, Integer> handRanks = new HashMap<>();
             for (PokerPlayer player : getNonFoldedPlayers()) {
                 handRanks.put(player, HandEvaluator.rankHand(player.getEvalHand()));
             }
-    
+
             /* Sort hand ranks */
             ArrayList<Integer> sortedRanks = new ArrayList<>(handRanks.values());
             Collections.sort(sortedRanks);
-    
+
             /* Pick winners with the highest ranked hands */
             int highestRank = sortedRanks.get(sortedRanks.size() - 1);
             ArrayList<PokerPlayer> winners = new ArrayList<>();
@@ -515,7 +516,7 @@ public class PokerTable extends CardsTable {
                     winners.add(entry.getKey());
                 }
             }
-    
+
             /* Pay pots to winners */
             if (winners.size() == 1) {
                 winners.get(0).payPot();
@@ -524,26 +525,26 @@ public class PokerTable extends CardsTable {
                     player.payPot(winners.size());
                 }
             }
-    
+
             /* Pay pots to any people that still have money invested (from split pots and such) */
             for (PokerPlayer player : getNonFoldedPlayers()) {
                 if (player.getPot() > 0) {
                     player.payPot();
                 }
             }
-    
+
             /* Cleanup */
             raiseBlinds();
             setInProgress(false);
             setToBeContinued(true);
-    
+
             for (PokerPlayer player : getPokerPlayers()) {
                 player.setTotalBet(0);
                 if (player.getMoney() < getHighestBlind()) {
                     sendTableMessage("&6" + player + "&f has been eliminated!");
                 }
             }
-    
+
             getShowdownPlayers().clear();
             playersThisHand.clear();
             setCurrentPhase(PokerPhase.HAND_END);
@@ -565,7 +566,7 @@ public class PokerTable extends CardsTable {
         clearBets();
         ArrayList<Card> cards = getDeck().generateCards(1);
         board.getCards().addAll(cards);
-        displayBoard(null, cards); 
+        displayBoard(null, cards);
         sendTableMessage("Total amount in pots: &6" + Formatter.formatMoney(getHighestPot()));
         nextPersonTurn(getPokerPlayersThisHand().get(getButton()));
     }

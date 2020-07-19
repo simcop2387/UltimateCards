@@ -69,7 +69,7 @@ public class PluginExecutor implements CommandExecutor {
         commandsTable.add(new TableTeleport());
         commandsTable.add(new TableWithdraw());
         commandsTable.add(new TableReload());
-    
+
         commandsPoker.add(new PokerHand());
         commandsPoker.add(new PokerAllin());
         commandsPoker.add(new PokerBet());
@@ -79,7 +79,7 @@ public class PluginExecutor implements CommandExecutor {
         commandsPoker.add(new PokerFold());
         commandsPoker.add(new PokerPot());
         commandsPoker.add(new PokerReveal());
-    
+
         commandsTable.add(new TableBan());
         commandsTable.add(new TableClose());
         commandsTable.add(new TableCreate());
@@ -92,7 +92,7 @@ public class PluginExecutor implements CommandExecutor {
         commandsTable.add(new TableUnban());
         commandsTable.add(new TableSave());
         commandsTable.add(new TableUnsave());
-    
+
         commandsBlackjack.add(new BlackjackHit());
         commandsBlackjack.add(new BlackjackStand());
         commandsBlackjack.add(new BlackjackBet());

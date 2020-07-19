@@ -27,13 +27,13 @@ public class PluginConfig {
     private static int dynamicFrequency;
     private static double maxBuy, sb, bb, ante, minRaise, fixRake, minBuy, rake;
     private static boolean minRaiseAlwaysBB;
-    
+
     // Blackjack
     private static boolean allowDoubleDown;
     private static double minBet;
 
     private static int amountOfDecks;
-    
+
     public static boolean isAutoKickOnLeave() {
         return autoKickOnLeave;
     }
@@ -171,7 +171,7 @@ public class PluginConfig {
         disableCommandsWhilePlaying = config.getBoolean("options.general.disableCommandsWhilePlaying", config.getDefaults().getBoolean("options.general.disableCommandsWhilePlaying"));
         preventMovementOutsideChatRange = config.getBoolean("options.general.preventMovementOutsideChatRange", config.getDefaults().getBoolean("options.general.preventMovementOutsideChatRange"));
         autoKickOnLeave = config.getBoolean("options.general.autoKickOnLeave", config.getDefaults().getBoolean("options.general.autoKickOnLeave"));
-        
+
         // Log
         enableLog = config.getBoolean("options.log.enableLog", config.getDefaults().getBoolean("options.log.enableLog"));
         dateFormat = config.getString("options.log.dateFormat", config.getDefaults().getString("options.log.dataFormat"));

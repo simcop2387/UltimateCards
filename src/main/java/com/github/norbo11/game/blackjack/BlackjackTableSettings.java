@@ -18,23 +18,27 @@ public class BlackjackTableSettings extends CardsTableSettings {
     public AmountOfDecks amountOfDecks = new AmountOfDecks(PluginConfig.getAmountOfDecks());
 
     public TableSetting<?>[] allSettings = {
-        allowDoubleDown, minBet, amountOfDecks
+            allowDoubleDown, minBet, amountOfDecks
     };
-    
+
     // Lists the settings of the table, returning a string array
     @Override
     public ArrayList<String> listTableSpecificSettings() {
         return listSettings(allSettings);
     }
-    
+
     public class AllowDoubleDown extends TableSetting<Boolean> {
         AllowDoubleDown(Boolean value) {
             super(value, "allowDoubleDown");
         }
 
         @Override
-        public void setValueUsingInput(String value) {            
-            try { setValue(checkBoolean(value)); } catch (NumberFormatException e) { return; }
+        public void setValueUsingInput(String value) {
+            try {
+                setValue(checkBoolean(value));
+            } catch (NumberFormatException e) {
+                return;
+            }
             if (getValue()) {
                 getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has allowed " + "&6Double Down&f!");
             } else {
@@ -59,9 +63,9 @@ public class BlackjackTableSettings extends CardsTableSettings {
         }
 
         @Override
-        public void setValueUsingInput(String value) {        
+        public void setValueUsingInput(String value) {
             if (checkInteger(value) == -99999) return;
-            
+
             setValue(checkInteger(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&Amount of Decks" + "&f to &6" + amountOfDecks);
         }
@@ -74,7 +78,7 @@ public class BlackjackTableSettings extends CardsTableSettings {
             }
             getTable().getDeck().setAmountOfDecks(value);
         }
-        
+
         @Override
         public String toString() {
             return "Amount of decks: &6" + getValue();
@@ -85,20 +89,20 @@ public class BlackjackTableSettings extends CardsTableSettings {
             return "&6amountOfDecks [number] - &fThe amount of decks used for the game.";
         }
     }
-    
+
     public class MinBet extends TableSetting<Double> {
         MinBet(Double value) {
             super(value, "minBet");
         }
 
         @Override
-        public void setValueUsingInput(String value) {  
+        public void setValueUsingInput(String value) {
             if (checkDouble(value) == -99999) return;
-            
+
             setValue(checkDouble(value));
             getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Minimum Bet" + "&f to &6" + Formatter.formatMoney(getValue()));
         }
-        
+
         @Override
         public String toString() {
             return "Minimum Bet: &6" + Formatter.formatMoney(getValue());

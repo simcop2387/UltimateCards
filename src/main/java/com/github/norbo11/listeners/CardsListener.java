@@ -24,47 +24,47 @@ public class CardsListener implements Listener {
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(player.getName());
-        
+
         if (cardsPlayer != null) {
             if (cardsPlayer.getTable().getSettings().autoKickOnLeave.getValue())
                 cardsPlayer.getTable().kick(cardsPlayer);
         }
     }
-    
+
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
         CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(player.getName());
         String command = e.getMessage().split(" ")[0];
-        String[] allowables = new String[] {
-            "/table",
-            "/cards",
-            "/poker",
-            "/bj",
-            "/blackjack"
+        String[] allowables = new String[]{
+                "/table",
+                "/cards",
+                "/poker",
+                "/bj",
+                "/blackjack"
         };
-        
+
         if (cardsPlayer != null) {
-            
+
             boolean allowed = false;
-            
+
             for (String allowable : allowables) {
                 if (allowable.equalsIgnoreCase(command)) allowed = true;
             }
-            
+
             if (!player.isOp() && PluginConfig.isDisableCommandsWhilePlaying() && !allowed) {
                 e.setCancelled(true);
                 Messages.sendMessage(player, "You may not use any commands while playing cards!");
-            }                
+            }
         }
     }
-    
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (PluginConfig.isPreventMovementOutsideChatRange()) {
             Player player = e.getPlayer();
             CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(player.getName());
-            
+
             if (cardsPlayer != null) {
                 int chatRange = PluginConfig.getPublicChatRange();
                 if (e.getTo().distance(cardsPlayer.getTable().getSettings().startLocation.getValue()) >= chatRange) {
@@ -74,7 +74,7 @@ public class CardsListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         ItemStack currentItem = e.getCurrentItem();
@@ -124,8 +124,8 @@ public class CardsListener implements Listener {
             e.getItem().remove();
             MapMethods.getCreatedMaps().remove(mapId);
         } // This results in maps that are no longer in use being deleted. Maps being
-          // picked up, but still in use, are
-          // not deleted, but simply cancelled. (both of this is in the case if the player
-          // is not the owner of the map)
+        // picked up, but still in use, are
+        // not deleted, but simply cancelled. (both of this is in the case if the player
+        // is not the owner of the map)
     }
 }

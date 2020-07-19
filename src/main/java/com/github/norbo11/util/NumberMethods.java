@@ -19,7 +19,7 @@ public class NumberMethods {
         return getInteger(string, false);
     }
 
-    private static int getInteger(String string, boolean positive) throws NumberFormatException  {
+    private static int getInteger(String string, boolean positive) throws NumberFormatException {
         try {
             int integer = Integer.parseInt(string);
             if (positive) {

@@ -24,6 +24,7 @@ import com.github.norbo11.util.NumberMethods;
 public class SavedTables {
     private static UltimateCards plugin = UltimateCards.getInstance();
     private static File fileSavedTables = new File(plugin.getDataFolder(), "tables.yml");
+
     static {
         if (!fileSavedTables.exists()) {
             plugin.saveResource("tables.yml", false);
@@ -46,40 +47,44 @@ public class SavedTables {
         loadTables();
     }
 
-    /** @noinspection UnnecessaryLocalVariable*/
+    /**
+     * @noinspection UnnecessaryLocalVariable
+     */
     private static void loadTables() throws Exception {
         savedTables = new ArrayList<>();
-        
+
         // Poker Tables
         for (String table : config.getKeys(false)) {
             ConfigurationSection tableSection = config.getConfigurationSection(table);
-            
+
             List<String> coords = tableSection.getStringList("startLocation");
             Location startLocation = null;
-            if (coords.size() == 4) startLocation = new Location(Bukkit.getServer().getWorld(coords.get(0)), NumberMethods.getInteger(coords.get(1)), NumberMethods.getInteger(coords.get(2)), NumberMethods.getInteger(coords.get(3)));
+            if (coords.size() == 4)
+                startLocation = new Location(Bukkit.getServer().getWorld(coords.get(0)), NumberMethods.getInteger(coords.get(1)), NumberMethods.getInteger(coords.get(2)), NumberMethods.getInteger(coords.get(3)));
 
             coords = tableSection.getStringList("leaveLocation");
             Location leaveLocation = null;
-            if (coords.size() == 4) leaveLocation = new Location(Bukkit.getServer().getWorld(coords.get(0)), NumberMethods.getInteger(coords.get(1)), NumberMethods.getInteger(coords.get(2)), NumberMethods.getInteger(coords.get(3)));
-            
-            
+            if (coords.size() == 4)
+                leaveLocation = new Location(Bukkit.getServer().getWorld(coords.get(0)), NumberMethods.getInteger(coords.get(1)), NumberMethods.getInteger(coords.get(2)), NumberMethods.getInteger(coords.get(3)));
+
+
             if (tableSection.getString("owner") == null || tableSection.getString("gameType") == null || tableSection.getStringList("startLocation") == null) {
                 System.out.println("Error while loading tables: Invalid config for table '" + table + "'");
                 continue;
             }
-            
+
             //If world exists
             if (startLocation != null && startLocation.getWorld() != null) {
                 String owner = "";
                 if (tableSection.getString("owner") != null) owner = tableSection.getString("owner");
                 String type = tableSection.getString("gameType");
                 String name = table;
-    
-                
+
+
                 CardsTable cardsTable = null;
                 CardsTableSettings tableSettings = null;
                 ConfigurationSection settings = tableSection.getConfigurationSection("settings");
-    
+
                 if (CardsTable.isGameType(type)) {
                     if (type.equalsIgnoreCase("poker")) {
                         cardsTable = new PokerTable(owner, name, CardsTable.getFreeTableID(), startLocation);
@@ -93,7 +98,7 @@ public class SavedTables {
                         pokerSettings.minRaise.setValue(settings.getDouble("minRaise", PluginConfig.getMinRaise()));
                         tableSettings = pokerSettings;
                     }
-    
+
                     if (type.equalsIgnoreCase("blackjack") || type.equalsIgnoreCase("bj")) {
                         cardsTable = new BlackjackTable(owner, name, CardsTable.getFreeTableID(), startLocation);
                         BlackjackTableSettings blackjackSettings = new BlackjackTableSettings((BlackjackTable) cardsTable);
@@ -106,7 +111,7 @@ public class SavedTables {
                     System.out.println("Error while loading tables: Invalid gameType for table '" + table + "'. Use 'poker' or 'blackjack'");
                     continue;
                 }
-    
+
                 tableSettings.allowRebuys.setValue(settings.getBoolean("allowRebuys", PluginConfig.isAllowRebuys()));
                 tableSettings.displayTurnsPublicly.setValue(settings.getBoolean("displayTurnsPublicly", PluginConfig.isDisplayTurnsPublicly()));
                 tableSettings.autoStart.setValue(settings.getInt("autoStart", PluginConfig.getAutoStart()));
@@ -117,7 +122,7 @@ public class SavedTables {
                 tableSettings.autoKickOnLeave.setValue(settings.getBoolean("autoKickOnLeave", PluginConfig.isAutoKickOnLeave()));
                 tableSettings.startLocation.setValue(startLocation);
                 tableSettings.leaveLocation.setValue(leaveLocation);
-                
+
                 cardsTable.setCardsTableSettings(tableSettings);
                 cardsTable.setOpen(true);
                 CardsTable.getTables().add(cardsTable);
@@ -129,17 +134,17 @@ public class SavedTables {
     private static void save() throws IOException {
         config.save(fileSavedTables);
     }
-    
+
     private static Vector<String> saveLocation(Location location) {
         Vector<String> returnValue = new Vector<>();
-        
+
         if (location != null && location.getWorld() != null) {
             returnValue.add(location.getWorld().getName());
             returnValue.add(Math.round(location.getX()) + "");
             returnValue.add(Math.round(location.getY()) + "");
             returnValue.add(Math.round(location.getZ()) + "");
         }
-            
+
         return returnValue;
     }
 
@@ -148,13 +153,13 @@ public class SavedTables {
 
         section.set("owner", table.getOwner());
         CardsTableSettings tableSettings = table.getSettings();
-        
+
         Location startLocation = table.getSettings().startLocation.getValue();
         Location leaveLocation = table.getSettings().leaveLocation.getValue();
 
         section.set("startLocation", saveLocation(startLocation));
         section.set("leaveLocation", saveLocation(leaveLocation));
-        
+
         ConfigurationSection settings = section.createSection("settings");
 
         if (table instanceof PokerTable) {

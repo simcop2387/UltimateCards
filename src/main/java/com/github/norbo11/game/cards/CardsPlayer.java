@@ -128,19 +128,19 @@ public abstract class CardsPlayer extends PlayerControlled {
         CardsTableSettings settings = getTable().getCardsTableSettings();
         int turnSeconds = table.getSettings().turnSeconds.getValue();
         String message;
-        
+
         if (turnSeconds > 0) {
             message = "&6" + getPlayerName() + " " + ChatColor.DARK_PURPLE + "has &6" + turnSeconds + " seconds" + ChatColor.DARK_PURPLE + " to act!";
         } else {
             message = ChatColor.DARK_PURPLE + "It is your turn to act!";
         }
-        
+
         if (settings.displayTurnsPublicly.getValue()) {
             getTable().sendTableMessage(message);
         } else {
             Messages.sendMessage(getPlayer(), message);
         }
-        
+
         Sound.tableTurnSounds(getTable(), getPlayerName());
         Sound.turn(getPlayer());
         startTurnTimer();

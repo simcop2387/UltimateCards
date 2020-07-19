@@ -61,7 +61,7 @@ public class TableLeave extends PluginCommand {
         if (leaveLocation != null) {
             cardsPlayer.getPlayer().teleport(leaveLocation);
         } else cardsPlayer.getPlayer().teleport(cardsPlayer.getStartLocation());
-        
+
         // Remove player
         cardsTable.removePlayer(cardsPlayer);
     }
