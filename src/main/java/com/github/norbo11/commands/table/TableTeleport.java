@@ -25,21 +25,24 @@ public class TableTeleport extends PluginCommand {
     // cards teleport <id>
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            int id = NumberMethods.getPositiveInteger(getArgs()[1]);
-            if (id != -99999) {
-                cardsTable = CardsTable.getTable(id);
-                if (cardsTable != null) return true;
-                else {
-                    ErrorMessages.notTable(getPlayer(), getArgs()[1]);
-                }
-            } else {
-                ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+        
+        int id = NumberMethods.getPositiveInteger(getArgs()[1]);
+        if (id == -99999) {
+            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+            return false;
+        }
+        
+        cardsTable = CardsTable.getTable(id);
+        if (cardsTable == null) {
+            ErrorMessages.notTable(getPlayer(), getArgs()[1]);
+            return false;
+        }
+        
+        return true;
     }
 
     @Override

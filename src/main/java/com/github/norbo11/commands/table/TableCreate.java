@@ -34,34 +34,42 @@ public class TableCreate extends PluginCommand {
     // table create name buyin poker|blackjack
     @Override
     public boolean conditions() {
-        if (getArgs().length == 4) {
-            if (CardsPlayer.getCardsPlayer(getPlayer().getName()) == null) {
-                gameType = getArgs()[3];
-                if (CardsTable.isGameType(gameType)) {
-                    buyin = NumberMethods.getDouble(getArgs()[2]);
-                    if (buyin != -99999) {
-                        if (UltimateCards.getInstance().getEconomy().has(getPlayer(), buyin)) {
-                            tableName = getArgs()[1];
-                            if (!CardsTable.doesTableExist(tableName)) return true;
-                            else {
-                                ErrorMessages.tableNameAlreadyExists(getPlayer());
-                            }
-                        } else {
-                            ErrorMessages.notEnoughMoney(getPlayer(), buyin, UltimateCards.getInstance().getEconomy().getBalance(getPlayer()) - buyin);
-                        }
-                    } else {
-                        ErrorMessages.invalidNumber(getPlayer(), getArgs()[2]);
-                    }
-                } else {
-                    ErrorMessages.notGameType(getPlayer());
-                }
-            } else {
-                ErrorMessages.playerSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 4) {
             showUsage();
+            return false;
         }
-        return false;
+        if (CardsPlayer.getCardsPlayer(getPlayer().getName()) != null) {
+            ErrorMessages.playerSittingAtTable(getPlayer());
+            return false;
+        }
+
+        gameType = getArgs()[3];
+
+        if (!CardsTable.isGameType(gameType)) {
+            ErrorMessages.notGameType(getPlayer());
+            return false;
+        }
+
+        buyin = NumberMethods.getDouble(getArgs()[2]);
+
+        if (buyin == -99999) {
+            ErrorMessages.invalidNumber(getPlayer(), getArgs()[2]);
+            return false;
+        }
+        if (!UltimateCards.getInstance().getEconomy().has(getPlayer(), buyin)) {
+            ErrorMessages.notEnoughMoney(getPlayer(), buyin,
+                    UltimateCards.getInstance().getEconomy().getBalance(getPlayer()) - buyin);
+            return false;
+        }
+
+        tableName = getArgs()[1];
+
+        if (CardsTable.doesTableExist(tableName)) {
+            ErrorMessages.tableNameAlreadyExists(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     @Override

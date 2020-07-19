@@ -31,19 +31,20 @@ public class TableLeave extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                money = cardsPlayer.getMoney();
-                return true;
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        cardsTable = cardsPlayer.getTable();
+        money = cardsPlayer.getMoney();
+        return true;
     }
 
     // Deletes the specified player from the table, if they are currently sitting at one. Doesnt allow the owner to leave
@@ -60,7 +61,9 @@ public class TableLeave extends PluginCommand {
         Location leaveLocation = cardsTable.getSettings().leaveLocation.getValue();
         if (leaveLocation != null) {
             cardsPlayer.getPlayer().teleport(leaveLocation);
-        } else cardsPlayer.getPlayer().teleport(cardsPlayer.getStartLocation());
+        } else {
+            cardsPlayer.getPlayer().teleport(cardsPlayer.getStartLocation());
+        }
 
         // Remove player
         cardsTable.removePlayer(cardsPlayer);

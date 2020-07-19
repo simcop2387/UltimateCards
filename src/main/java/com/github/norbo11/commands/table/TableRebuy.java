@@ -32,34 +32,39 @@ public class TableRebuy extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                if (cardsTable.getSettings().allowRebuys.getValue()) {
-                    if (!cardsTable.isInProgress()) {
-                        amount = NumberMethods.getDouble(getArgs()[1]);
-                        if (amount != -99999) {
-                            if (UltimateCards.getInstance().getEconomy().has(getPlayer(), amount)) return true;
-                            else {
-                                ErrorMessages.notEnoughMoney(getPlayer(), amount, UltimateCards.getInstance().getEconomy().getBalance(getPlayer()));
-                            }
-                        } else {
-                            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
-                        }
-                    } else {
-                        ErrorMessages.tableInProgress(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.tableDoesntAllowRebuys(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer != null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        cardsTable = cardsPlayer.getTable();
+        if (cardsTable.getSettings().allowRebuys.getValue()) {
+            ErrorMessages.tableDoesntAllowRebuys(getPlayer());
+            return false;
+        }
+        if (cardsTable.isInProgress()) {
+            ErrorMessages.tableInProgress(getPlayer());
+            return false;
+        }
+
+        amount = NumberMethods.getDouble(getArgs()[1]);
+        if (amount == -99999) {
+            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+            return false;
+        }
+        if (!UltimateCards.getInstance().getEconomy().has(getPlayer(), amount)) {
+            ErrorMessages.notEnoughMoney(getPlayer(), amount,
+                    UltimateCards.getInstance().getEconomy().getBalance(getPlayer()));
+            return false;
+        }
+
+        return true;
     }
 
     // Adds money to the specified player

@@ -24,18 +24,18 @@ public class TableMoney extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-
-            if (cardsPlayer != null) return true;
-            else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
 
-        return false;
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     // Displays the player's money just to the player

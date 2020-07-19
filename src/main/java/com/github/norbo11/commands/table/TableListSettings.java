@@ -26,18 +26,19 @@ public class TableListSettings extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                return true;
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        cardsTable = cardsPlayer.getTable();
+        return true;
     }
 
     // Lists all valid setting types to the player.

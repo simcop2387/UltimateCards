@@ -23,22 +23,26 @@ public class TableDelete extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                CardsTable cardsTable = cardsPlayer.getTable();
-                if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    return cardsPlayer.getTable().canBeDeleted();
-                } else {
-                    ErrorMessages.playerNotOwner(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        CardsTable cardsTable = cardsPlayer.getTable();
+
+        if (!cardsTable.isOwner(cardsPlayer.getPlayerName())) {
+            ErrorMessages.playerNotOwner(getPlayer());
+            return false;
+        }
+
+        return cardsPlayer.getTable().canBeDeleted();
     }
 
     // Deletes the players's table

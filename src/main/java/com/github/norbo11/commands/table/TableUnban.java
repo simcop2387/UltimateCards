@@ -27,26 +27,29 @@ public class TableUnban extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            toUnBan = getArgs()[1];
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    if (cardsTable.getBannedList().contains(toUnBan)) return true;
-                    else {
-                        ErrorMessages.playerNotBanned(getPlayer(), toUnBan);
-                    }
-                } else {
-                    ErrorMessages.playerNotOwner(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+        
+        toUnBan = getArgs()[1];
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+        
+        cardsTable = cardsPlayer.getTable();
+        if (!cardsTable.isOwner(cardsPlayer.getPlayerName())) {
+            ErrorMessages.playerNotOwner(getPlayer());
+            return false;
+        }
+        if (cardsTable.getBannedList().contains(toUnBan)) {
+            ErrorMessages.playerNotBanned(getPlayer(), toUnBan);
+            return false;
+        }
+        
+        return true;
     }
 
     // Unbans the specified player from the player's table specified

@@ -27,51 +27,55 @@ public class PokerCall extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
-            if (pokerPlayer != null) {
-                if (!pokerPlayer.isEliminated()) {
-                    pokerTable = pokerPlayer.getPokerTable();
-                    if (pokerTable.isInProgress()) {
-                        if (pokerTable.getCurrentPhase() != PokerPhase.SHOWDOWN) {
-                            if (pokerPlayer.isAction()) {
-                                if (!pokerPlayer.isFolded()) {
-                                    if (!pokerPlayer.isAllIn()) {
-                                        if (pokerPlayer.getCurrentBet() < pokerTable.getCurrentBet()) // Check if the player hasn't already called
-                                        {
-                                            if (pokerPlayer.hasMoney(pokerTable.getCurrentBet() - pokerPlayer.getCurrentBet()))
-                                                return true;
-                                            else {
-                                                ErrorMessages.notEnoughMoney(getPlayer(), pokerTable.getCurrentBet(), pokerPlayer.getMoney());
-                                            }
-                                        } else {
-                                            ErrorMessages.cantCall(getPlayer());
-                                        }
-                                    } else {
-                                        ErrorMessages.playerIsAllIn(getPlayer());
-                                    }
-                                } else {
-                                    ErrorMessages.playerIsFolded(getPlayer());
-                                }
-                            } else {
-                                ErrorMessages.notYourTurn(getPlayer());
-                            }
-                        } else {
-                            ErrorMessages.tableAtShowdown(getPlayer());
-                        }
-                    } else {
-                        ErrorMessages.tableNotInProgress(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.playerIsEliminated(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
+
+        if (pokerPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+        if (pokerPlayer.isEliminated()) {
+            ErrorMessages.playerIsEliminated(getPlayer());
+            return false;
+        }
+
+        pokerTable = pokerPlayer.getPokerTable();
+
+        if (!pokerTable.isInProgress()) {
+            ErrorMessages.tableNotInProgress(getPlayer());
+            return false;
+        }
+        if (pokerTable.getCurrentPhase() == PokerPhase.SHOWDOWN) {
+            ErrorMessages.tableAtShowdown(getPlayer());
+            return false;
+        }
+        if (!pokerPlayer.isAction()) {
+            ErrorMessages.notYourTurn(getPlayer());
+            return false;
+        }
+        if (pokerPlayer.isFolded()) {
+            ErrorMessages.playerIsFolded(getPlayer());
+            return false;
+        }
+        if (pokerPlayer.isAllIn()) {
+            ErrorMessages.playerIsAllIn(getPlayer());
+            return false;
+        }
+        // Check if the player hasn't already called
+        if (pokerPlayer.getCurrentBet() >= pokerTable.getCurrentBet()) {
+            ErrorMessages.cantCall(getPlayer());
+            return false;
+        }
+        if (!pokerPlayer.hasMoney(pokerTable.getCurrentBet() - pokerPlayer.getCurrentBet())) {
+            ErrorMessages.notEnoughMoney(getPlayer(), pokerTable.getCurrentBet(), pokerPlayer.getMoney());
+            return false;
+        }
+
+        return true;
     }
 
     // Calls the latest bet in the name of the player.

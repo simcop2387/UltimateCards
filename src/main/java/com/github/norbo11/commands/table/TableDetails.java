@@ -25,35 +25,38 @@ public class TableDetails extends PluginCommand {
     // Lists the specified details type of the specified table. If no table is specified, lists details of the table that the player is sitting on.
     @Override
     public boolean conditions() {
+
+        if (getArgs().length != 2 && getArgs().length != 1) {
+            showUsage();
+            return false;
+        }
+
         // cards details 5
         if (getArgs().length == 2) {
             int tableID = NumberMethods.getPositiveInteger(getArgs()[1]);
-            if (tableID != -99999) {
-                cardsTable = CardsTable.getTable(tableID);
-                if (cardsTable != null) return true;
-                else {
-                    ErrorMessages.notTable(getPlayer(), getArgs()[1]);
-                }
-            } else {
+            if (tableID == -99999) {
                 ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+                return false;
             }
-        }
+            cardsTable = CardsTable.getTable(tableID);
+            if (cardsTable == null) {
+                ErrorMessages.notTable(getPlayer(), getArgs()[1]);
+                return false;
+            }
 
+            return true;
+        }
+        
         // cards details
-        else if (getArgs().length == 1) {
-            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                return true;
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
-            showUsage();
+        CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
         }
-
-        return false;
-
+        
+        cardsTable = cardsPlayer.getTable();
+        return true;
     }
 
     @Override

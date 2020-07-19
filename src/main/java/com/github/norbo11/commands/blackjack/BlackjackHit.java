@@ -28,52 +28,53 @@ public class BlackjackHit extends PluginCommand {
     @Override
     public boolean conditions() {
         hand = 0;
-        if (getArgs().length == 1 || getArgs().length == 2) {
-            blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
-            if (blackjackPlayer != null) {
-                BlackjackTable blackjackTable = blackjackPlayer.getTable();
-
-                if (blackjackTable.isInProgress()) {
-                    if (blackjackPlayer.isAction()) {
-                        if (getArgs().length == 2) {
-                            if (blackjackPlayer.isSplit()) {
-                                hand = NumberMethods.getPositiveInteger(getArgs()[1]);
-                                if (hand != 0 && hand != 1) {
-                                    ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
-                                    return false;
-                                }
-                            } else {
-                                ErrorMessages.cannotSpecifyHand(getPlayer());
-                                return false;
-                            }
-                        } else {
-                            if (blackjackPlayer.isSplit()) {
-                                ErrorMessages.needToSpecifyHand(getPlayer());
-                                return false;
-                            }
-                        }
-
-                        if (!blackjackPlayer.getHands().get(hand).isBust()) {
-                            if (!blackjackPlayer.getHands().get(hand).isStayed()) return true;
-                            else {
-                                ErrorMessages.playerIsStayed(getPlayer());
-                            }
-                        } else {
-                            ErrorMessages.playerIsBust(getPlayer());
-                        }
-                    } else {
-                        ErrorMessages.notYourTurn(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.tableNotInProgress(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1 && getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+        
+        blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
+        
+        if (blackjackPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        BlackjackTable blackjackTable = blackjackPlayer.getTable();
+
+        if (!blackjackTable.isInProgress()) {
+            ErrorMessages.tableNotInProgress(getPlayer());
+            return false;
+        }
+        if (!blackjackPlayer.isAction()) {
+            ErrorMessages.notYourTurn(getPlayer());
+            return false;
+        }
+
+        if (getArgs().length == 2) {
+            if (!blackjackPlayer.isSplit()) {
+                ErrorMessages.cannotSpecifyHand(getPlayer());
+                return false;
+            }
+            hand = NumberMethods.getPositiveInteger(getArgs()[1]);
+            if (hand != 0 && hand != 1) {
+                ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+                return false;
+            }
+        } else if (blackjackPlayer.isSplit()) {
+            ErrorMessages.needToSpecifyHand(getPlayer());
+            return false;
+        }
+
+        if (blackjackPlayer.getHands().get(hand).isBust()) {
+            ErrorMessages.playerIsBust(getPlayer());
+            return false;
+        }
+        if (!blackjackPlayer.getHands().get(hand).isStayed()) {
+            ErrorMessages.playerIsStayed(getPlayer());
+        }
+        
+        return true;
     }
 
     @Override

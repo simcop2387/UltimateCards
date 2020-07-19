@@ -19,12 +19,12 @@ public class TableReload extends PluginCommand {
     // Lists the specified details type of the specified table. If no table is specified, lists details of the table that the player is sitting on. If a type is not specified, lists all details.
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) return true;
-        else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override

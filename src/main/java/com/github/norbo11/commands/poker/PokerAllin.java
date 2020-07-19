@@ -25,43 +25,46 @@ public class PokerAllin extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
-            if (pokerPlayer != null) {
-                if (!pokerPlayer.isEliminated()) {
-                    PokerTable pokerTable = pokerPlayer.getPokerTable();
-                    if (pokerTable.isInProgress()) // Check if the table is
-                    // in progress
-                    {
-                        if (pokerTable.getCurrentPhase() != PokerPhase.SHOWDOWN) {
-                            if (pokerPlayer.isAction()) {
-                                if (!pokerPlayer.isFolded()) {
-                                    if (!pokerPlayer.isAllIn()) return true;
-                                    else {
-                                        ErrorMessages.playerIsAllIn(getPlayer());
-                                    }
-                                } else {
-                                    ErrorMessages.playerIsFolded(getPlayer());
-                                }
-                            } else {
-                                ErrorMessages.notYourTurn(getPlayer());
-                            }
-                        } else {
-                            ErrorMessages.tableAtShowdown(getPlayer());
-                        }
-                    } else {
-                        ErrorMessages.tableNotInProgress(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.playerIsEliminated(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
+
+        if (pokerPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+        if (pokerPlayer.isEliminated()) {
+            ErrorMessages.playerIsEliminated(getPlayer());
+            return false;
+        }
+
+        PokerTable pokerTable = pokerPlayer.getPokerTable();
+
+        if (!pokerTable.isInProgress()) {
+            ErrorMessages.tableNotInProgress(getPlayer());
+            return false;
+        }
+        if (pokerTable.getCurrentPhase() == PokerPhase.SHOWDOWN) {
+            ErrorMessages.tableAtShowdown(getPlayer());
+            return false;
+        }
+        if (!pokerPlayer.isAction()) {
+            ErrorMessages.notYourTurn(getPlayer());
+            return false;
+        }
+        if (pokerPlayer.isFolded()) {
+            ErrorMessages.playerIsFolded(getPlayer());
+            return false;
+        }
+        if (pokerPlayer.isAllIn()) {
+            ErrorMessages.playerIsAllIn(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     // Declares the specified player all in

@@ -26,16 +26,19 @@ public class PokerHand extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
-            if (pokerPlayer != null) if (pokerPlayer.getHand().getCards().size() > 0) return true;
-            else {
-                ErrorMessages.playerHasNoHand(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
+
+        if (pokerPlayer == null || pokerPlayer.getHand().getCards().isEmpty()) {
+            ErrorMessages.playerHasNoHand(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     // Displays the player's hand (to himself only)

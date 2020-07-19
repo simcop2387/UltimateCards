@@ -31,34 +31,38 @@ public class TableWithdraw extends PluginCommand {
     // cards withdraw <amount>
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                if (cardsTable.getSettings().allowRebuys.getValue()) {
-                    if (!cardsPlayer.getTable().isInProgress()) {
-                        amountToWithdraw = NumberMethods.getDouble(getArgs()[1]);
-                        if (amountToWithdraw != -99999) {
-                            if (amountToWithdraw <= cardsPlayer.getMoney()) return true;
-                            else {
-                                ErrorMessages.notEnoughMoney(getPlayer(), cardsPlayer.getMoney(), amountToWithdraw);
-                            }
-                        } else {
-                            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
-                        }
-                    } else {
-                        ErrorMessages.tableInProgress(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.tableDoesntAllowRebuys(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+        
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+        
+        cardsTable = cardsPlayer.getTable();
+        if (!cardsTable.getSettings().allowRebuys.getValue()) {
+            ErrorMessages.tableDoesntAllowRebuys(getPlayer());
+            return false;
+        }
+        if (cardsPlayer.getTable().isInProgress()) {
+            ErrorMessages.tableInProgress(getPlayer());
+            return false;
+        }
+        
+        amountToWithdraw = NumberMethods.getDouble(getArgs()[1]);
+        if (amountToWithdraw == -99999) {
+            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+            return false;
+        }
+        if (amountToWithdraw > cardsPlayer.getMoney()) {
+            ErrorMessages.notEnoughMoney(getPlayer(), cardsPlayer.getMoney(), amountToWithdraw);
+            return false;
+        }
+        
+        return true;
     }
 
     @Override

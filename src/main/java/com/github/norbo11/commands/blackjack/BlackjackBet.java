@@ -26,43 +26,52 @@ public class BlackjackBet extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
-            if (blackjackPlayer != null) {
-                if (blackjackPlayer.getTable().getOwnerPlayer() != blackjackPlayer) {
-                    BlackjackTable blackjackTable = blackjackPlayer.getTable();
-                    amountToBet = NumberMethods.getDouble(getArgs()[1]);
-                    if (amountToBet != -99999) {
-                        if (blackjackPlayer.getMoney() >= amountToBet) {
-                            blackjackTable = blackjackPlayer.getTable();
-                            if (blackjackTable.getDealer().hasEnoughMoney(amountToBet)) {
-                                if (amountToBet >= blackjackTable.getSettings().minBet.getValue()) {
-                                    if (!blackjackTable.isInProgress()) return true;
-                                    else {
-                                        ErrorMessages.tableInProgress(getPlayer());
-                                    }
-                                } else {
-                                    ErrorMessages.tooSmallBet(getPlayer(), blackjackTable.getSettings().minBet.getValue());
-                                }
-                            } else {
-                                ErrorMessages.dealerHasNotEnoughMoney(getPlayer(), blackjackTable.getOwnerPlayer().getMoney() / ((blackjackTable.getPlayers().size() - 1) * 2));
-                            }
-                        } else {
-                            ErrorMessages.notEnoughMoney(getPlayer(), amountToBet, blackjackPlayer.getMoney());
-                        }
-                    } else {
-                        ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
-                    }
-                } else {
-                    ErrorMessages.playerIsBlackjackDealer(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+
+        blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
+
+        if (blackjackPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+        if (blackjackPlayer.getTable().getOwnerPlayer() != blackjackPlayer) {
+            ErrorMessages.playerIsBlackjackDealer(getPlayer());
+            return false;
+        }
+
+        BlackjackTable blackjackTable = blackjackPlayer.getTable();
+        amountToBet = NumberMethods.getDouble(getArgs()[1]);
+
+        if (amountToBet == -99999) {
+            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+            return false;
+        }
+        if (blackjackPlayer.getMoney() < amountToBet) {
+            ErrorMessages.notEnoughMoney(getPlayer(), amountToBet, blackjackPlayer.getMoney());
+            return false;
+        }
+
+        blackjackTable = blackjackPlayer.getTable();
+
+        if (!blackjackTable.getDealer().hasEnoughMoney(amountToBet)) {
+            ErrorMessages.dealerHasNotEnoughMoney(getPlayer(),
+                    blackjackTable.getOwnerPlayer().getMoney() / ((blackjackTable.getPlayers().size() - 1) * 2));
+
+            return false;
+        }
+        if (amountToBet < blackjackTable.getSettings().minBet.getValue()) {
+            ErrorMessages.tooSmallBet(getPlayer(), blackjackTable.getSettings().minBet.getValue());
+            return false;
+        }
+        if (!blackjackTable.isInProgress()) {
+            ErrorMessages.tableInProgress(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     @Override

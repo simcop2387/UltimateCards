@@ -25,32 +25,36 @@ public class TablePlayers extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        // If a table was not specified, make sure that the player is sitting at a table, then display all players on that table to the player
+        // If a table was not specified, make sure that the player is sitting at a
+        // table, then display all players on that table to the player
         if (getArgs().length == 1) {
             CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                return true;
-            } else {
+            if (cardsPlayer == null) {
                 ErrorMessages.notSittingAtTable(getPlayer());
+                return false;
             }
-        } else if (getArgs().length == 2)
-        // If a table was specified, make sure that the specified table is a real table before displaying all it's players
-        {
+            cardsTable = cardsPlayer.getTable();
+            return true;
+
+        } else if (getArgs().length == 2) { // If a table was specified, make sure that the specified table is a real
+                                            // table before displaying all it's players
+
             int tableID = NumberMethods.getPositiveInteger(getArgs()[1]);
-            if (tableID != -99999) {
-                cardsTable = CardsTable.getTable(tableID);
-                if (cardsTable != null) return true;
-                else {
-                    ErrorMessages.notTable(getPlayer(), getArgs()[1]);
-                }
-            } else {
+            if (tableID == -99999) {
                 ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+                return false;
             }
+
+            cardsTable = CardsTable.getTable(tableID);
+            if (cardsTable == null) {
+                ErrorMessages.notTable(getPlayer(), getArgs()[1]);
+                return false;
+            }
+            return true;
         } else {
             showUsage();
+            return false;
         }
-        return false;
     }
 
     // Displays the list of players to the specified player

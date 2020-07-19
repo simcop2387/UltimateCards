@@ -23,44 +23,47 @@ public class BlackjackSplit extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
-            if (blackjackPlayer != null) {
-                BlackjackTable blackjackTable = blackjackPlayer.getTable();
-
-                if (blackjackTable.isInProgress()) {
-                    if (blackjackPlayer.isAction()) {
-                        if (!blackjackPlayer.isSplit()) {
-                            if (!blackjackPlayer.isHitted()) {
-                                if (blackjackPlayer.sameHoleCards()) {
-                                    if (blackjackPlayer.hasMoney(blackjackPlayer.getTotalAmountBet())) {
-                                        blackjackTable = blackjackPlayer.getTable();
-                                        return true;
-                                    } else {
-                                        ErrorMessages.notEnoughMoney(getPlayer(), blackjackPlayer.getTotalAmountBet(), blackjackPlayer.getMoney());
-                                    }
-                                } else {
-                                    ErrorMessages.holeCardsNotMatching(getPlayer());
-                                }
-                            } else {
-                                ErrorMessages.playerIsSplit(getPlayer());
-                            }
-                        } else {
-                            ErrorMessages.playerIsStayed(getPlayer());
-                        }
-                    } else {
-                        ErrorMessages.notYourTurn(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.tableNotInProgress(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+        
+        blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
+        
+        if (blackjackPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        BlackjackTable blackjackTable = blackjackPlayer.getTable();
+
+        if (!blackjackTable.isInProgress()) {
+            ErrorMessages.tableNotInProgress(getPlayer());
+            return false;
+        }
+        if (!blackjackPlayer.isAction()) {
+            ErrorMessages.notYourTurn(getPlayer());
+            return false;
+        }
+        if (blackjackPlayer.isSplit()) {
+            ErrorMessages.playerIsStayed(getPlayer());
+            return false;
+        }
+        if (blackjackPlayer.isHitted()) {
+            ErrorMessages.playerIsSplit(getPlayer());
+            return false;
+        }
+        if (!blackjackPlayer.sameHoleCards()) {
+            ErrorMessages.holeCardsNotMatching(getPlayer());
+            return false;
+        }
+        if (!blackjackPlayer.hasMoney(blackjackPlayer.getTotalAmountBet())) {
+            ErrorMessages.notEnoughMoney(getPlayer(), blackjackPlayer.getTotalAmountBet(), blackjackPlayer.getMoney());
+            return false;
+        }
+        
+        blackjackTable = blackjackPlayer.getTable();
+        return true;
     }
 
     @Override

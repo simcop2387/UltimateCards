@@ -31,30 +31,35 @@ public class PokerReveal extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
-            if (pokerPlayer != null) {
-                PokerTable pokerTable = pokerPlayer.getPokerTable();
-                if (!pokerPlayer.isEliminated()) {
-                    if (pokerTable.getCurrentPhase() == PokerPhase.SHOWDOWN) // If it is showdown
-                    {
-                        if (pokerPlayer.isAction()) return true;
-                        else {
-                            ErrorMessages.notYourTurn(getPlayer());
-                        }
-                    } else {
-                        ErrorMessages.cantReveal(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.playerIsEliminated(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
+
+        if (pokerPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        PokerTable pokerTable = pokerPlayer.getPokerTable();
+
+        if (pokerPlayer.isEliminated()) {
+            ErrorMessages.playerIsEliminated(getPlayer());
+            return false;
+        }
+        // If it is showdown
+        if (pokerTable.getCurrentPhase() != PokerPhase.SHOWDOWN) {
+            ErrorMessages.cantReveal(getPlayer());
+            return false;
+        }
+        if (!pokerPlayer.isAction()) {
+            ErrorMessages.notYourTurn(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     // Publicly reveals the player's hand to everybody

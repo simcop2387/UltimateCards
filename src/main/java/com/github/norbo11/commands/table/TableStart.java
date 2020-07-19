@@ -28,29 +28,32 @@ public class TableStart extends PluginCommand {
     // table start
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    if (!cardsTable.isInProgress()) {
-                        if (cardsTable.getPlayers().size() >= cardsTable.getMinPlayers()) return true;
-                        else {
-                            ErrorMessages.notEnoughPlayers(getPlayer());
-                        }
-                    } else {
-                        ErrorMessages.tableInProgress(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.playerNotOwner(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        cardsTable = cardsPlayer.getTable();
+        if (!cardsTable.isOwner(cardsPlayer.getPlayerName())) {
+            ErrorMessages.playerNotOwner(getPlayer());
+            return false;
+        }
+        if (cardsTable.isInProgress()) {
+            ErrorMessages.tableInProgress(getPlayer());
+            return false;
+        }
+        if (cardsTable.getPlayers().size() < cardsTable.getMinPlayers()) {
+            ErrorMessages.notEnoughPlayers(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     @Override

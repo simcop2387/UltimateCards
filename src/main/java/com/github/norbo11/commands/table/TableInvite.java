@@ -27,24 +27,29 @@ public class TableInvite extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                Player playerToInvite = Bukkit.getPlayer(getArgs()[1]);
-                if (playerToInvite != null) // If the player specified is an online player (ignoring the case), then send them the invite.
-                {
-                    toInvite = getArgs()[1];
-                    return true;
-                } else {
-                    ErrorMessages.playerNotFound(getPlayer(), getArgs()[1]);
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+
+        cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        Player playerToInvite = Bukkit.getPlayer(getArgs()[1]);
+
+        // If the player specified is an online player (ignoring the case), then send
+        // them the invite.
+        if (playerToInvite == null) {
+            ErrorMessages.playerNotFound(getPlayer(), getArgs()[1]);
+            return false;
+        }
+
+        toInvite = getArgs()[1];
+        return true;
     }
 
     // Sends a simple message to the specified player to invite

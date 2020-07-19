@@ -24,33 +24,37 @@ public class TableKick extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 2) {
-            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                CardsTable cardsTable = cardsPlayer.getTable();
-                if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    int IDtoKick = NumberMethods.getPositiveInteger(getArgs()[1]);
-                    if (IDtoKick != -99999) {
-                        toKick = CardsPlayer.getCardsPlayer(IDtoKick, cardsTable);
-                        if (toKick != null) // Check if the ID specified is a real poker player.
-                        {
-                            return true;
-                        } else {
-                            ErrorMessages.notPlayerID(getPlayer(), IDtoKick);
-                        }
-                    } else {
-                        ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
-                    }
-                } else {
-                    ErrorMessages.playerNotOwner(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2) {
             showUsage();
+            return false;
         }
-        return false;
+
+        CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        CardsTable cardsTable = cardsPlayer.getTable();
+        if (!cardsTable.isOwner(cardsPlayer.getPlayerName())) {
+            ErrorMessages.playerNotOwner(getPlayer());
+            return false;
+        }
+
+        int IDtoKick = NumberMethods.getPositiveInteger(getArgs()[1]);
+        if (IDtoKick == -99999) {
+            ErrorMessages.invalidNumber(getPlayer(), getArgs()[1]);
+            return false;
+        }
+
+        toKick = CardsPlayer.getCardsPlayer(IDtoKick, cardsTable);
+        // Check if the ID specified is a real poker player.
+        if (toKick == null) {
+            ErrorMessages.notPlayerID(getPlayer(), IDtoKick);
+            return false;
+        }
+
+        return true;
     }
 
     // Kicks the specified player from the owner's table

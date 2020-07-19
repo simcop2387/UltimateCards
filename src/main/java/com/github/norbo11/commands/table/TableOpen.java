@@ -23,25 +23,27 @@ public class TableOpen extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    if (!cardsTable.isOpen()) return true;
-                    else {
-                        ErrorMessages.tableAlreadyOpen(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.playerNotOwner(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        cardsTable = cardsPlayer.getTable();
+        if (!cardsTable.isOwner(cardsPlayer.getPlayerName())) {
+            ErrorMessages.playerNotOwner(getPlayer());
+            return false;
+        }
+        if (cardsTable.isOpen()) {
+            ErrorMessages.tableAlreadyOpen(getPlayer());
+            return false;
+        }
+        return true;
     }
 
     // Opens the specified player's table

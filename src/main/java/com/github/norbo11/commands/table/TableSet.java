@@ -19,28 +19,31 @@ public class TableSet extends PluginCommand {
 
     private CardsTable cardsTable;
 
-    @Override
     // table set <Setting> <value>
+    @Override
     public boolean conditions() {
-        if (getArgs().length == 2 || getArgs().length == 3) {
-            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
-            if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
-                if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    if (!cardsTable.isInProgress()) return true;
-                    else {
-                        ErrorMessages.tableInProgress(getPlayer());
-                    }
-                } else {
-                    ErrorMessages.playerNotOwner(getPlayer());
-                }
-            } else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 2 & getArgs().length != 3) {
             showUsage();
+            return false;
         }
-        return false;
+
+        CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+        if (cardsPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        cardsTable = cardsPlayer.getTable();
+        if (!cardsTable.isOwner(cardsPlayer.getPlayerName())) {
+            ErrorMessages.playerNotOwner(getPlayer());
+            return false;
+        }
+        if (cardsTable.isInProgress()) {
+            ErrorMessages.tableInProgress(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     // Sets the specified setting on the player's table, to the specified

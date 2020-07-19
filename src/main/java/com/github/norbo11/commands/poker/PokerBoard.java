@@ -22,16 +22,19 @@ public class PokerBoard extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) {
-            pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
-            if (pokerPlayer != null) return true;
-            else {
-                ErrorMessages.notSittingAtTable(getPlayer());
-            }
-        } else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
+
+        if (pokerPlayer == null) {
+            ErrorMessages.notSittingAtTable(getPlayer());
+            return false;
+        }
+
+        return true;
     }
 
     // Displays the board to the specified player

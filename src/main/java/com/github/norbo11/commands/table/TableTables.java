@@ -24,11 +24,12 @@ public class TableTables extends PluginCommand {
 
     @Override
     public boolean conditions() {
-        if (getArgs().length == 1) return true;
-        else {
+        if (getArgs().length != 1) {
             showUsage();
+            return false;
         }
-        return false;
+
+        return true;
     }
 
     @Override
