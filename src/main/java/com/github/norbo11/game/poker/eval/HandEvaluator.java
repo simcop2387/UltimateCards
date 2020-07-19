@@ -109,7 +109,6 @@ public class HandEvaluator {
                 if (hand[i] != unknown && hand[i] / 13 == suit) {
                     suitvector[hand[i] % 13 + 1] = 1;
                 }
-                ;
             }
 
             /* now look for straights */
@@ -127,7 +126,6 @@ public class HandEvaluator {
                     if (strght >= 5) {
                         strtop = i - 1;
                     }
-                    ;
                 } else {
                     strght = 0;
                 }
@@ -149,7 +147,7 @@ public class HandEvaluator {
         return returnvalue;
     }
 
-    private final static byte ID_ExistsStraightFlush(EvalHand h, byte major_suit) {
+    private static byte ID_ExistsStraightFlush(EvalHand h, byte major_suit) {
         boolean[] present = new boolean[EvalCard.NUM_RANKS];
         // for (i=0;i<Card.NUM_RANKS;i++) present[i]=false;
 
@@ -176,7 +174,7 @@ public class HandEvaluator {
     // suit: Card.NUM_SUITS means any
     // not_allowed: Card.NUM_RANKS means any
     // returns ident value
-    private final static int ID_KickerValue(byte[] paired, int kickers, byte[] not_allowed) {
+    private static int ID_KickerValue(byte[] paired, int kickers, byte[] not_allowed) {
         int i = EvalCard.ACE;
         int value = 0;
         while (kickers != 0) {
@@ -190,7 +188,7 @@ public class HandEvaluator {
         return value;
     }
 
-    private final static int ID_KickerValueSuited(EvalHand h, int kickers, byte suit) {
+    private static int ID_KickerValueSuited(EvalHand h, int kickers, byte suit) {
         int i;
         int value = 0;
 
@@ -204,7 +202,7 @@ public class HandEvaluator {
 
         i = EvalCard.ACE;
         while (kickers != 0) {
-            while (present[i] == false) {
+            while (!present[i]) {
                 i--;
             }
             kickers--;
@@ -225,7 +223,7 @@ public class HandEvaluator {
         int type = (rank / ID_GROUP_SIZE);
         int ident = (rank % ID_GROUP_SIZE), ident2;
 
-        String t = new String();
+        String t;
 
         switch (type) {
             case HIGH:
@@ -473,11 +471,11 @@ public class HandEvaluator {
      * @param h2
      *            The second hand
      * @return 1 = first hand is best, 2 = second hand is best, 0 = tie
+     * @noinspection UnnecessaryLocalVariable
      */
     public int compareHands(int rank1, EvalHand h2) {
         int r1 = rank1;
         int r2 = rankHand(h2);
-
         if (r1 > r2) return 1;
         if (r1 < r2) return 2;
         return 0;
@@ -530,7 +528,6 @@ public class HandEvaluator {
             if (dist[i] >= 5) {
                 flushsuit = i - 14;
             }
-            ;
         }
 
         /* explicitly initialize suitvector */
@@ -544,7 +541,6 @@ public class HandEvaluator {
             if (hand[i] != unknown && hand[i] / 13 == flushsuit) {
                 suitvector[hand[i] % 13 + 1] = 1;
             }
-            ;
         }
 
         /* determine best five cards in flushsuit */
@@ -555,20 +551,18 @@ public class HandEvaluator {
                 best[j] = 13 * flushsuit + i - 1;
                 j++;
             }
-            ;
             i--;
         }
     }
 
     private void Find_FullHouse(int[] hand, int[] dist, int[] best) {
-        int i, j, tripsrank = 0, pairrank = 0;
+        int i, j, tripsrank = 0, pairrank;
 
         /* find rank of largest trips */
         for (i = 1; i <= 13; i++) {
             if (dist[i] >= 3) {
                 tripsrank = i - 1;
             }
-            ;
         }
 
         /* copy those trips */
@@ -579,7 +573,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
 
@@ -601,7 +594,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
     }
@@ -654,7 +646,6 @@ public class HandEvaluator {
             } else if (dist[i] > rankmax2) {
                 rankmax2 = dist[i];
             }
-            ;
 
             if (dist[i] >= 1) {
                 strght++;
@@ -672,8 +663,6 @@ public class HandEvaluator {
             }
         }
 
-        hand_type = unknown;
-
         if (flushmax >= 5 && strmax >= 5) {
             if (Check_StrFlush(hand, dist, best)) {
                 hand_type = strflush;
@@ -681,7 +670,6 @@ public class HandEvaluator {
                 hand_type = flush;
                 Find_Flush(hand, dist, best);
             }
-            ;
         } else if (rankmax1 >= 4) {
             hand_type = quads;
             Find_Quads(hand, dist, best);
@@ -707,7 +695,6 @@ public class HandEvaluator {
             hand_type = nopair;
             Find_NoPair(hand, dist, best);
         }
-        ;
 
         return hand_type;
     }
@@ -721,35 +708,30 @@ public class HandEvaluator {
             if (dist[i] >= 1) {
                 kicker1 = i - 1;
             }
-            ;
         }
         kicker2 = unknown;
         for (i = 1; i <= kicker1; i++) { /* find rank of second kicker */
             if (dist[i] >= 1) {
                 kicker2 = i - 1;
             }
-            ;
         }
         kicker3 = unknown;
         for (i = 1; i <= kicker2; i++) { /* find rank of third kicker */
             if (dist[i] >= 1) {
                 kicker3 = i - 1;
             }
-            ;
         }
         kicker4 = unknown;
         for (i = 1; i <= kicker3; i++) { /* find rank of fourth kicker */
             if (dist[i] >= 1) {
                 kicker4 = i - 1;
             }
-            ;
         }
         kicker5 = unknown;
         for (i = 1; i <= kicker4; i++) { /* find rank of fifth kicker */
             if (dist[i] >= 1) {
                 kicker5 = i - 1;
             }
-            ;
         }
 
         /* copy kickers */
@@ -762,7 +744,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -777,7 +758,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -792,7 +772,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -807,7 +786,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -822,7 +800,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -839,7 +816,6 @@ public class HandEvaluator {
             if (dist[i] >= 2) {
                 pairrank = i - 1;
             }
-            ;
         }
 
         /* copy that pair */
@@ -850,7 +826,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
 
@@ -860,14 +835,12 @@ public class HandEvaluator {
             if (dist[i] >= 1 && i - 1 != pairrank) {
                 kicker1 = i - 1;
             }
-            ;
         }
         kicker2 = unknown;
         for (i = 1; i <= kicker1; i++) { /* find rank of second kicker */
             if (dist[i] >= 1 && i - 1 != pairrank) {
                 kicker2 = i - 1;
             }
-            ;
         }
         kicker3 = unknown;
         for (i = 1; i <= kicker2; i++) { /* find rank of third kicker */
@@ -884,7 +857,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -899,7 +871,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -914,7 +885,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -931,7 +901,6 @@ public class HandEvaluator {
             if (dist[i] >= 4) {
                 quadrank = i - 1;
             }
-            ;
         }
 
         /* copy those quads */
@@ -942,7 +911,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
 
@@ -962,7 +930,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -989,7 +956,6 @@ public class HandEvaluator {
                 if (strght >= 5) {
                     strtop = i - 1;
                 }
-                ;
             } else {
                 strght = 0;
             }
@@ -1002,7 +968,6 @@ public class HandEvaluator {
                     if (hand[i] != unknown && hand[i] % 13 == strtop + 1 - j) {
                         best[j] = hand[i];
                     }
-                    ;
                 }
             }
         } else if (strtop == 3) {
@@ -1011,14 +976,12 @@ public class HandEvaluator {
                     if (hand[i] != unknown && hand[i] % 13 == strtop + 1 - j) {
                         best[j] = hand[i];
                     }
-                    ;
                 }
             }
             for (i = 1; i <= hand[0]; i++) { /* the Ace in a low straight */
                 if (hand[i] != unknown && hand[i] % 13 == 12) {
                     best[5] = hand[i];
                 }
-                ;
             }
         }
     }
@@ -1031,7 +994,6 @@ public class HandEvaluator {
             if (dist[i] >= 3) {
                 tripsrank = i - 1;
             }
-            ;
         }
 
         /* copy those trips */
@@ -1042,7 +1004,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
 
@@ -1052,7 +1013,6 @@ public class HandEvaluator {
             if (dist[i] >= 1 && i - 1 != tripsrank) {
                 kicker1 = i - 1;
             }
-            ;
         }
 
         kicker2 = unknown;
@@ -1060,7 +1020,6 @@ public class HandEvaluator {
             if (dist[i] >= 1 && i - 1 != tripsrank) {
                 kicker2 = i - 1;
             }
-            ;
         }
 
         /* copy kickers */
@@ -1071,7 +1030,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -1086,7 +1044,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {
@@ -1103,14 +1060,12 @@ public class HandEvaluator {
             if (dist[i] >= 2) {
                 pairrank1 = i - 1;
             }
-            ;
         }
         /* find rank of second largest pair */
         for (i = 1; i <= 13; i++) {
             if (dist[i] >= 2 && i - 1 != pairrank1) {
                 pairrank2 = i - 1;
             }
-            ;
         }
 
         /* copy those pairs */
@@ -1121,7 +1076,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
         i = 1; /* position in hand[] */
@@ -1130,7 +1084,6 @@ public class HandEvaluator {
                 best[j] = hand[i];
                 j++;
             }
-            ;
             i++;
         }
 
@@ -1150,7 +1103,6 @@ public class HandEvaluator {
                     best[j] = hand[i];
                     j++;
                 }
-                ;
                 i++;
             }
         } else {

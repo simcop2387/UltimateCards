@@ -19,17 +19,16 @@ public class TableDelete extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsPlayer cardsPlayer;
 
     @Override
     public boolean conditions() {
         if (getArgs().length == 1) {
             cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
+                CardsTable cardsTable = cardsPlayer.getTable();
                 if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
-                    if (cardsPlayer.getTable().canBeDeleted()) return true;
+                    return cardsPlayer.getTable().canBeDeleted();
                 } else {
                     ErrorMessages.playerNotOwner(getPlayer());
                 }

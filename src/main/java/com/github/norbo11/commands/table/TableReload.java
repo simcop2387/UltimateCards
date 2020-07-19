@@ -28,7 +28,7 @@ public class TableReload extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         PluginConfig.load();
         Messages.sendMessage(getPlayer(), "Plugin configuration sucessfully reloaded.");
     }

@@ -2,7 +2,6 @@ package com.github.norbo11.game.poker;
 
 import java.util.ArrayList;
 
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.cards.CardsTableSettings;
 import com.github.norbo11.game.cards.TableSetting;
 import com.github.norbo11.util.Formatter;
@@ -45,21 +44,21 @@ public class PokerTableSettings extends CardsTableSettings {
     public DynamicFrequency dynamicFrequency = new DynamicFrequency(PluginConfig.getDynamicFrequency());
     public MinRaiseAlwaysBB minRaiseAlwaysBB = new MinRaiseAlwaysBB(PluginConfig.isMinRaiseAlwaysBB());
    
-    private boolean rakeFixed = false;
+    private boolean rakeFixed;
 
     public TableSetting<?>[] allSettings = {
         sb, bb, ante, rake, minRaise, dynamicFrequency, minRaiseAlwaysBB
     };
     
-    public double getOriginalAnte() {
+    private double getOriginalAnte() {
         return originalAnte;
     }
 
-    public double getOriginalBB() {
+    private double getOriginalBB() {
         return originalBB;
     }
 
-    public double getOriginalSB() {
+    private double getOriginalSB() {
         return originalSB;
     }
 
@@ -75,7 +74,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
 
     public class BB extends TableSetting<Double> {
-        public BB(Double value) {
+        BB(Double value) {
             super(value, "bb");
         }
 
@@ -104,7 +103,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
     
     public class Ante extends TableSetting<Double> {
-        public Ante(Double value) {
+        Ante(Double value) {
             super(value, "ante");
         }
 
@@ -133,7 +132,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
     
     public class DynamicFrequency extends TableSetting<Integer> {
-        public DynamicFrequency(Integer value) {
+        DynamicFrequency(Integer value) {
             super(value, "dynamicFrequency");
         }
 
@@ -177,7 +176,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
 
     public class MinRaise extends TableSetting<Double> {
-        public MinRaise(Double value) {
+        MinRaise(Double value) {
             super(value, "minRaise");
         }
 
@@ -187,9 +186,9 @@ public class PokerTableSettings extends CardsTableSettings {
             
             if (!minRaiseAlwaysBB.getValue()) {
                 setValue(checkDouble(value));
-                getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the " + "&6Minimum Raise" + "&f to &6" + Formatter.formatMoney(getValue()));
+                getTable().sendTableMessage("&6" + getTable().getOwner() + "&f has set the &6Minimum Raise&f to &6" + Formatter.formatMoney(getValue()));
             } else {
-                Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cThis table's minimum raise is currently set to always be equal to the big blind! Change this with " + PluginExecutor.tableSet.getCommandString() + " minRaiseAlwaySBB false.");
+                Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cThis table's minimum raise is currently set to always be equal to the big blind! Change this with &6/table set minRaiseAlwaySBB false.");
             }
         }
         
@@ -216,7 +215,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
     
     public class MinRaiseAlwaysBB extends TableSetting<Boolean> {
-        public MinRaiseAlwaysBB(Boolean value) {
+        MinRaiseAlwaysBB(Boolean value) {
             super(value, "minRaiseAlwaysBB");
         }
 
@@ -242,7 +241,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
    
     public class Rake extends TableSetting<Double> {
-        public Rake(Double value) {
+        Rake(Double value) {
             super(value, "rake");
         }
 
@@ -278,7 +277,7 @@ public class PokerTableSettings extends CardsTableSettings {
     }
 
     public class SB extends TableSetting<Double> {
-        public SB(Double value) {
+        SB(Double value) {
             super(value, "sb");
         }
 
@@ -314,6 +313,6 @@ public class PokerTableSettings extends CardsTableSettings {
     @Override
     public void setTableSpecificSetting(String inputSetting, String inputValue) {
         if (!setSetting(inputSetting, inputValue, allSettings))        
-            Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cInvalid setting. Check available settings with " + PluginExecutor.tableListSettings.getCommandString() + ".");
+            Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cInvalid setting. Check available settings with &6/table listsettings.");
     }
 }

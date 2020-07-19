@@ -25,16 +25,17 @@ import com.github.norbo11.UltimateCards;
 import com.github.norbo11.game.blackjack.BlackjackPlayer;
 import com.github.norbo11.game.cards.Card;
 import com.github.norbo11.game.poker.PokerPlayer;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class MapMethods {
     private static class BlackjackRenderer extends MapRenderer {
-        public BlackjackRenderer() {
+        BlackjackRenderer() {
             super(true);
         }
 
         @Override
-        public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
+        public void render(@NotNull MapView mapView, @NotNull MapCanvas mapCanvas, Player player) {
             if (redrawsNeeded.get(player.getName())) {
                 BlackjackPlayer blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(player.getName());
                 if (blackjackPlayer != null) {
@@ -128,12 +129,12 @@ public class MapMethods {
     }
 
     private static class PokerRenderer extends MapRenderer {
-        public PokerRenderer() {
+        PokerRenderer() {
             super(true);
         }
 
         @Override
-        public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
+        public void render(@NotNull MapView mapView, @NotNull MapCanvas mapCanvas, Player player) {
             if (redrawsNeeded.get(player.getName())) {
                 PokerPlayer pokerPlayer = PokerPlayer.getPokerPlayer(player.getName());
                 if (pokerPlayer != null) {
@@ -201,7 +202,7 @@ public class MapMethods {
         }
     }
 
-    public static UltimateCards plugin = UltimateCards.getInstance();
+    private static UltimateCards plugin = UltimateCards.getInstance();
     private static BufferedImage poker_base = null;
     private static BufferedImage blackjack_base = null;
     private static BufferedImage blackjack_base_split = null;
@@ -227,11 +228,11 @@ public class MapMethods {
         }
     }
 
-    private static ArrayList<Short> createdMaps = new ArrayList<Short>();
+    private static ArrayList<Short> createdMaps = new ArrayList<>();
 
-    private static final HashMap<String, Integer> redrawTasks = new HashMap<String, Integer>();
-    private static final HashMap<String, Boolean> redrawsNeeded = new HashMap<String, Boolean>();
-    private static HashMap<String, ItemStack> savedMaps = new HashMap<String, ItemStack>();
+    private static final HashMap<String, Integer> redrawTasks = new HashMap<>();
+    private static final HashMap<String, Boolean> redrawsNeeded = new HashMap<>();
+    private static HashMap<String, ItemStack> savedMaps = new HashMap<>();
 
     private static final PokerRenderer pokerRenderer = new PokerRenderer();
     private static final BlackjackRenderer blackjackRenderer = new BlackjackRenderer();
@@ -242,7 +243,7 @@ public class MapMethods {
         }
     }
 
-    public static void drawImageWithTransparency(MapCanvas canvas, BufferedImage img, int posX, int posY) {
+    private static void drawImageWithTransparency(MapCanvas canvas, BufferedImage img, int posX, int posY) {
         try {
             int height = img.getHeight();
             int width = img.getWidth();
@@ -267,7 +268,7 @@ public class MapMethods {
                     i++;
                 }
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 
@@ -301,14 +302,7 @@ public class MapMethods {
         createdMaps.add((short) map.getId());
 
         // Schedule task
-        redrawTasks.put(player.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-
-            @Override
-            public void run() {
-                redrawsNeeded.put(player.getName(), true);
-            }
-
-        }, 0L, 20L));
+        redrawTasks.put(player.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> redrawsNeeded.put(player.getName(), true), 0L, 20L));
 
         if (InventoryHelper.hasOpenSlotInInventory(player)) {
             ItemStack held = player.getInventory().getItem(0) == null ? new ItemStack(Material.AIR) : player.getInventory().getItem(0);
@@ -323,8 +317,9 @@ public class MapMethods {
     }
 
     public static String mapExists(ItemStack itemStack) {
-        for (Entry<String, ItemStack> entry : savedMaps.entrySet())
-            if (entry == itemStack) return entry.getKey();
+        for (Entry<String, ItemStack> entry : savedMaps.entrySet()) {
+            if (entry.getValue().equals(itemStack)) return entry.getKey();
+        }
         return "";
     }
 

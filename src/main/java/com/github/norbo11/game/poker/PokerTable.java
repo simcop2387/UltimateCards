@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.github.norbo11.UltimateCards;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.cards.Card;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.game.cards.CardsTable;
@@ -26,7 +25,7 @@ import com.github.norbo11.util.Timers;
 
 public class PokerTable extends CardsTable {
 
-    public PokerTable(String owner, String name, int id, Location location, double buyin) throws Exception {
+    public PokerTable(String owner, String name, int id, Location location, double buyin) {
         super(owner, name, id);
         
         if (buyin != 0) {
@@ -46,11 +45,11 @@ public class PokerTable extends CardsTable {
 
     // Generic vars
     private Hand board = new Hand();
-    private ArrayList<PokerPlayer> showdownPlayers = new ArrayList<PokerPlayer>();
-    private ArrayList<PokerPlayer> playersThisHand = new ArrayList<PokerPlayer>();
+    private ArrayList<PokerPlayer> showdownPlayers = new ArrayList<>();
+    private ArrayList<PokerPlayer> playersThisHand = new ArrayList<>();
 
     public static ArrayList<PokerTable> getPokerTables() {
-        ArrayList<PokerTable> returnValue = new ArrayList<PokerTable>();
+        ArrayList<PokerTable> returnValue = new ArrayList<>();
 
         for (CardsTable table : getTables()) {
             returnValue.add((PokerTable) table);
@@ -69,12 +68,7 @@ public class PokerTable extends CardsTable {
                 setTimerTask(null);
             }
 
-            setTimerTask(Timers.startTimerAsync(new Runnable() {
-                @Override
-                public void run() {
-                    deal();
-                }
-            }, getSettings().autoStart.getValue()));
+            setTimerTask(Timers.startTimerAsync(this::deal, getSettings().autoStart.getValue()));
         }
     }
 
@@ -95,10 +89,10 @@ public class PokerTable extends CardsTable {
     }
 
     public boolean canPlay(CardsPlayer player) {
-        return player.isEliminated() == true && player.getMoney() > getHighestBlind();
+        return player.isEliminated() && player.getMoney() > getHighestBlind();
     }
 
-    public void clearBets() {
+    private void clearBets() {
         for (CardsPlayer player : getPlayers()) {
             ((PokerPlayer) player).clearBet();
         }
@@ -158,7 +152,7 @@ public class PokerTable extends CardsTable {
             }
     }
 
-    public void decidePlayersThisHand() {
+    private void decidePlayersThisHand() {
         playersThisHand.clear();
 
         for (PokerPlayer player : getPokerPlayers()) {
@@ -194,25 +188,25 @@ public class PokerTable extends CardsTable {
         }
     }
 
-    public ArrayList<PokerPlayer> getActedPlayers() {
-        ArrayList<PokerPlayer> acted = new ArrayList<PokerPlayer>(); // List to hold all the players that have acted
+    private ArrayList<PokerPlayer> getActedPlayers() {
+        ArrayList<PokerPlayer> acted = new ArrayList<>(); // List to hold all the players that have acted
 
         // Go through all players and add them to the acted list or if they are all in
         for (PokerPlayer player : getNonFoldedPlayers())
-            if (player.isActed() == true || player.isAllIn()) {
+            if (player.isActed() || player.isAllIn()) {
                 acted.add(player);
             }
 
         return acted;
     }
 
-    public PokerPlayer getActionPokerPlayer() {
+    private PokerPlayer getActionPokerPlayer() {
         return (PokerPlayer) getActionPlayer();
     }
 
     // Returns a list of players that are all in
-    public ArrayList<PokerPlayer> getAllInPlayers() {
-        ArrayList<PokerPlayer> returnValue = new ArrayList<PokerPlayer>();
+    private ArrayList<PokerPlayer> getAllInPlayers() {
+        ArrayList<PokerPlayer> returnValue = new ArrayList<>();
         for (PokerPlayer player : getNonFoldedPlayers())
             // Go through all players, if their money is 0, add them to the eventually returned value
             if (player.getMoney() <= 0) {
@@ -225,8 +219,8 @@ public class PokerTable extends CardsTable {
         return board;
     }
 
-    public ArrayList<PokerPlayer> getContributedPlayers() {
-        ArrayList<PokerPlayer> contributed = new ArrayList<PokerPlayer>(); // List to hold all the players that have contributed the required amount
+    private ArrayList<PokerPlayer> getContributedPlayers() {
+        ArrayList<PokerPlayer> contributed = new ArrayList<>(); // List to hold all the players that have contributed the required amount
 
         // Go through all players that have not folded
         for (PokerPlayer nonFolded : getNonFoldedPlayers())
@@ -269,7 +263,7 @@ public class PokerTable extends CardsTable {
         return highestCallingAmount;
     }
 
-    public double getHighestCurrentBet() {
+    private double getHighestCurrentBet() {
         double highest = 0;
         for (PokerPlayer p : getNonFoldedPlayers()) {
             if (p.getCurrentBet() > highest) {
@@ -303,7 +297,7 @@ public class PokerTable extends CardsTable {
 
     // Returns a list of non folded players sitting at the table
     public ArrayList<PokerPlayer> getNonFoldedPlayers() {
-        ArrayList<PokerPlayer> returnValue = new ArrayList<PokerPlayer>();
+        ArrayList<PokerPlayer> returnValue = new ArrayList<>();
 
         // Go through all players, if their folded flag is true, add them to the eventually returned value
         for (CardsPlayer player : getPokerPlayersThisHand()) {
@@ -318,17 +312,14 @@ public class PokerTable extends CardsTable {
 
     @Override
     public ArrayList<CardsPlayer> getPlayersThisHand() {
-        ArrayList<CardsPlayer> returnValue = new ArrayList<CardsPlayer>();
 
-        for (PokerPlayer player : playersThisHand) {
-            returnValue.add(player);
-        }
+        ArrayList<CardsPlayer> returnValue = new ArrayList<>(playersThisHand);
 
         return returnValue;
     }
 
     public ArrayList<PokerPlayer> getPokerPlayers() {
-        ArrayList<PokerPlayer> returnValue = new ArrayList<PokerPlayer>();
+        ArrayList<PokerPlayer> returnValue = new ArrayList<>();
 
         for (CardsPlayer player : getPlayers()) {
             returnValue.add((PokerPlayer) player);
@@ -342,7 +333,7 @@ public class PokerTable extends CardsTable {
     }
 
     private ArrayList<PokerPlayer> getRevealedPlayers() {
-        ArrayList<PokerPlayer> revealed = new ArrayList<PokerPlayer>();
+        ArrayList<PokerPlayer> revealed = new ArrayList<>();
         for (PokerPlayer player : getNonFoldedPlayers())
             if (player.isRevealed()) {
                 revealed.add(player);
@@ -355,7 +346,7 @@ public class PokerTable extends CardsTable {
         return (PokerTableSettings) getCardsTableSettings();
     }
 
-    public ArrayList<PokerPlayer> getShowdownPlayers() {
+    private ArrayList<PokerPlayer> getShowdownPlayers() {
         return showdownPlayers;
     }
 
@@ -369,7 +360,7 @@ public class PokerTable extends CardsTable {
         if (pokerPlayer.isOnline()) {
             pokerPlayer.getPlayer().teleport(pokerPlayer.getStartLocation());
             UltimateCards.getInstance().getEconomy().depositPlayer(pokerPlayer.getPlayer(), pokerPlayer.getMoney());
-            Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(pokerPlayer.getMoney() + pokerPlayer.getTotalBet()) + " to " + pokerPlayer);
+            Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + (pokerPlayer.getMoney() + pokerPlayer.getTotalBet()) + " to " + pokerPlayer);
             Messages.sendMessage(pokerPlayer.getPlayer(), "&cYou have been kicked from the table! You receive your remaining stack of &6" + Formatter.formatMoney(pokerPlayer.getMoney()));
         }
 
@@ -379,7 +370,7 @@ public class PokerTable extends CardsTable {
 
     @Override
     public ArrayList<String> listPlayers() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
 
         for (CardsPlayer player : getPlayers()) // Display all the players. If the player is offline make their name appear in red
         {
@@ -456,7 +447,7 @@ public class PokerTable extends CardsTable {
     }
 
     // Go to the next phase depending on what the current phase is
-    public void nextPhase() {
+    private void nextPhase() {
         endPhaseForPlayers();
         if (getCurrentPhase() == PokerPhase.PREFLOP) {
             phaseFlop();
@@ -476,7 +467,6 @@ public class PokerTable extends CardsTable {
         }
         if (getCurrentPhase() == PokerPhase.SHOWDOWN) {
             phaseHandEnd();
-            return;
         }
     }
 
@@ -491,7 +481,7 @@ public class PokerTable extends CardsTable {
     }
 
     // Deals the flop
-    public void phaseFlop() {
+    private void phaseFlop() {
         setCurrentPhase(PokerPhase.FLOP);
         clearBets();
         ArrayList<Card> cards = getDeck().generateCards(3);
@@ -508,21 +498,18 @@ public class PokerTable extends CardsTable {
         if (getPlayersThisHand().size() > 1)
         {
             /* Evaluate all hands */
-            HashMap<PokerPlayer, Integer> handRanks = new HashMap<PokerPlayer, Integer>();
+            HashMap<PokerPlayer, Integer> handRanks = new HashMap<>();
             for (PokerPlayer player : getNonFoldedPlayers()) {
                 handRanks.put(player, HandEvaluator.rankHand(player.getEvalHand()));
             }
     
             /* Sort hand ranks */
-            ArrayList<Integer> sortedRanks = new ArrayList<Integer>();
-            for (Integer value : handRanks.values()) {
-                sortedRanks.add(value);
-            }
+            ArrayList<Integer> sortedRanks = new ArrayList<>(handRanks.values());
             Collections.sort(sortedRanks);
     
             /* Pick winners with the highest ranked hands */
             int highestRank = sortedRanks.get(sortedRanks.size() - 1);
-            ArrayList<PokerPlayer> winners = new ArrayList<PokerPlayer>();
+            ArrayList<PokerPlayer> winners = new ArrayList<>();
             for (Entry<PokerPlayer, Integer> entry : handRanks.entrySet()) {
                 if (highestRank == entry.getValue()) {
                     winners.add(entry.getKey());
@@ -566,14 +553,14 @@ public class PokerTable extends CardsTable {
     }
 
     // Deals the preflop
-    public void phasePreflop() {
+    private void phasePreflop() {
         setCurrentPhase(PokerPhase.PREFLOP);
         postBlinds();
         nextPersonTurn(getNextPlayer(getButton() + 1));
     }
 
     // Deals the river
-    public void phaseRiver() {
+    private void phaseRiver() {
         setCurrentPhase(PokerPhase.RIVER);
         clearBets();
         ArrayList<Card> cards = getDeck().generateCards(1);
@@ -584,13 +571,11 @@ public class PokerTable extends CardsTable {
     }
 
     // Showdown method
-    public void phaseShowdown() {
+    private void phaseShowdown() {
         setCurrentPhase(PokerPhase.SHOWDOWN);
         sendTableMessage("Showdown time!");
 
-        for (PokerPlayer player : getNonFoldedPlayers()) {
-            showdownPlayers.add(player);
-        }
+        showdownPlayers.addAll(getNonFoldedPlayers());
 
         if (board.getCards().size() != 5) // If somehow the board doesnt have 5 cards (an all in made the hand end early, for example)
         {
@@ -603,12 +588,12 @@ public class PokerTable extends CardsTable {
 
         displayBoard(null, board.getCards());
 
-        sendTableMessage("Use " + PluginExecutor.pokerReveal.getCommandString() + "&f to reveal your hand, or " + "&6/poker muck" + "&f to muck.");
+        sendTableMessage("Use &6/poker reveal&f to reveal your hand, or &6/poker muck&f to muck.");
         nextPersonTurn(getNextPlayer(getButton())); // Get the action of the player AFTER the button (the small blind)
     }
 
     // Deal the turn
-    public void phaseTurn() {
+    private void phaseTurn() {
         setCurrentPhase(PokerPhase.TURN);
         clearBets();
         ArrayList<Card> cards = getDeck().generateCards(1);
@@ -629,14 +614,14 @@ public class PokerTable extends CardsTable {
     }
 
     @Override
-    public PokerPlayer playerSit(Player player, double buyin) throws Exception {
+    public PokerPlayer playerSit(Player player, double buyin) {
         PokerPlayer pokerPlayer = new PokerPlayer(player, this, buyin);
         getPlayers().add(pokerPlayer);
         return pokerPlayer;
     }
 
     // Post the blinds for every player on the table
-    public void postBlinds() {
+    private void postBlinds() {
         // Post antes if there is one
         if (((PokerTableSettings) getCardsTableSettings()).ante.getValue() > 0) {
             for (CardsPlayer player : getPlayers()) {
@@ -648,7 +633,7 @@ public class PokerTable extends CardsTable {
     }
 
     // Raise the blinds if the dynamic frequency is set
-    public void raiseBlinds() {
+    private void raiseBlinds() {
         PokerTableSettings settings = (PokerTableSettings) getCardsTableSettings();
         // If the current hand number is a multiple of the dynamic ante frequency, and dynamic ante frequency is turned on, increase the blinds/ante by what it was set to most recently
         if (settings.dynamicFrequency.getValue() > 0) {
@@ -671,10 +656,10 @@ public class PokerTable extends CardsTable {
             Messages.sendMessage(pokerPlayer.getPlayer(), "You have been paid your remaining stack of &6" + Formatter.formatMoney(pokerPlayer.getMoney() + pokerPlayer.getTotalBet()));
         }
         UltimateCards.getInstance().getEconomy().depositPlayer(cardsPlayer.getPlayer(), pokerPlayer.getMoney() + pokerPlayer.getTotalBet());
-        Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(pokerPlayer.getMoney() + pokerPlayer.getTotalBet()) + " to " + pokerPlayer);
+        Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + (pokerPlayer.getMoney() + pokerPlayer.getTotalBet()) + " to " + pokerPlayer);
     }
 
-    public void setNewActionPlayer(boolean ignoreAllIn, PokerPlayer lastPlayer) {
+    private void setNewActionPlayer(boolean ignoreAllIn, PokerPlayer lastPlayer) {
         for (CardsPlayer cardsPlayer : getRearrangedPlayers(getNextPlayer(getPlayersThisHand().indexOf(lastPlayer)))) {
             PokerPlayer player = (PokerPlayer) cardsPlayer;
 
@@ -693,7 +678,7 @@ public class PokerTable extends CardsTable {
 
     // This method makes sure that every player ID is equal to their index in the player list. This should be called whenever a player is removed.
     @Override
-    public void shiftIDs() {
+    protected void shiftIDs() {
         for (int i = 0; i < getPlayers().size(); i++)
             if (getPlayers().get(i).getID() != i) {
                 getPlayers().get(i).setID(i);

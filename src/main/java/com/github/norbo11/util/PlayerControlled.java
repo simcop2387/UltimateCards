@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class PlayerControlled {
     private UUID uuid; // This holds the player's name. Should never be changed
 
-    public PlayerControlled(Player player) {
+    protected PlayerControlled(Player player) {
         uuid = player.getUniqueId();
     }
     

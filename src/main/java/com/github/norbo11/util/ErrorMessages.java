@@ -13,7 +13,7 @@ import com.github.norbo11.game.poker.PokerPlayer;
 public class ErrorMessages {
 
     public static void betBelowCurrentBet(Player player) {
-        Messages.sendMessage(player, "&cYou need to bet more than the current table bet! Or simply " + PluginExecutor.pokerCall.getCommandString() + "&f.");
+        Messages.sendMessage(player, "&cYou need to bet more than the current table bet! Or simply &6/poker call&f.");
     }
 
     public static void betBelowMinRaise(Player player, double minRaise, double currentBet) {
@@ -148,7 +148,7 @@ public class ErrorMessages {
     }
 
     public static void notSittingAtTable(Player player) {
-        Messages.sendMessage(player, "&cYou are not currently sitting at any table! Sit with " + PluginExecutor.tableSit.getCommandString() + " [id] [buy-in]&c.");
+        Messages.sendMessage(player, "&cYou are not currently sitting at any table! Sit with &6/table sit [id] [buy-in]&c.");
     }
 
     public static void notTable(Player player, String id) {
@@ -260,7 +260,7 @@ public class ErrorMessages {
     }
 
     public static void tableAtShowdown(Player player) {
-        Messages.sendMessage(player, "&cThe table is currently at showdown! Reveal your hand with " + PluginExecutor.pokerReveal.getCommandString() + ".");
+        Messages.sendMessage(player, "&cThe table is currently at showdown! Reveal your hand with &6/poker reveal.");
     }
 
     public static void tableDoesntAllowRebuys(Player player) {

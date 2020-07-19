@@ -18,9 +18,9 @@ public class TableBan extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    String toBan;
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private String toBan;
+    private CardsPlayer cardsPlayer;
+    private CardsTable cardsTable;
 
     @Override
     public boolean conditions() {
@@ -49,7 +49,7 @@ public class TableBan extends PluginCommand {
 
     // Bans the specified player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         cardsTable.getBannedList().add(toBan);
         cardsTable.sendTableMessage("&6" + cardsPlayer.getPlayerName() + "&f has banned &6" + toBan + "&f from the table!");
 

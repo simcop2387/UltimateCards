@@ -13,7 +13,7 @@ import com.github.norbo11.util.Sound;
 import com.github.norbo11.util.Timers;
 
 public class BlackjackPlayer extends CardsPlayer {
-    public BlackjackPlayer(Player player, BlackjackTable table, double buyin) throws Exception {
+    public BlackjackPlayer(Player player, BlackjackTable table, double buyin) {
         super(player);
         hands.add(new BlackjackHand(this, 0));
         setTable(table);
@@ -26,7 +26,7 @@ public class BlackjackPlayer extends CardsPlayer {
     private boolean hitted;
     private boolean doubled;
     private double pushingAmount;
-    private ArrayList<BlackjackHand> hands = new ArrayList<BlackjackHand>();
+    private ArrayList<BlackjackHand> hands = new ArrayList<>();
 
     public static BlackjackPlayer getBlackjackPlayer(int id, BlackjackTable table) {
         if (table != null) {
@@ -54,7 +54,7 @@ public class BlackjackPlayer extends CardsPlayer {
         return getMoney() > getTable().getSettings().minBet.getValue() || getTable().getSettings().allowRebuys.getValue();
     }
 
-    public void checkForBust() {
+    private void checkForBust() {
         for (BlackjackHand hand : hands)
             if (hand.getScore() > 21) {
                 hand.bust();
@@ -269,23 +269,18 @@ public class BlackjackPlayer extends CardsPlayer {
                 setTurnTimer(null);
             }
 
-            setTurnTimer(Timers.startTimerAsync(new Runnable() {
-                @Override
-                public void run() {
-                    BlackjackStand stand = new BlackjackStand(getPlayer(), new String[] { "stand" });
-                    getTable().sendTableMessage("&6" + getPlayerName() + "&f's turn timer has ended!");
+            setTurnTimer(Timers.startTimerAsync(() -> {
+                BlackjackStand stand = new BlackjackStand(getPlayer(), new String[] { "stand" });
+                getTable().sendTableMessage("&6" + getPlayerName() + "&f's turn timer has ended!");
 
-                    try {
-                        if (stand.conditions()) {
-                            stand.perform();
-                            return;
-                        } else {
-                            getTable().kick(getBlackjackPlayer(getPlayerName()));
-                            return;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    if (stand.conditions()) {
+                        stand.perform();
+                    } else {
+                        getTable().kick(getBlackjackPlayer(getPlayerName()));
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }, settings.turnSeconds.getValue()));
         }

@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.github.norbo11.UltimateCards;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.game.cards.CardsTable;
 import com.github.norbo11.util.DateMethods;
@@ -20,7 +19,7 @@ import com.github.norbo11.util.Timers;
 
 public class BlackjackTable extends CardsTable {
 
-    public BlackjackTable(String owner, String name, int id, Location location, double buyin) throws Exception {
+    public BlackjackTable(String owner, String name, int id, Location location, double buyin) {
         super(owner, name, id);
 
         if (buyin != 0) {
@@ -42,7 +41,7 @@ public class BlackjackTable extends CardsTable {
     private BlackjackDealer dealer = new BlackjackDealer(this);
 
     public static ArrayList<BlackjackTable> getBlackjackTables() {
-        ArrayList<BlackjackTable> returnValue = new ArrayList<BlackjackTable>();
+        ArrayList<BlackjackTable> returnValue = new ArrayList<>();
 
         for (CardsTable table : getTables()) {
             returnValue.add((BlackjackTable) table);
@@ -61,12 +60,9 @@ public class BlackjackTable extends CardsTable {
                 setTimerTask(null);
             }
 
-            setTimerTask(Timers.startTimerAsync(new Runnable() {
-                @Override
-                public void run() {
-                    if (canDeal()) {
-                        deal();
-                    }
+            setTimerTask(Timers.startTimerAsync(() -> {
+                if (canDeal()) {
+                    deal();
                 }
             }, getSettings().autoStart.getValue()));
         }
@@ -76,7 +72,7 @@ public class BlackjackTable extends CardsTable {
     public boolean canDeal() {
         // If there are not enough players to continue the hand
         if (getPlayersThisHand().size() < getMinPlayers()) {
-            sendTableMessage("&cNobody has placed a bet (" + PluginExecutor.blackjackBet.getCommandString() + " [amount]&c)! Cannot start the game.");
+            sendTableMessage("&cNobody has placed a bet (&6/bj bed [amount]&c)! Cannot start the game.");
             return false;
         }
 
@@ -87,7 +83,7 @@ public class BlackjackTable extends CardsTable {
         return player.getMoney() > getSettings().minBet.getValue();
     }
 
-    public void clearDealerVars() {
+    private void clearDealerVars() {
         dealer.getHand().getCards().clear();
         dealer.setBust(false);
         dealer.setScore(0);
@@ -143,18 +139,18 @@ public class BlackjackTable extends CardsTable {
         dealer.addInitialCards();
     }
 
-    public void displayScores() {
+    private void displayScores() {
         for (BlackjackPlayer player : getBjPlayersThisHand()) {
             player.displayScore();
         }
     }
 
-    public BlackjackPlayer getActionBlackjackPlayer() {
+    private BlackjackPlayer getActionBlackjackPlayer() {
         return (BlackjackPlayer) getActionPlayer();
     }
 
     public ArrayList<BlackjackPlayer> getBjPlayersThisHand() {
-        ArrayList<BlackjackPlayer> returnValue = new ArrayList<BlackjackPlayer>();
+        ArrayList<BlackjackPlayer> returnValue = new ArrayList<>();
 
         for (CardsPlayer player : getPlayersThisHand()) {
             returnValue.add((BlackjackPlayer) player);
@@ -164,7 +160,7 @@ public class BlackjackTable extends CardsTable {
     }
 
     public ArrayList<BlackjackPlayer> getBlackjackPlayers() {
-        ArrayList<BlackjackPlayer> returnValue = new ArrayList<BlackjackPlayer>();
+        ArrayList<BlackjackPlayer> returnValue = new ArrayList<>();
 
         for (CardsPlayer player : getPlayers()) {
             returnValue.add((BlackjackPlayer) player);
@@ -173,8 +169,8 @@ public class BlackjackTable extends CardsTable {
         return returnValue;
     }
 
-    public ArrayList<BlackjackPlayer> getBustedPlayers() {
-        ArrayList<BlackjackPlayer> returnValue = new ArrayList<BlackjackPlayer>();
+    private ArrayList<BlackjackPlayer> getBustedPlayers() {
+        ArrayList<BlackjackPlayer> returnValue = new ArrayList<>();
 
         for (BlackjackPlayer blackjackPlayer : getBjPlayersThisHand())
             if (blackjackPlayer.isBustOnAllHands()) {
@@ -203,7 +199,7 @@ public class BlackjackTable extends CardsTable {
 
     @Override
     public ArrayList<CardsPlayer> getPlayersThisHand() {
-        ArrayList<CardsPlayer> returnValue = new ArrayList<CardsPlayer>();
+        ArrayList<CardsPlayer> returnValue = new ArrayList<>();
 
         for (BlackjackPlayer player : getBlackjackPlayers()) {
             if (player.playingThisHand()) {
@@ -214,8 +210,8 @@ public class BlackjackTable extends CardsTable {
         return returnValue;
     }
 
-    public ArrayList<BlackjackPlayer> getReadyPlayers() {
-        ArrayList<BlackjackPlayer> returnValue = new ArrayList<BlackjackPlayer>();
+    private ArrayList<BlackjackPlayer> getReadyPlayers() {
+        ArrayList<BlackjackPlayer> returnValue = new ArrayList<>();
 
         for (BlackjackPlayer player : getBjPlayersThisHand())
             if (player.isDoubled() || player.isStayedOnAllHands() || player.isBustOnAllHands()) {
@@ -231,7 +227,7 @@ public class BlackjackTable extends CardsTable {
     }
 
     public ArrayList<BlackjackPlayer> getStayedPlayers() {
-        ArrayList<BlackjackPlayer> returnValue = new ArrayList<BlackjackPlayer>();
+        ArrayList<BlackjackPlayer> returnValue = new ArrayList<>();
 
         for (BlackjackPlayer blackjackPlayer : getBjPlayersThisHand())
             if (blackjackPlayer.isStayedOnAllHands()) {
@@ -241,7 +237,7 @@ public class BlackjackTable extends CardsTable {
         return returnValue;
     }
 
-    public void handEnd() {
+    private void handEnd() {
         // If not all players are bust
         if (getBustedPlayers().size() != getPlayersThisHand().size()) {
             sendTableMessage("&6" + UltimateCards.LINE_STRING);
@@ -259,7 +255,7 @@ public class BlackjackTable extends CardsTable {
         setToBeContinued(true);
         setInProgress(false);
         clearPlayerVars();
-        sendTableMessage("Hand ended. Please place bets again (" + PluginExecutor.blackjackBet.getCommandString() + " [amount]&f).");
+        sendTableMessage("Hand ended. Please place bets again (&6/bj bed [amount]&f).");
     }
 
     @Override
@@ -285,27 +281,26 @@ public class BlackjackTable extends CardsTable {
 
     @Override
     public ArrayList<String> listPlayers() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
 
         for (BlackjackPlayer player : getBlackjackPlayers()) {
-            BlackjackPlayer blackjackPlayer = player;
-            String temp = "[" + blackjackPlayer.getID() + "] ";
+            String temp = "[" + player.getID() + "] ";
 
-            if (blackjackPlayer.isOnline()) {
-                temp = temp + "&6" + blackjackPlayer.getPlayerName() + " - ";
+            if (player.isOnline()) {
+                temp = temp + "&6" + player.getPlayerName() + " - ";
             } else {
-                temp = temp + "&c" + blackjackPlayer.getPlayerName() + "&f - ";
+                temp = temp + "&c" + player.getPlayerName() + "&f - ";
             }
 
-            if (blackjackPlayer.isAction()) {
-                temp = temp.replace(blackjackPlayer.getPlayerName(), ChatColor.BOLD + blackjackPlayer.getPlayerName() + "&6");
+            if (player.isAction()) {
+                temp = temp.replace(player.getPlayerName(), ChatColor.BOLD + player.getPlayerName() + "&6");
             }
 
-            if (getChipLeader() == blackjackPlayer) {
-                temp = temp.replace(blackjackPlayer.getPlayerName(), ChatColor.BOLD + blackjackPlayer.getPlayerName() + "&6");
+            if (getChipLeader() == player) {
+                temp = temp.replace(player.getPlayerName(), ChatColor.BOLD + player.getPlayerName() + "&6");
             }
 
-            temp = temp + "&6" + Formatter.formatMoney(blackjackPlayer.getMoney());
+            temp = temp + "&6" + Formatter.formatMoney(player.getMoney());
             list.add(temp);
         }
 
@@ -335,8 +330,8 @@ public class BlackjackTable extends CardsTable {
     }
 
     // Pays players and returns pushing list
-    public ArrayList<BlackjackPlayer> payPlayers() {
-        ArrayList<BlackjackPlayer> pushingPlayers = new ArrayList<BlackjackPlayer>();
+    private ArrayList<BlackjackPlayer> payPlayers() {
+        ArrayList<BlackjackPlayer> pushingPlayers = new ArrayList<>();
 
         for (BlackjackPlayer blackjackPlayer : getBjPlayersThisHand()) {
             for (BlackjackHand hand : blackjackPlayer.getHands())
@@ -374,7 +369,7 @@ public class BlackjackTable extends CardsTable {
     }
 
     @Override
-    public BlackjackPlayer playerSit(Player player, double buyin) throws Exception {
+    public BlackjackPlayer playerSit(Player player, double buyin) {
         BlackjackPlayer blackjackPlayer = new BlackjackPlayer(player, this, buyin);
         getPlayers().add(blackjackPlayer);
         return blackjackPlayer;
@@ -389,6 +384,6 @@ public class BlackjackTable extends CardsTable {
             Messages.sendMessage(blackjackPlayer.getPlayer(), "You have been paid your remaining stack of &6" + Formatter.formatMoney(blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()));
         }
         UltimateCards.getInstance().getEconomy().depositPlayer(blackjackPlayer.getPlayer(), blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet());
-        Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + Double.toString(blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()) + " to " + blackjackPlayer.getPlayerName());
+        Log.addToLog(DateMethods.getDate() + " [ECONOMY] Depositing " + (blackjackPlayer.getMoney() + blackjackPlayer.getTotalAmountBet()) + " to " + blackjackPlayer.getPlayerName());
     }
 }

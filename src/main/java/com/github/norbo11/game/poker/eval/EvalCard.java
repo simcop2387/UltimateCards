@@ -73,25 +73,25 @@ public class EvalCard {
         }
     }
 
-    public final static int CLUBS = 0;
-    public final static int DIAMONDS = 1;
-    public final static int HEARTS = 2;
-    public final static int SPADES = 3;
+    private final static int CLUBS = 0;
+    private final static int DIAMONDS = 1;
+    private final static int HEARTS = 2;
+    private final static int SPADES = 3;
     public final static int BAD_CARD = -1;
-    public final static int TWO = 0;
-    public final static int THREE = 1;
-    public final static int FOUR = 2;
-    public final static int FIVE = 3;
-    public final static int SIX = 4;
-    public final static int SEVEN = 5;
-    public final static int EIGHT = 6;
-    public final static int NINE = 7;
+    private final static int TWO = 0;
+    private final static int THREE = 1;
+    private final static int FOUR = 2;
+    private final static int FIVE = 3;
+    private final static int SIX = 4;
+    private final static int SEVEN = 5;
+    private final static int EIGHT = 6;
+    private final static int NINE = 7;
 
-    public final static int TEN = 8;
-    public final static int JACK = 9;
-    public final static int QUEEN = 10;
+    private final static int TEN = 8;
+    private final static int JACK = 9;
+    private final static int QUEEN = 10;
 
-    public final static int KING = 11;
+    private final static int KING = 11;
 
     public final static int ACE = 12;
 
@@ -99,7 +99,7 @@ public class EvalCard {
 
     public final static int NUM_RANKS = 13;
 
-    public final static int NUM_CARDS = 52;
+    private final static int NUM_CARDS = 52;
 
     private int gIndex;
 
@@ -112,7 +112,7 @@ public class EvalCard {
         return (i % NUM_RANKS);
     }
 
-    public static char getRankChar(int r) {
+    private static char getRankChar(int r) {
         char s;
         switch (r) {
             case ACE:
@@ -155,7 +155,7 @@ public class EvalCard {
      *            the suit to convert
      * @return the index calculated from the rank and suit
      */
-    public static int toIndex(int rank, int suit) {
+    private static int toIndex(int rank, int suit) {
         return NUM_RANKS * suit + rank;
     }
 
@@ -187,32 +187,22 @@ public class EvalCard {
                 r = NINE;
                 break;
             case 'T':
-                r = TEN;
-                break;
-            case 'J':
-                r = JACK;
-                break;
-            case 'Q':
-                r = QUEEN;
-                break;
-            case 'K':
-                r = KING;
-                break;
-            case 'A':
-                r = ACE;
-                break;
             case 't':
                 r = TEN;
                 break;
+            case 'J':
             case 'j':
                 r = JACK;
                 break;
+            case 'Q':
             case 'q':
                 r = QUEEN;
                 break;
+            case 'K':
             case 'k':
                 r = KING;
                 break;
+            case 'A':
             case 'a':
                 r = ACE;
                 break;
@@ -220,26 +210,18 @@ public class EvalCard {
         int s = -1;
         switch (suit) {
             case 'h':
-                s = HEARTS;
-                break;
-            case 'd':
-                s = DIAMONDS;
-                break;
-            case 's':
-                s = SPADES;
-                break;
-            case 'c':
-                s = CLUBS;
-                break;
             case 'H':
                 s = HEARTS;
                 break;
+            case 'd':
             case 'D':
                 s = DIAMONDS;
                 break;
+            case 's':
             case 'S':
                 s = SPADES;
                 break;
+            case 'c':
             case 'C':
                 s = CLUBS;
                 break;
@@ -304,7 +286,7 @@ public class EvalCard {
      */
     @Override
     public String toString() {
-        String s = new String();
+        String s = "";
         s += getRankChar(getRank());
         switch (getSuit()) {
             case HEARTS:

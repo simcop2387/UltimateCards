@@ -3,7 +3,6 @@ package com.github.norbo11.commands.table;
 import org.bukkit.ChatColor;
 
 import com.github.norbo11.commands.PluginCommand;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.blackjack.BlackjackTable;
 import com.github.norbo11.game.cards.CardsTable;
 import com.github.norbo11.game.poker.PokerTable;
@@ -33,12 +32,12 @@ public class TableTables extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         Messages.sendMessage(getPlayer(), "List of currently created card tables:");
 
         for (CardsTable table : CardsTable.getTables()) // Goes through all tables and lists them. Displays the name in red if the table is closed, or green if its open.
         {
-            String color = "";
+            String color;
             if (table.isOpen()) {
                 color = "&2";
             } else {
@@ -56,6 +55,6 @@ public class TableTables extends PluginCommand {
         }
 
         Messages.sendMessage(getPlayer(), ChatColor.GREEN + "GREEN = Open. &cRED = Closed.");
-        Messages.sendMessage(getPlayer(), "Use " + PluginExecutor.tableSit.getCommandString() + " [table ID] [buy-in] " + "&fto join a table.");
+        Messages.sendMessage(getPlayer(), "Use &6/table sit [table ID] [buy-in] " + "&fto join a table.");
     }
 }

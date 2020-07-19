@@ -20,16 +20,14 @@ public class TableKick extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
-    CardsPlayer toKick;
+    private CardsPlayer toKick;
 
     @Override
     public boolean conditions() {
         if (getArgs().length == 2) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
-                cardsTable = cardsPlayer.getTable();
+                CardsTable cardsTable = cardsPlayer.getTable();
                 if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
                     int IDtoKick = NumberMethods.getPositiveInteger(getArgs()[1]);
                     if (IDtoKick != -99999) {

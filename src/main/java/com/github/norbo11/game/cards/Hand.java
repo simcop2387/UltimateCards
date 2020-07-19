@@ -3,7 +3,7 @@ package com.github.norbo11.game.cards;
 import java.util.ArrayList;
 
 public class Hand {
-    private ArrayList<Card> cards = new ArrayList<Card>();
+    private ArrayList<Card> cards = new ArrayList<>();
 
     // Clears the player's hand
     public void clearHand() {
@@ -15,16 +15,16 @@ public class Hand {
     }
 
     public String getEvalString() {
-        String handString = "";
+        StringBuilder handString = new StringBuilder();
 
         if (cards.size() > 0) {
             for (Card card : cards) {
-                handString += card.toEvalString() + " ";
+                handString.append(card.toEvalString()).append(" ");
             }
-            handString.substring(0, handString.length() - 1);
+            handString.setLength(handString.length() - 1);
         }
 
-        return handString;
+        return handString.toString();
     }
 
     // Returns an array which represents the string representation of each card

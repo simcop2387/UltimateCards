@@ -25,10 +25,10 @@ public class TableRebuy extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsPlayer cardsPlayer;
+    private CardsTable cardsTable;
 
-    double amount;
+    private double amount;
 
     @Override
     public boolean conditions() {
@@ -64,7 +64,7 @@ public class TableRebuy extends PluginCommand {
 
     // Adds money to the specified player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         // Withdraw the desired amount from the ECONOMY, add it to their stack, then display the message
         MoneyMethods.withdrawMoney(getPlayer(), amount);
         cardsPlayer.setMoney(cardsPlayer.getMoney() + amount);

@@ -2,7 +2,6 @@ package com.github.norbo11.game.blackjack;
 
 import java.util.ArrayList;
 
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.cards.CardsTableSettings;
 import com.github.norbo11.game.cards.TableSetting;
 import com.github.norbo11.util.Formatter;
@@ -29,7 +28,7 @@ public class BlackjackTableSettings extends CardsTableSettings {
     }
     
     public class AllowDoubleDown extends TableSetting<Boolean> {
-        public AllowDoubleDown(Boolean value) {
+        AllowDoubleDown(Boolean value) {
             super(value, "allowDoubleDown");
         }
 
@@ -55,7 +54,7 @@ public class BlackjackTableSettings extends CardsTableSettings {
     }
 
     public class AmountOfDecks extends TableSetting<Integer> {
-        public AmountOfDecks(Integer value) {
+        AmountOfDecks(Integer value) {
             super(value, "amountOfDecks");
         }
 
@@ -88,7 +87,7 @@ public class BlackjackTableSettings extends CardsTableSettings {
     }
     
     public class MinBet extends TableSetting<Double> {
-        public MinBet(Double value) {
+        MinBet(Double value) {
             super(value, "minBet");
         }
 
@@ -115,7 +114,7 @@ public class BlackjackTableSettings extends CardsTableSettings {
     @Override
     public void setTableSpecificSetting(String inputSetting, String inputValue) {
         if (!setSetting(inputSetting, inputValue, allSettings))
-            Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cInvalid setting. Check available settings with " + PluginExecutor.tableListSettings.getCommandString() + ".");
+            Messages.sendMessage(getTable().getOwnerPlayer().getPlayer(), "&cInvalid setting. Check available settings with &6/table listsettings.");
     }
 
 }

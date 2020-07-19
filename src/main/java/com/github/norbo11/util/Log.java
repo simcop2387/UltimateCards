@@ -51,12 +51,12 @@ public class Log {
     }
 
     // Logs the supplied command, it's sender and all of it's arguments
-    public static void logCommand(CommandSender sender, Command command, String args[]) {
-        String arguments = "";
+    public static void logCommand(CommandSender sender, Command command, String[] args) {
+        StringBuilder arguments = new StringBuilder();
         for (String argument : args) {
             // Goes through the array of given arguments, appends them at the
             // back of the arguments variable
-            arguments = arguments + " " + argument;
+            arguments.append(" ").append(argument);
         }
         addToLog(DateMethods.getDate() + " " + sender.getName() + ": /" + command.getName() + arguments);
     }

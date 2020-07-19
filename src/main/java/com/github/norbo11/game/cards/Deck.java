@@ -11,11 +11,11 @@ public class Deck {
     }
 
     private int amountOfDecks;
-    private ArrayList<Card> cards = new ArrayList<Card>(); // Cards left in the
+    private ArrayList<Card> cards = new ArrayList<>(); // Cards left in the
                                                            // deck
 
     // Goes through ranks and suits, then adds them all to the deck
-    public void addCards() {
+    private void addCards() {
         // Decks
         for (int d = 1; d <= amountOfDecks; d++) {
             // Ranks
@@ -30,7 +30,7 @@ public class Deck {
 
     // Generates the specified number of cards, returning an array
     public ArrayList<Card> generateCards(int number) {
-        ArrayList<Card> returnValue = new ArrayList<Card>();
+        ArrayList<Card> returnValue = new ArrayList<>();
         for (int i = 0; i < number; i++) {
             Card card = cards.get(NumberMethods.getRandomInteger(cards.size() - 1));
             returnValue.add(card);

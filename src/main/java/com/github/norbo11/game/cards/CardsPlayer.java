@@ -10,7 +10,7 @@ import com.github.norbo11.util.PlayerControlled;
 import com.github.norbo11.util.Sound;
 
 public abstract class CardsPlayer extends PlayerControlled {
-    public CardsPlayer(Player player) {
+    protected CardsPlayer(Player player) {
         super(player);
     }
 
@@ -44,7 +44,7 @@ public abstract class CardsPlayer extends PlayerControlled {
         return null;
     }
 
-    public void cancelTurnTimer() {
+    protected void cancelTurnTimer() {
         if (turnTimer != null) {
             turnTimer.cancel();
             turnTimer = null;
@@ -73,7 +73,7 @@ public abstract class CardsPlayer extends PlayerControlled {
         return turnTimer;
     }
 
-    public void giveMoney(double amount) {
+    protected void giveMoney(double amount) {
         money += amount;
     }
 
@@ -97,7 +97,7 @@ public abstract class CardsPlayer extends PlayerControlled {
         return getPlayer() != null;
     }
 
-    public void removeMoney(double amount) {
+    protected void removeMoney(double amount) {
         money -= amount;
     }
 
@@ -109,25 +109,25 @@ public abstract class CardsPlayer extends PlayerControlled {
         this.money = money;
     }
 
-    public void setStartLocation(Location startLocation) {
+    protected void setStartLocation(Location startLocation) {
         this.startLocation = startLocation;
     }
 
-    public void setTable(CardsTable table) {
+    protected void setTable(CardsTable table) {
         this.table = table;
     }
 
-    public void setTurnTimer(BukkitTask turnTimer) {
+    protected void setTurnTimer(BukkitTask turnTimer) {
         this.turnTimer = turnTimer;
     }
 
-    public abstract void startTurnTimer();
+    protected abstract void startTurnTimer();
 
     // Sets the player's action flag to true and gives them an eye-catching message
     public void takeAction() {
         CardsTableSettings settings = getTable().getCardsTableSettings();
         int turnSeconds = table.getSettings().turnSeconds.getValue();
-        String message = ChatColor.UNDERLINE  + "";
+        String message;
         
         if (turnSeconds > 0) {
             message = "&6" + getPlayerName() + " " + ChatColor.DARK_PURPLE + "has &6" + turnSeconds + " seconds" + ChatColor.DARK_PURPLE + " to act!";

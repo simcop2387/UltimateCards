@@ -34,6 +34,9 @@ public class UltimateCards extends JavaPlugin {
     }
 
     public static UltimateCards getInstance() {
+        if (instance == null) {
+            instance = JavaPlugin.getPlugin(UltimateCards.class);
+        }
         return instance;
     }
     
@@ -45,7 +48,7 @@ public class UltimateCards extends JavaPlugin {
         return version;
     }
 
-    public void addPermissions() {
+    private void addPermissions() {
         for (ArrayList<PluginCommand> commandGroup : PluginExecutor.commands) {
             for (PluginCommand cmd : commandGroup) {
                 getServer().getPluginManager().addPermission(new Permission(cmd.getPermissionNodes().get(1), PermissionDefault.OP));
@@ -93,30 +96,23 @@ public class UltimateCards extends JavaPlugin {
         getCommand("bj").setExecutor(pluginExecutor);
 
         if (!(getConfig().getDouble("table.fixRake") <= 1 && getConfig().getDouble("table.fixRake") >= -1)) {
-            terminate("Check your config file! The field fixRake must be either -1 or 0-1!", null);
+            getLogger().severe("Check your config file! The field fixRake must be either -1 or 0-1!");
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
         getLogger().info("UltimateCards v" + version + " plugin enabled!");
     }
 
-    public boolean setupEconomy() {
+    private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            terminate("Economy plugin not detected! You need an ECONOMY plugin such as iConomy to run this plugin! iConomy DL at: http://dev.bukkit.org/server-mods/iconomy/", null);
+            getLogger().severe("Economy plugin not detected! You need an ECONOMY plugin such as iConomy to run this plugin! iConomy DL at: http://dev.bukkit.org/server-mods/iconomy/");
+            getServer().getPluginManager().disablePlugin(this);
             return false;
         }
         economy = rsp.getProvider();
         getLogger().info("Hooked into " + economy.getName());
         return true;
-    }
-
-    // Stops the plugin with the specified message and prints a stack trace of the error
-    public void terminate(String message, Exception e) {
-        getLogger().severe(message);
-        if (e != null) {
-            e.printStackTrace();
-        }
-        getServer().getPluginManager().disablePlugin(this);
     }
 }

@@ -46,8 +46,9 @@ public class SavedTables {
         loadTables();
     }
 
-    public static void loadTables() throws Exception {
-        savedTables = new ArrayList<CardsTable>();
+    /** @noinspection UnnecessaryLocalVariable*/
+    private static void loadTables() throws Exception {
+        savedTables = new ArrayList<>();
         
         // Poker Tables
         for (String table : config.getKeys(false)) {
@@ -125,12 +126,12 @@ public class SavedTables {
         }
     }
 
-    public static void save() throws IOException {
+    private static void save() throws IOException {
         config.save(fileSavedTables);
     }
     
     private static Vector<String> saveLocation(Location location) {
-        Vector<String> returnValue = new Vector<String>();
+        Vector<String> returnValue = new Vector<>();
         
         if (location != null && location.getWorld() != null) {
             returnValue.add(location.getWorld().getName());

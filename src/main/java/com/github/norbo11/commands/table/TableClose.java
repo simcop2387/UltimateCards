@@ -19,13 +19,12 @@ public class TableClose extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     @Override
     public boolean conditions() {
         if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
                 cardsTable = cardsPlayer.getTable();
                 if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
@@ -47,7 +46,7 @@ public class TableClose extends PluginCommand {
 
     // Closes the table and doesn't allow any more people to sit
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         cardsTable.setOpen(false);
         cardsTable.sendTableMessage("Table named &6" + cardsTable.getName() + "&f, ID #&6" + cardsTable.getId() + "&f is now closed! Players now can't join!");
     }

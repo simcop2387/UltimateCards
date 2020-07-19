@@ -20,7 +20,7 @@ public class BlackjackDealer {
     private Hand hand = new Hand();
     private boolean bust;
 
-    public void addCards(ArrayList<Card> cards) {
+    private void addCards(ArrayList<Card> cards) {
         for (Card card : cards) {
             getHand().getCards().add(card);
             table.sendTableMessage("&6" + "The dealer&f has been dealt the " + card.toString());
@@ -41,18 +41,18 @@ public class BlackjackDealer {
         if (!table.getOwner().equals("")) MoneyMethods.depositMoney(table.getOwnerPlayer().getPlayer(), amount);
     }
 
-    public void bust() {
+    private void bust() {
         table.sendTableMessage("&6" + "The dealer&f has gone bust!");
         setBust(true);
     }
 
-    public void checkForBust() {
+    private void checkForBust() {
         if (score > 21) {
             bust();
         }
     }
 
-    public void displayScore() {
+    private void displayScore() {
         getTable().sendTableMessage("&6" + "The dealer&f's score: &6" + score);
     }
 
@@ -64,7 +64,7 @@ public class BlackjackDealer {
         return holeCard;
     }
 
-    public double getMoney() {
+    private double getMoney() {
         if (!table.getOwner().equals("")) return MoneyMethods.getMoney(table.getOwnerPlayer().getPlayer());
         return Double.MAX_VALUE;
     }
@@ -73,7 +73,7 @@ public class BlackjackDealer {
         return score;
     }
 
-    public BlackjackTable getTable() {
+    private BlackjackTable getTable() {
         return table;
     }
 
@@ -105,7 +105,7 @@ public class BlackjackDealer {
         Sound.lost(blackjackPlayer.getPlayer());
     }
 
-    public void recalculateScore() {
+    private void recalculateScore() {
         int newScore = 0;
 
         for (Card card : getHand().getCards())
@@ -138,7 +138,7 @@ public class BlackjackDealer {
         this.bust = bust;
     }
 
-    public void setHoleCard(Card holeCard) {
+    private void setHoleCard(Card holeCard) {
         this.holeCard = holeCard;
     }
 

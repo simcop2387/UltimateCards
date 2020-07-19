@@ -20,7 +20,7 @@ public class PokerPot extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
@@ -38,7 +38,7 @@ public class PokerPot extends PluginCommand {
 
     // Displays the table's pots to the player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         for (PokerPlayer p : pokerPlayer.getPokerTable().getNonFoldedPlayers()) {
             double pot = p.getTotalPot() > 0 ? p.getTotalPot() : 0;
             Messages.sendMessage(getPlayer(), "If &6" + p.getPlayerName() + "&f wins, he will win &6" + Formatter.formatMoney(pot) + "&f.");

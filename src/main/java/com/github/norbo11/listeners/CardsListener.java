@@ -77,30 +77,26 @@ public class CardsListener implements Listener {
     
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        try {
-            if (e.getCurrentItem().getType() == Material.MAP) {
-                ItemStack itemStack = MapMethods.getSavedMaps().get(e.getWhoClicked().getName());
-                if (itemStack != null && e.getCurrentItem().equals(itemStack)) {
-                    Messages.sendMessage((Player) e.getWhoClicked(), "You may not move your cards interface map!");
-                    e.setCancelled(true);
-                    e.getInventory().remove(itemStack);
-                }
-            }
-        } catch (Exception exc) {
+        ItemStack currentItem = e.getCurrentItem();
+        if (currentItem == null || currentItem.getType() != Material.MAP) {
+            return;
+        }
+        ItemStack itemStack = MapMethods.getSavedMaps().get(e.getWhoClicked().getName());
+        if (currentItem.equals(itemStack)) {
+            Messages.sendMessage((Player) e.getWhoClicked(), "You may not move your cards interface map!");
+            e.setCancelled(true);
+            e.getInventory().remove(itemStack);
         }
     }
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
-        try {
-            if (e.getItemDrop().getItemStack().getType() == Material.MAP) {
-                ItemStack itemStack = MapMethods.getSavedMaps().get(e.getPlayer().getName());
-                if (itemStack != null && e.getItemDrop().getItemStack().equals(itemStack)) {
-                    Messages.sendMessage((Player) e.getPlayer(), "You may not drop your cards interface map!");
-                    e.setCancelled(true);
-                }
+        if (e.getItemDrop().getItemStack().getType() == Material.MAP) {
+            ItemStack itemStack = MapMethods.getSavedMaps().get(e.getPlayer().getName());
+            if (itemStack != null && e.getItemDrop().getItemStack().equals(itemStack)) {
+                Messages.sendMessage(e.getPlayer(), "You may not drop your cards interface map!");
+                e.setCancelled(true);
             }
-        } catch (Exception exc) {
         }
     }
 
@@ -121,7 +117,7 @@ public class CardsListener implements Listener {
         // If the player trying to pick up the map is NOT the rightful owner, and the
         // map DOES have an owner
         String mapOwner = MapMethods.mapExists(e.getItem().getItemStack());
-        if (mapOwner != player.getName() && mapOwner != "") {
+        if (!mapOwner.equals(player.getName()) && !mapOwner.equals("")) {
             e.setCancelled(true);
         } else if (CardsPlayer.getCardsPlayer(player.getName()) == null) {
             e.setCancelled(true);

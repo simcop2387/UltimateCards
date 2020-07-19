@@ -7,23 +7,23 @@ import org.bukkit.entity.Player;
 import com.github.norbo11.util.Messages;
 
 public abstract class PluginCommand {
-    public PluginCommand() {
+    protected PluginCommand() {
     }
 
-    public PluginCommand(Player player, String[] args) {
+    protected PluginCommand(Player player, String[] args) {
         setPlayer(player);
         setArgs(args);
     }
 
-    public static final String PERMISSIONS_BASE_NODE = "ucards.";
+    protected static final String PERMISSIONS_BASE_NODE = "ucards.";
     private Player player;
     private String[] args;
     private String description;
     private String argumentsString;
 
-    private ArrayList<String> permissionNodes = new ArrayList<String>();
+    private ArrayList<String> permissionNodes = new ArrayList<>();
 
-    private ArrayList<String> aliases = new ArrayList<String>();
+    private ArrayList<String> aliases = new ArrayList<>();
 
     public abstract boolean conditions();
 
@@ -35,24 +35,23 @@ public abstract class PluginCommand {
     }
 
     public String getAliasesString() {
-        String returnValue = "";
-
+        StringBuilder returnValue = new StringBuilder();
         for (String alias : aliases) {
-            returnValue += alias + "&b | &6";
+            returnValue.append(alias).append("&b | &6");
         }
 
-        if (returnValue.endsWith("&b | &6")) {
-            returnValue = returnValue.substring(0, returnValue.length() - 7);
+        if (!aliases.isEmpty()) {
+            return returnValue.substring(0, returnValue.length() - 7);
         }
 
-        return returnValue;
+        return returnValue.toString();
     }
 
     public ArrayList<String> getAlises() {
         return aliases;
     }
 
-    public String[] getArgs() {
+    protected String[] getArgs() {
         return args;
     }
 
@@ -67,7 +66,7 @@ public abstract class PluginCommand {
         else return "&6ERROR";
     }
 
-    public String getDescription() {
+    private String getDescription() {
         return description;
     }
 
@@ -75,7 +74,7 @@ public abstract class PluginCommand {
         return permissionNodes;
     }
 
-    public Player getPlayer() {
+    protected Player getPlayer() {
         return player;
     }
 
@@ -102,11 +101,11 @@ public abstract class PluginCommand {
         this.argumentsString = argumentsString;
     }
 
-    public void setArgumentString(String argumentsString) {
+    protected void setArgumentString(String argumentsString) {
         this.argumentsString = argumentsString;
     }
 
-    public void setDescription(String description) {
+    protected void setDescription(String description) {
         this.description = description;
     }
 
@@ -114,7 +113,7 @@ public abstract class PluginCommand {
         this.player = player;
     }
 
-    public void showUsage() {
+    protected void showUsage() {
         Messages.sendMessage(player, getUsage());
     }
 }

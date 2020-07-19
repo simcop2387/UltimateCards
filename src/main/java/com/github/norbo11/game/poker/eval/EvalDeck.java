@@ -18,7 +18,7 @@ import java.util.Random;
  */
 
 @SuppressWarnings("static-access")
-public class EvalDeck {
+class EvalDeck {
     /**
      * Constructor.
      */
@@ -81,7 +81,7 @@ public class EvalDeck {
      * @param c
      *            the card to remove.
      */
-    public synchronized void extractCard(EvalCard c) {
+    private synchronized void extractCard(EvalCard c) {
         int i = findCard(c);
         if (i != -1) {
             EvalCard t = gCards[i];
@@ -106,7 +106,7 @@ public class EvalDeck {
     /**
      * Remove and return a randomly selected card from within the deck.
      */
-    public synchronized EvalCard extractRandomCard() {
+    private synchronized EvalCard extractRandomCard() {
         int pos = position + randInt(NUM_CARDS - position);
         EvalCard c = gCards[pos];
         gCards[pos] = gCards[position];
@@ -118,7 +118,7 @@ public class EvalDeck {
     /**
      * Find position of Card in Deck.
      */
-    public synchronized int findCard(EvalCard c) {
+    private synchronized int findCard(EvalCard c) {
         int i = position;
         int n = c.getIndex();
         while (i < NUM_CARDS && n != gCards[i].getIndex()) {
@@ -207,14 +207,14 @@ public class EvalDeck {
 
     @Override
     public String toString() {
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         s.append("* ");
         for (int i = 0; i < position; i++) {
-            s.append(gCards[i].toString() + " ");
+            s.append(gCards[i].toString()).append(" ");
         }
         s.append("\n* ");
         for (int i = position; i < NUM_CARDS; i++) {
-            s.append(gCards[i].toString() + " ");
+            s.append(gCards[i].toString()).append(" ");
         }
         return s.toString();
     }

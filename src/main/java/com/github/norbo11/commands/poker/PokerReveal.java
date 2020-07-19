@@ -27,16 +27,14 @@ public class PokerReveal extends PluginCommand {
         this(null, null);
     }
 
-    PokerPlayer pokerPlayer;
-
-    PokerTable pokerTable;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
         if (getArgs().length == 1) {
             pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
             if (pokerPlayer != null) {
-                pokerTable = pokerPlayer.getPokerTable();
+                PokerTable pokerTable = pokerPlayer.getPokerTable();
                 if (!pokerPlayer.isEliminated()) {
                     if (pokerTable.getCurrentPhase() == PokerPhase.SHOWDOWN) // If it is showdown
                     {
@@ -61,7 +59,7 @@ public class PokerReveal extends PluginCommand {
 
     // Publicly reveals the player's hand to everybody
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         pokerPlayer.reveal();
     }
 }

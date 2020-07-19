@@ -19,14 +19,13 @@ public class TableUnsave extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     // table create name buyin poker|blackjack
     @Override
     public boolean conditions() {
         if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
                 cardsTable = cardsPlayer.getTable();
                 if (cardsTable.isOwner(cardsPlayer.getPlayerName())) return true;

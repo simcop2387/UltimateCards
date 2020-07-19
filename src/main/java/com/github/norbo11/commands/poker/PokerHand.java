@@ -22,7 +22,7 @@ public class PokerHand extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
@@ -40,9 +40,9 @@ public class PokerHand extends PluginCommand {
 
     // Displays the player's hand (to himself only)
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         Messages.sendMessage(getPlayer(), "Your hand:");
         Messages.sendMessage(getPlayer(), "&6" + UltimateCards.LINE_STRING);
-        Messages.sendMessage(getPlayer(), new ArrayList<String>(Arrays.asList(pokerPlayer.getHand().getHand())));
+        Messages.sendMessage(getPlayer(), new ArrayList<>(Arrays.asList(pokerPlayer.getHand().getHand())));
     }
 }

@@ -21,9 +21,7 @@ public class PokerAllin extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
-
-    PokerTable pokerTable;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
@@ -31,7 +29,7 @@ public class PokerAllin extends PluginCommand {
             pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
             if (pokerPlayer != null) {
                 if (!pokerPlayer.isEliminated()) {
-                    pokerTable = pokerPlayer.getPokerTable();
+                    PokerTable pokerTable = pokerPlayer.getPokerTable();
                     if (pokerTable.isInProgress()) // Check if the table is
                                                    // in progress
                     {
@@ -68,7 +66,7 @@ public class PokerAllin extends PluginCommand {
 
     // Declares the specified player all in
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         double betAmount = pokerPlayer.getMoney() + pokerPlayer.getCurrentBet();
         pokerPlayer.bet(betAmount, null);
     }

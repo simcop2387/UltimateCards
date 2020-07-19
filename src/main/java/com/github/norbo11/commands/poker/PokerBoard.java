@@ -18,7 +18,7 @@ public class PokerBoard extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
@@ -36,7 +36,7 @@ public class PokerBoard extends PluginCommand {
 
     // Displays the board to the specified player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         pokerPlayer.getPokerTable().displayBoard(getPlayer(), pokerPlayer.getPokerTable().getBoard().getCards());
     }
 }

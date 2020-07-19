@@ -17,21 +17,13 @@ import com.github.norbo11.util.NumberMethods;
 import com.github.norbo11.util.config.SavedTables;
 
 public abstract class CardsTable {
-    public CardsTable(String owner, String name, int id) {
+    protected CardsTable(String owner, String name, int id) {
         // Set the table core properties
         setOwner(owner);
         setName(name);
         setId(id);
     }
 
-    static {
-        ArrayList<String> allowedDetailTypes = new ArrayList<String>();
-        allowedDetailTypes.add("settings");
-        allowedDetailTypes.add("player");
-        allowedDetailTypes.add("other");
-        allowedDetailTypes.add("general");
-        allowedDetailTypes.add("all");
-    }
     private int button; // button (in the list 'players')
 
     private CardsPlayer ownerPlayer;
@@ -50,9 +42,16 @@ public abstract class CardsTable {
     private boolean open; // Decides if player can join or not
     private boolean toBeContinued;
     private static ArrayList<String> allowedDetailTypes;
-    private ArrayList<CardsPlayer> players = new ArrayList<CardsPlayer>();
-    private ArrayList<String> bannedList = new ArrayList<String>();
-    private static ArrayList<CardsTable> tables = new ArrayList<CardsTable>();
+    static {
+        allowedDetailTypes.add("settings");
+        allowedDetailTypes.add("player");
+        allowedDetailTypes.add("other");
+        allowedDetailTypes.add("general");
+        allowedDetailTypes.add("all");
+    }
+    private ArrayList<CardsPlayer> players = new ArrayList<>();
+    private ArrayList<String> bannedList = new ArrayList<>();
+    private static ArrayList<CardsTable> tables = new ArrayList<>();
     private BukkitTask timerTask;
 
     public static boolean doesTableExist(String tableName) {
@@ -137,7 +136,7 @@ public abstract class CardsTable {
 
         Messages.sendMessage(player, "&6" + UltimateCards.LINE_STRING);
         Messages.sendMessage(player,  "&6General Details");
-        Messages.sendMessage(player, "Owner: &6" + (getOwner().equals("") == false ? getOwner() : "SERVER"));
+        Messages.sendMessage(player, "Owner: &6" + (!getOwner().equals("") ? getOwner() : "SERVER"));
         Messages.sendMessage(player, "Hands played: &6" + getHandNumber());
         Messages.sendMessage(player, "Open: &6" + isOpen());
         Messages.sendMessage(player, "In progress: " + "&6" + isInProgress());
@@ -161,7 +160,7 @@ public abstract class CardsTable {
         return bannedList;
     }
 
-    public int getButton() {
+    protected int getButton() {
         return button;
     }
 
@@ -178,7 +177,7 @@ public abstract class CardsTable {
         return cardsTableSettings;
     }
 
-    public CardsPlayer getChipLeader() {
+    protected CardsPlayer getChipLeader() {
         CardsPlayer returnValue = players.get(0);
         for (CardsPlayer cardsPlayer : players)
             if (cardsPlayer.getMoney() > returnValue.getMoney()) {
@@ -240,9 +239,9 @@ public abstract class CardsTable {
 
     // Returns a list of online player sitting at the table
     public ArrayList<CardsPlayer> getOnlinePlayers() {
-        ArrayList<CardsPlayer> returnValue = new ArrayList<CardsPlayer>();
+        ArrayList<CardsPlayer> returnValue = new ArrayList<>();
         for (CardsPlayer player : getPlayers())
-            if (player.isOnline() == true) {
+            if (player.isOnline()) {
                 returnValue.add(player);
             }
         return returnValue;
@@ -262,8 +261,8 @@ public abstract class CardsTable {
 
     public abstract ArrayList<CardsPlayer> getPlayersThisHand();
 
-    public ArrayList<CardsPlayer> getRearrangedPlayers(CardsPlayer startingPlayer) {
-        ArrayList<CardsPlayer> returnValue = new ArrayList<CardsPlayer>(getPlayersThisHand());
+    protected ArrayList<CardsPlayer> getRearrangedPlayers(CardsPlayer startingPlayer) {
+        ArrayList<CardsPlayer> returnValue = new ArrayList<>(getPlayersThisHand());
 
         for (CardsPlayer player : getPlayersThisHand()) {
             if (getPlayers().indexOf(player) < getPlayersThisHand().indexOf(startingPlayer)) {
@@ -303,7 +302,7 @@ public abstract class CardsTable {
     public abstract ArrayList<String> listPlayers();
 
     // Moves the button to the next player (call this when starting a new hand)
-    public void moveButton() {
+    protected void moveButton() {
         // If the button is not the last player in the list, increment the
         // button. Otherwise set button to 0.
         if (++button >= getPlayersThisHand().size()) {
@@ -316,7 +315,7 @@ public abstract class CardsTable {
 
     public abstract void playerLeave(CardsPlayer player);
 
-    public abstract CardsPlayer playerSit(Player player, double buyin) throws Exception;
+    public abstract CardsPlayer playerSit(Player player, double buyin);
 
     public void removePlayer(CardsPlayer cardsPlayer) {
         players.remove(cardsPlayer);
@@ -332,11 +331,11 @@ public abstract class CardsTable {
     public abstract void returnMoney(CardsPlayer player);
 
     public void sendTableMessage(String message) {
-        sendTableMessage(message, Collections.<String> emptyList());
+        sendTableMessage(message, Collections.emptyList());
     }
 
-    public void sendTableMessage(String message, List<String> toIgnore) {
-        ArrayList<String> ignore = new ArrayList<String>(toIgnore);
+    private void sendTableMessage(String message, List<String> toIgnore) {
+        ArrayList<String> ignore = new ArrayList<>(toIgnore);
         int range = getSettings().publicChatRange.getValue();
 
         // Send private message to all table players, also add them to the ignore list
@@ -349,8 +348,8 @@ public abstract class CardsTable {
         if (range > 0) Messages.sendToAllWithinRange(getSettings().startLocation.getValue(), range, message, ignore);
     }
 
-    public void sendTableMessage(String message, String ignore) {
-        ArrayList<String> ignoreList = new ArrayList<String>();
+    protected void sendTableMessage(String message, String ignore) {
+        ArrayList<String> ignoreList = new ArrayList<>();
         ignoreList.add(ignore);
         sendTableMessage(message, ignoreList);
     }
@@ -361,7 +360,7 @@ public abstract class CardsTable {
         }
     }
 
-    public void setActionPlayer(CardsPlayer cardsPlayer) {
+    protected void setActionPlayer(CardsPlayer cardsPlayer) {
         actionPlayer = cardsPlayer;
     }
 
@@ -373,7 +372,7 @@ public abstract class CardsTable {
         this.cardsTableSettings = cardsTableSettings;
     }
 
-    public void setCurrentPhase(PokerPhase currentPhase) {
+    protected void setCurrentPhase(PokerPhase currentPhase) {
         this.currentPhase = currentPhase;
     }
 
@@ -381,19 +380,19 @@ public abstract class CardsTable {
         this.deck = deck;
     }
 
-    public void setHandNumber(int handNumber) {
+    protected void setHandNumber(int handNumber) {
         this.handNumber = handNumber;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 
-    public void setInProgress(boolean inProgress) {
+    protected void setInProgress(boolean inProgress) {
         this.inProgress = inProgress;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -401,7 +400,7 @@ public abstract class CardsTable {
         this.open = open;
     }
 
-    public void setOwner(String owner) {
+    private void setOwner(String owner) {
         this.owner = owner;
     }
 
@@ -417,13 +416,13 @@ public abstract class CardsTable {
         this.timerTask = timerTask;
     }
 
-    public void setToBeContinued(boolean toBeContinued) {
+    protected void setToBeContinued(boolean toBeContinued) {
         this.toBeContinued = toBeContinued;
     }
 
     // This method makes sure that every player ID is equal to their index in
     // the player list. This should be called whenever a player is removed.
-    public void shiftIDs() {
+    protected void shiftIDs() {
         for (int i = 0; i < getPlayers().size(); i++)
             if (getPlayers().get(i).getID() != i) {
                 getPlayers().get(i).setID(i);

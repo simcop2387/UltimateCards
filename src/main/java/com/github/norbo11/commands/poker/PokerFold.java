@@ -29,8 +29,7 @@ public class PokerFold extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
-    PokerTable pokerTable;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
@@ -38,7 +37,7 @@ public class PokerFold extends PluginCommand {
             pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
             if (pokerPlayer != null) {
                 if (!pokerPlayer.isEliminated()) {
-                    pokerTable = pokerPlayer.getPokerTable();
+                    PokerTable pokerTable = pokerPlayer.getPokerTable();
                     if (pokerTable.isInProgress()) {
                         if (pokerPlayer.isAction()) {
                             if (!pokerPlayer.isFolded()) {
@@ -71,7 +70,7 @@ public class PokerFold extends PluginCommand {
     // Clears the player's hand, sets their folded flag to true and
     // displays a message. Then goes to the turn of the next player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         pokerPlayer.fold();
     }
 }

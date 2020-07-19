@@ -48,96 +48,56 @@ import com.github.norbo11.util.ErrorMessages;
 import com.github.norbo11.util.ExceptionCatcher;
 import com.github.norbo11.util.Log;
 import com.github.norbo11.util.Messages;
+import org.jetbrains.annotations.NotNull;
 
 public class PluginExecutor implements CommandExecutor {
 
-    public static TableDetails tableDetails = new TableDetails();
-    public static TableInvite tableInvite = new TableInvite();
-    public static TableLeave tableLeave = new TableLeave();
-    public static TableMoney tableMoney = new TableMoney();
-    public static TablePlayers tablePlayers = new TablePlayers();
-    public static TableRebuy tableRebuy = new TableRebuy();
-    public static TableSit tableSit = new TableSit();
-    public static TableTables tableTables = new TableTables();
-    public static TableTeleport tableTeleport = new TableTeleport();
-    public static TableWithdraw tableWithdraw = new TableWithdraw();
-    public static TableReload tableReload = new TableReload();
-
-    public static PokerHand pokerHand = new PokerHand();
-    public static PokerAllin pokerAllin = new PokerAllin();
-    public static PokerBet pokerBet = new PokerBet();
-    public static PokerBoard pokerBoard = new PokerBoard();
-    public static PokerCall pokerCall = new PokerCall();
-    public static PokerCheck pokerCheck = new PokerCheck();
-    public static PokerFold pokerFold = new PokerFold();
-    public static PokerPot pokerPot = new PokerPot();
-    public static PokerReveal pokerReveal = new PokerReveal();
-
-    public static TableBan tableBan = new TableBan();
-    public static TableClose tableClose = new TableClose();
-    public static TableCreate tableCreate = new TableCreate();
-    public static TableDelete tableDelete = new TableDelete();
-    public static TableKick tableKick = new TableKick();
-    public static TableListSettings tableListSettings = new TableListSettings();
-    public static TableOpen tableOpen = new TableOpen();
-    public static TableSet tableSet = new TableSet();
-    public static TableStart tableStart = new TableStart();
-    public static TableUnban tableUnban = new TableUnban();
-    public static TableSave tableSave = new TableSave();
-    public static TableUnsave tableUnsave = new TableUnsave();
-
-    public static BlackjackHit blackjackHit = new BlackjackHit();
-    public static BlackjackStand blackjackStand = new BlackjackStand();
-    public static BlackjackBet blackjackBet = new BlackjackBet();
-    public static BlackjackSplit blackjackSplit = new BlackjackSplit();
-    public static BlackjackDouble blackjackDouble = new BlackjackDouble();
-
-    public static ArrayList<PluginCommand> commandsTable = new ArrayList<PluginCommand>();
-    public static ArrayList<PluginCommand> commandsPoker = new ArrayList<PluginCommand>();
-    public static ArrayList<PluginCommand> commandsBlackjack = new ArrayList<PluginCommand>();
-    public static ArrayList<ArrayList<PluginCommand>> commands = new ArrayList<ArrayList<PluginCommand>>();
+    public static ArrayList<PluginCommand> commandsTable = new ArrayList<>();
+    public static ArrayList<PluginCommand> commandsPoker = new ArrayList<>();
+    public static ArrayList<PluginCommand> commandsBlackjack = new ArrayList<>();
+    public static ArrayList<ArrayList<PluginCommand>> commands = new ArrayList<>();
 
     static {
-        commandsTable.add(tableDetails);
-        commandsTable.add(tableInvite);
-        commandsTable.add(tableLeave);
-        commandsTable.add(tableMoney);
-        commandsTable.add(tablePlayers);
-        commandsTable.add(tableRebuy);
-        commandsTable.add(tableSit);
-        commandsTable.add(tableTables);
-        commandsTable.add(tableTeleport);
-        commandsTable.add(tableWithdraw);
-        commandsTable.add(tableReload);
-
-        commandsTable.add(tableBan);
-        commandsTable.add(tableClose);
-        commandsTable.add(tableCreate);
-        commandsTable.add(tableDelete);
-        commandsTable.add(tableKick);
-        commandsTable.add(tableListSettings);
-        commandsTable.add(tableOpen);
-        commandsTable.add(tableSet);
-        commandsTable.add(tableStart);
-        commandsTable.add(tableUnban);
-        commandsTable.add(tableSave);
-        commandsTable.add(tableUnsave);
-
-        commandsPoker.add(pokerHand);
-        commandsPoker.add(pokerReveal);
-        commandsPoker.add(pokerAllin);
-        commandsPoker.add(pokerBet);
-        commandsPoker.add(pokerBoard);
-        commandsPoker.add(pokerCall);
-        commandsPoker.add(pokerCheck);
-        commandsPoker.add(pokerFold);
-        commandsPoker.add(pokerPot);
-
-        commandsBlackjack.add(blackjackHit);
-        commandsBlackjack.add(blackjackStand);
-        commandsBlackjack.add(blackjackBet);
-        commandsBlackjack.add(blackjackSplit);
-        commandsBlackjack.add(blackjackDouble);
+        commandsTable.add(new TableDetails());
+        commandsTable.add(new TableInvite());
+        commandsTable.add(new TableLeave());
+        commandsTable.add(new TableMoney());
+        commandsTable.add(new TablePlayers());
+        commandsTable.add(new TableRebuy());
+        commandsTable.add(new TableSit());
+        commandsTable.add(new TableTables());
+        commandsTable.add(new TableTeleport());
+        commandsTable.add(new TableWithdraw());
+        commandsTable.add(new TableReload());
+    
+        commandsPoker.add(new PokerHand());
+        commandsPoker.add(new PokerAllin());
+        commandsPoker.add(new PokerBet());
+        commandsPoker.add(new PokerBoard());
+        commandsPoker.add(new PokerCall());
+        commandsPoker.add(new PokerCheck());
+        commandsPoker.add(new PokerFold());
+        commandsPoker.add(new PokerPot());
+        commandsPoker.add(new PokerReveal());
+    
+        commandsTable.add(new TableBan());
+        commandsTable.add(new TableClose());
+        commandsTable.add(new TableCreate());
+        commandsTable.add(new TableDelete());
+        commandsTable.add(new TableKick());
+        commandsTable.add(new TableListSettings());
+        commandsTable.add(new TableOpen());
+        commandsTable.add(new TableSet());
+        commandsTable.add(new TableStart());
+        commandsTable.add(new TableUnban());
+        commandsTable.add(new TableSave());
+        commandsTable.add(new TableUnsave());
+    
+        commandsBlackjack.add(new BlackjackHit());
+        commandsBlackjack.add(new BlackjackStand());
+        commandsBlackjack.add(new BlackjackBet());
+        commandsBlackjack.add(new BlackjackSplit());
+        commandsBlackjack.add(new BlackjackDouble());
 
         commands.add(commandsTable);
         commands.add(commandsPoker);
@@ -145,7 +105,7 @@ public class PluginExecutor implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
@@ -213,7 +173,7 @@ public class PluginExecutor implements CommandExecutor {
         return true;
     }
 
-    public void performCommand(PluginCommand cmd, String[] args, Player player) throws Exception {
+    private void performCommand(PluginCommand cmd, String[] args, Player player) throws Exception {
         cmd.setArgs(args);
         cmd.setPlayer(player);
         if (cmd.conditions()) {

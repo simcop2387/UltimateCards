@@ -20,7 +20,7 @@ public class TableMoney extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
+    private CardsPlayer cardsPlayer;
 
     @Override
     public boolean conditions() {
@@ -40,7 +40,7 @@ public class TableMoney extends PluginCommand {
 
     // Displays the player's money just to the player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
 
         Messages.sendMessage(getPlayer().getName(), "You have &6" + Formatter.formatMoney(cardsPlayer.getMoney()) + "&f left on this table.");
         Messages.sendMessage(getPlayer().getName(), "Average stack size: &6" + Formatter.formatMoney(cardsPlayer.getTable().getAverageStack()));

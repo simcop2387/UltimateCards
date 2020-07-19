@@ -1,7 +1,6 @@
 package com.github.norbo11.commands.table;
 
 import com.github.norbo11.commands.PluginCommand;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.cards.CardsTable;
 import com.github.norbo11.util.ErrorMessages;
 import com.github.norbo11.util.Messages;
@@ -21,7 +20,7 @@ public class TableTeleport extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     // cards teleport <id>
     @Override
@@ -44,8 +43,8 @@ public class TableTeleport extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         getPlayer().teleport(cardsTable.getSettings().startLocation.getValue());
-        Messages.sendMessage(getPlayer(), "You have teleported to table " + "&6" + cardsTable.getName() + "&f, ID #" + "&6" + cardsTable.getId() + "&f. Sit down with " + PluginExecutor.tableSit.getCommandString() + " [ID]");
+        Messages.sendMessage(getPlayer(), "You have teleported to table " + "&6" + cardsTable.getName() + "&f, ID #" + "&6" + cardsTable.getId() + "&f. Sit down with &6/table sit [ID]");
     }
 }

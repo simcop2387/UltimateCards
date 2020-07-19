@@ -21,9 +21,9 @@ public class PokerCall extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
+    private PokerPlayer pokerPlayer;
 
-    PokerTable pokerTable;
+    private PokerTable pokerTable;
 
     @Override
     public boolean conditions() {
@@ -75,7 +75,7 @@ public class PokerCall extends PluginCommand {
 
     // Calls the latest bet in the name of the player.
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         double amountCalled = pokerTable.getCurrentBet();
         pokerPlayer.bet(amountCalled, null);
     }

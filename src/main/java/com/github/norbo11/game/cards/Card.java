@@ -12,12 +12,12 @@ public class Card {
     public Card(int i, int j) {
         rank = (byte) i;
         suit = (byte) j;
-        image = cardImages.get(Integer.toString(rank) + Integer.toString(suit));
+        image = cardImages.get(Integer.toString(rank) + suit);
     }
 
     // We read all card images here and put them in a hashmap, so they don't
     // have to be read every single time they are created
-    private static HashMap<String, BufferedImage> cardImages = new HashMap<String, BufferedImage>();
+    private static HashMap<String, BufferedImage> cardImages = new HashMap<>();
 
     static {
         try {
@@ -54,12 +54,12 @@ public class Card {
         return suit;
     }
 
-    public boolean isFaceCard() {
+    private boolean isFaceCard() {
         return rank == 11 || rank == 12 || rank == 13;
     }
 
-    public String rankToString() {
-        String value = "Error";
+    private String rankToString() {
+        String value;
 
         if (rank == 1) {
             value = "Ace";
@@ -76,7 +76,7 @@ public class Card {
         return value;
     }
 
-    public String suitToString() {
+    private String suitToString() {
         String suit = "Error";
 
         if (this.suit == 0) {
@@ -94,7 +94,7 @@ public class Card {
 
     // Special format used by the Hand Evaluator
     public String toEvalString() {
-        String rank = "";
+        String rank;
         if (this.rank != 10) {
             rank = rankToString().substring(0, 1).toUpperCase();
         } else {

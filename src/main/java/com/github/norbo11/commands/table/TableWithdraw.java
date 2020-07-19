@@ -23,10 +23,10 @@ public class TableWithdraw extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsPlayer cardsPlayer;
+    private CardsTable cardsTable;
 
-    double amountToWithdraw;
+    private double amountToWithdraw;
 
     // cards withdraw <amount>
     @Override
@@ -62,7 +62,7 @@ public class TableWithdraw extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         cardsPlayer.setMoney(cardsPlayer.getMoney() - amountToWithdraw);
         MoneyMethods.depositMoney(getPlayer(), amountToWithdraw);
         cardsTable.sendTableMessage("&6" + getPlayer().getName() + "&f withdraws " + "&6" + Formatter.formatMoney(amountToWithdraw) + "&f New balance: " + "&6" + Formatter.formatMoney(cardsPlayer.getMoney()));

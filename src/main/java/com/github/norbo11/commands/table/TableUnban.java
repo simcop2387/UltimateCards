@@ -20,10 +20,10 @@ public class TableUnban extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsPlayer cardsPlayer;
+    private CardsTable cardsTable;
 
-    String toUnBan;
+    private String toUnBan;
 
     @Override
     public boolean conditions() {

@@ -20,7 +20,7 @@ public class TableDetails extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     // Lists the specified details type of the specified table. If no table is specified, lists details of the table that the player is sitting on.
     @Override
@@ -57,7 +57,7 @@ public class TableDetails extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         cardsTable.displayDetails(getPlayer());
     }
 }

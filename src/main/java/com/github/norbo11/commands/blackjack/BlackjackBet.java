@@ -20,10 +20,9 @@ public class BlackjackBet extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "blackjack." + getAlises().get(0));
     }
 
-    BlackjackPlayer blackjackPlayer;
-    BlackjackTable blackjackTable;
+    private BlackjackPlayer blackjackPlayer;
 
-    double amountToBet;
+    private double amountToBet;
 
     @Override
     public boolean conditions() {
@@ -31,7 +30,7 @@ public class BlackjackBet extends PluginCommand {
             blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
             if (blackjackPlayer != null) {
                 if (blackjackPlayer.getTable().getOwnerPlayer() != blackjackPlayer) {
-                    blackjackTable = blackjackPlayer.getTable();
+                    BlackjackTable blackjackTable = blackjackPlayer.getTable();
                     amountToBet = NumberMethods.getDouble(getArgs()[1]);
                     if (amountToBet != -99999) {
                         if (blackjackPlayer.getMoney() >= amountToBet) {
@@ -67,7 +66,7 @@ public class BlackjackBet extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         blackjackPlayer.bet(amountToBet);
     }
 }

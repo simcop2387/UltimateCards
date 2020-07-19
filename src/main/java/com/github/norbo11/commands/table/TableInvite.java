@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.github.norbo11.commands.PluginCommand;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.util.ErrorMessages;
 import com.github.norbo11.util.Messages;
@@ -22,9 +21,9 @@ public class TableInvite extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    String toInvite;
+    private String toInvite;
 
-    CardsPlayer cardsPlayer;
+    private CardsPlayer cardsPlayer;
 
     @Override
     public boolean conditions() {
@@ -50,8 +49,8 @@ public class TableInvite extends PluginCommand {
 
     // Sends a simple message to the specified player to invite
     @Override
-    public void perform() throws Exception {
-        Messages.sendMessage(toInvite, "&6" + getPlayer().getName() + " &fhas invited you to their poker table! Sit with " + PluginExecutor.tableSit.getCommandString() + " " + cardsPlayer.getTable().getId() + " [buy-in]");
+    public void perform() {
+        Messages.sendMessage(toInvite, "&6" + getPlayer().getName() + " &fhas invited you to their poker table! Sit with &6/table sit " + cardsPlayer.getTable().getId() + " [buy-in]");
         Messages.sendMessage(getPlayer(), "You have invited &6" + toInvite + " &fto your table.");
 
     }

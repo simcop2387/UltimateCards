@@ -22,15 +22,14 @@ public class TableStart extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     // Starts the player's table if they are the owner.
     // table start
     @Override
     public boolean conditions() {
         if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
                 cardsTable = cardsPlayer.getTable();
                 if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
@@ -55,7 +54,7 @@ public class TableStart extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         BukkitTask timerTask = cardsTable.getTimerTask();
         if (timerTask != null) {
             timerTask.cancel();

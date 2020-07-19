@@ -17,14 +17,13 @@ public class TableSet extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     @Override
     // table set <Setting> <value>
     public boolean conditions() {
         if (getArgs().length == 2 || getArgs().length == 3) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
                 cardsTable = cardsPlayer.getTable();
                 if (cardsTable.isOwner(cardsPlayer.getPlayerName())) {
@@ -47,7 +46,7 @@ public class TableSet extends PluginCommand {
     // Sets the specified setting on the player's table, to the specified
     // value.
     @Override
-    public void perform() throws Exception {     
+    public void perform() {
         String setting = getArgs()[1];
 
         if (setting.equalsIgnoreCase("startLocation")) {

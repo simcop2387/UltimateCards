@@ -21,7 +21,7 @@ public class TablePlayers extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     @Override
     public boolean conditions() {
@@ -55,7 +55,7 @@ public class TablePlayers extends PluginCommand {
 
     // Displays the list of players to the specified player
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         Messages.sendMessage(getPlayer(), cardsTable.listPlayers());
     }
 }

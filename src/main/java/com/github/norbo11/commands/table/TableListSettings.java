@@ -1,7 +1,6 @@
 package com.github.norbo11.commands.table;
 
 import com.github.norbo11.commands.PluginCommand;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.blackjack.BlackjackTable;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.game.cards.CardsTable;
@@ -23,14 +22,12 @@ public class TableListSettings extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    CardsPlayer cardsPlayer;
-
-    CardsTable cardsTable;
+    private CardsTable cardsTable;
 
     @Override
     public boolean conditions() {
         if (getArgs().length == 1) {
-            cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
+            CardsPlayer cardsPlayer = CardsPlayer.getCardsPlayer(getPlayer().getName());
             if (cardsPlayer != null) {
                 cardsTable = cardsPlayer.getTable();
                 return true;
@@ -45,7 +42,7 @@ public class TableListSettings extends PluginCommand {
 
     // Lists all valid setting types to the player.
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         TableSetting<?>[] specificSettings = null;
         
         if (cardsTable instanceof PokerTable) {
@@ -67,7 +64,7 @@ public class TableListSettings extends PluginCommand {
             Messages.sendMessage(getPlayer(), setting.getHelpString());
         }
         
-        Messages.sendMessage(getPlayer(), "&cUsage: " + PluginExecutor.tableSet.getCommandString() + " [setting] [value]");
+        Messages.sendMessage(getPlayer(), "&cUsage: &6/table set [setting] [value]");
 
         
                 /*if (cardsTable instanceof PokerTable) {

@@ -23,10 +23,9 @@ public class PokerBet extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
-    PokerTable pokerTable;
+    private PokerPlayer pokerPlayer;
 
-    double amountToBet;
+    private double amountToBet;
 
     @Override
     public boolean conditions() {
@@ -34,7 +33,7 @@ public class PokerBet extends PluginCommand {
             pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
             if (pokerPlayer != null) {
                 if (!pokerPlayer.isEliminated()) {
-                    pokerTable = pokerPlayer.getPokerTable();
+                    PokerTable pokerTable = pokerPlayer.getPokerTable();
                     if (pokerTable.isInProgress()) {
                         if (pokerTable.getCurrentPhase() != PokerPhase.SHOWDOWN) {
                             if (pokerPlayer.isAction()) {
@@ -91,7 +90,7 @@ public class PokerBet extends PluginCommand {
     // This method is only called when raising or betting for the first time in
     // the phase. You cannot bet less than the current bet of the table
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         pokerPlayer.bet(amountToBet, null);
     }
 

@@ -24,10 +24,10 @@ public class TableLeave extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsTable cardsTable;
-    CardsPlayer cardsPlayer;
+    private CardsTable cardsTable;
+    private CardsPlayer cardsPlayer;
 
-    double money;
+    private double money;
 
     @Override
     public boolean conditions() {
@@ -48,7 +48,7 @@ public class TableLeave extends PluginCommand {
 
     // Deletes the specified player from the table, if they are currently sitting at one. Doesnt allow the owner to leave
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         cardsTable.playerLeave(cardsPlayer);
 
         MoneyMethods.depositMoney(getPlayer(), money);

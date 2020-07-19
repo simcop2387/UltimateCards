@@ -13,7 +13,7 @@ import com.github.norbo11.util.config.PluginConfig;
 
 public abstract class CardsTableSettings {
     public class AllowRebuys extends TableSetting<Boolean> {
-        public AllowRebuys(Boolean value) {
+        AllowRebuys(Boolean value) {
             super(value, "allowRebuys");
         }
 
@@ -39,7 +39,7 @@ public abstract class CardsTableSettings {
     }
     
     public class DisplayTurnsPublicly extends TableSetting<Boolean> {
-        public DisplayTurnsPublicly(Boolean value) {
+        DisplayTurnsPublicly(Boolean value) {
             super(value, "displayTurnsPublicly");
         }
 
@@ -65,7 +65,7 @@ public abstract class CardsTableSettings {
     }
     
     public class AutoStart extends TableSetting<Integer> {
-        public AutoStart(Integer value) {
+        AutoStart(Integer value) {
             super(value, "autoStart");
         }
 
@@ -94,7 +94,7 @@ public abstract class CardsTableSettings {
     }
 
     public class MaxBuy extends TableSetting<Double> {
-        public MaxBuy(Double value) {
+        MaxBuy(Double value) {
             super(value, "maxBuy");
         }
 
@@ -118,7 +118,7 @@ public abstract class CardsTableSettings {
     }
     
     public class MinBuy extends TableSetting<Double> {
-        public MinBuy(Double value) {
+        MinBuy(Double value) {
             super(value, "minBuy");
         }
 
@@ -142,7 +142,7 @@ public abstract class CardsTableSettings {
     }
     
     public class PublicChatRange extends TableSetting<Integer> {
-        public PublicChatRange(Integer value) {
+        PublicChatRange(Integer value) {
             super(value, "publicChatRange");
         }
 
@@ -170,7 +170,7 @@ public abstract class CardsTableSettings {
     }
     
     public class TurnSeconds extends TableSetting<Integer> {
-        public TurnSeconds(Integer value) {
+        TurnSeconds(Integer value) {
             super(value, "turnSeconds");
         }
 
@@ -198,7 +198,7 @@ public abstract class CardsTableSettings {
     }
     
     public class LeaveLocation extends TableSetting<Location> {
-        public LeaveLocation() {
+        LeaveLocation() {
             super("leaveLocation");
         }
         
@@ -219,7 +219,7 @@ public abstract class CardsTableSettings {
     }
     
     public class StartLocation extends TableSetting<Location> {
-        public StartLocation() {
+        StartLocation() {
             super("startLocation");
         }
         
@@ -240,7 +240,7 @@ public abstract class CardsTableSettings {
     }
     
     public class AutoKickOnLeave extends TableSetting<Boolean> {
-        public AutoKickOnLeave(boolean value) {
+        AutoKickOnLeave(boolean value) {
             super(value, "autoKickOnLeave");
         }
         
@@ -267,7 +267,7 @@ public abstract class CardsTableSettings {
     
     //--------------------------------------------------------------------------------------------------
     
-    public CardsTableSettings(CardsTable table) {
+    protected CardsTableSettings(CardsTable table) {
         this.parentTable = table;
     }
 
@@ -289,13 +289,13 @@ public abstract class CardsTableSettings {
     private CardsTable parentTable;
 
 
-    public CardsTable getTable() {
+    protected CardsTable getTable() {
         return parentTable;
     }
 
 
-    public static ArrayList<String> listSettings(TableSetting<?>[] settings) {
-        ArrayList<String> list = new ArrayList<String>();
+    protected static ArrayList<String> listSettings(TableSetting<?>[] settings) {
+        ArrayList<String> list = new ArrayList<>();
 
         for (TableSetting<?> setting : settings) {
             list.add(setting.toString());
@@ -304,7 +304,7 @@ public abstract class CardsTableSettings {
         return list;
     }
     
-    public static boolean setSetting(String inputSetting, String inputValue, TableSetting<?>[] settings) {
+    protected static boolean setSetting(String inputSetting, String inputValue, TableSetting<?>[] settings) {
         for (TableSetting<?> setting : settings)
         {
             if (setting.getName().equalsIgnoreCase(inputSetting)) {
@@ -323,7 +323,7 @@ public abstract class CardsTableSettings {
     }
     
 
-    public abstract ArrayList<String> listTableSpecificSettings();
+    protected abstract ArrayList<String> listTableSpecificSettings();
 
     public void setSetting(String inputSetting, String inputValue) {
         if (!setSetting(inputSetting, inputValue, allSettings)) {
@@ -331,9 +331,9 @@ public abstract class CardsTableSettings {
         }
     }
 
-    public abstract void setTableSpecificSetting(String setting, String v);
+    protected abstract void setTableSpecificSetting(String setting, String v);
     
-    public boolean checkBoolean(String v) {
+    protected boolean checkBoolean(String v) {
         boolean value;
 
         if (v.equalsIgnoreCase("true") || v.equalsIgnoreCase("yes")) {
@@ -347,7 +347,7 @@ public abstract class CardsTableSettings {
         return value;
     }
 
-    public double checkDouble(String v)  {
+    protected double checkDouble(String v)  {
         try {
             return NumberMethods.getDouble(v);
         } catch (NumberFormatException e) {
@@ -356,7 +356,7 @@ public abstract class CardsTableSettings {
         }
     }
 
-    public int checkInteger(String v) {
+    protected int checkInteger(String v) {
         try {
             return NumberMethods.getPositiveInteger(v);
         } catch (NumberFormatException e) {
@@ -365,7 +365,7 @@ public abstract class CardsTableSettings {
         }
     }
 
-    public double checkPercentage(String v) {
+    protected double checkPercentage(String v) {
         try {
             double value = NumberMethods.getDouble(v);
             if (value >= 0 && value <= 1) return value;

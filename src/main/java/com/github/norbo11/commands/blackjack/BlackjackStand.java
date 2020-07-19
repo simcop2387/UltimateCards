@@ -29,10 +29,9 @@ public class BlackjackStand extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "blackjack." + getAlises().get(0));
     }
 
-    BlackjackPlayer blackjackPlayer;
-    BlackjackTable blackjackTable;
+    private BlackjackPlayer blackjackPlayer;
 
-    int hand = 0;
+    private int hand = 0;
 
     @Override
     public boolean conditions() {
@@ -41,7 +40,7 @@ public class BlackjackStand extends PluginCommand {
             blackjackPlayer = BlackjackPlayer.getBlackjackPlayer(getPlayer().getName());
 
             if (blackjackPlayer != null) {
-                blackjackTable = blackjackPlayer.getTable();
+                BlackjackTable blackjackTable = blackjackPlayer.getTable();
                 if (blackjackTable.isInProgress()) {
                     if (blackjackPlayer.isAction()) {
 
@@ -89,7 +88,7 @@ public class BlackjackStand extends PluginCommand {
     }
 
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         blackjackPlayer.stand(hand);
     }
 }

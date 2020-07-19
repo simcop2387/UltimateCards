@@ -13,7 +13,7 @@ import com.github.norbo11.Sounds;
 
 public class Sound {
     private static UltimateCards plugin = UltimateCards.getInstance();
-    private static HashMap<String, BukkitTask> soundTasks = new HashMap<String, BukkitTask>();
+    private static HashMap<String, BukkitTask> soundTasks = new HashMap<>();
 
     public static void lost(final Player player) {
         if (player != null) {
@@ -34,7 +34,7 @@ public class Sound {
         }
     }
 
-    public static void otherTurn(final Player player) {
+    private static void otherTurn(final Player player) {
         if (player != null) {
             player.playSound(player.getLocation(), Sounds.NOTE_BASS_DRUM.bukkitSound(), 1.0F, 1.0F);
             player.playSound(player.getLocation(), Sounds.NOTE_BASS_DRUM.bukkitSound(), 1.0F, 2.0F);

@@ -23,7 +23,7 @@ import com.github.norbo11.util.Sound;
 import com.github.norbo11.util.Timers;
 
 public class PokerPlayer extends CardsPlayer {
-    public PokerPlayer(Player player, CardsTable table, double buyin) throws Exception {
+    public PokerPlayer(Player player, CardsTable table, double buyin) {
         super(player);
         setTable(table);
         setStartLocation(player.getLocation());
@@ -221,19 +221,23 @@ public class PokerPlayer extends CardsPlayer {
         PokerTableSettings settings = (PokerTableSettings) getPokerTable().getCardsTableSettings();
 
         double amount = 0;
-        if (blind.equals("small blind")) {
-            amount = settings.sb.getValue();
-        } else if (blind.equals("big blind")) {
-            amount = settings.bb.getValue();
-        } else if (blind.equals("ante")) {
-            amount = settings.ante.getValue();
+        switch (blind) {
+            case "small blind":
+                amount = settings.sb.getValue();
+                break;
+            case "big blind":
+                amount = settings.bb.getValue();
+                break;
+            case "ante":
+                amount = settings.ante.getValue();
+                break;
         }
 
         bet(amount, blind);
         cancelTurnTimer();
     }
 
-    public void resetDeltaPot() {
+    private void resetDeltaPot() {
         deltaPot = 0;
     }
 
@@ -245,11 +249,11 @@ public class PokerPlayer extends CardsPlayer {
         getPokerTable().nextPersonTurn(this);
     }
 
-    public void setActed(boolean acted) {
+    private void setActed(boolean acted) {
         this.acted = acted;
     }
 
-    public void setCurrentBet(double currentBet) {
+    private void setCurrentBet(double currentBet) {
         this.currentBet = currentBet;
     }
 
@@ -281,45 +285,38 @@ public class PokerPlayer extends CardsPlayer {
                 setTurnTimer(null);
             }
 
-            setTurnTimer(Timers.startTimerAsync(new Runnable() {
-                @Override
-                public void run() {
-                    PokerCheck check = new PokerCheck(getPlayer(), new String[] { "check" });
-                    PokerFold fold = new PokerFold(getPlayer(), new String[] { "fold" });
-                    PokerReveal reveal = new PokerReveal(getPlayer(), new String[] { "reveal" });
-                    getPokerTable().sendTableMessage("&6" + getPlayerName() + "&f's turn timer has ended!");
+            setTurnTimer(Timers.startTimerAsync(() -> {
+                PokerCheck check = new PokerCheck(getPlayer(), new String[] { "check" });
+                PokerFold fold = new PokerFold(getPlayer(), new String[] { "fold" });
+                PokerReveal reveal = new PokerReveal(getPlayer(), new String[] { "reveal" });
+                getPokerTable().sendTableMessage("&6" + getPlayerName() + "&f's turn timer has ended!");
 
-                    try {
-                        if (check.conditions()) {
-                            check.perform();
-                            return;
-                        } else if (reveal.conditions()) {
-                            reveal.perform();
-                            return;
-                        } else if (fold.conditions()) {
-                            fold.perform();
-                            getPokerTable().kick(getPokerPlayer(getPlayerName()));
-                            return;
-                        } else {
-                            getPokerTable().kick(getPokerPlayer(getPlayerName()));
-                            return;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    if (check.conditions()) {
+                        check.perform();
+                    } else if (reveal.conditions()) {
+                        reveal.perform();
+                    } else if (fold.conditions()) {
+                        fold.perform();
+                        getPokerTable().kick(getPokerPlayer(getPlayerName()));
+                    } else {
+                        getPokerTable().kick(getPokerPlayer(getPlayerName()));
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }, settings.turnSeconds.getValue()));
         }
     }
 
-    public void tableLeave(CardsPlayer cardsPlayer) throws Exception {
+    public void tableLeave(CardsPlayer cardsPlayer) {
         PokerPlayer pokerPlayer = (PokerPlayer) cardsPlayer;
         if (pokerPlayer.getTable().isInProgress() && !pokerPlayer.isFolded() && !pokerPlayer.isEliminated()) {
             fold();
         }
     }
 
-    public void updatePot() {
+    private void updatePot() {
         for (PokerPlayer p : getPokerTable().getNonFoldedPlayers()) {
             if (p.getCurrentBet() >= getCurrentBet()) {
                 deltaPot += getCurrentBet();

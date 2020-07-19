@@ -28,9 +28,7 @@ public class PokerCheck extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "poker." + getAlises().get(0));
     }
 
-    PokerPlayer pokerPlayer;
-
-    PokerTable pokerTable;
+    private PokerPlayer pokerPlayer;
 
     @Override
     public boolean conditions() {
@@ -38,7 +36,7 @@ public class PokerCheck extends PluginCommand {
             pokerPlayer = PokerPlayer.getPokerPlayer(getPlayer().getName());
             if (pokerPlayer != null) {
                 if (!pokerPlayer.isEliminated()) {
-                    pokerTable = pokerPlayer.getPokerTable();
+                    PokerTable pokerTable = pokerPlayer.getPokerTable();
                     if (pokerTable.isInProgress()) {
                         if (pokerTable.getCurrentPhase() != PokerPhase.SHOWDOWN) {
                             if (pokerPlayer.isAction()) {
@@ -77,7 +75,7 @@ public class PokerCheck extends PluginCommand {
 
     // Checks the turn of the specified player()
     @Override
-    public void perform() throws Exception {
+    public void perform() {
         pokerPlayer.check();
     }
 }

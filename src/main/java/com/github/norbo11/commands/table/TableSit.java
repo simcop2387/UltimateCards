@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.github.norbo11.UltimateCards;
 import com.github.norbo11.commands.PluginCommand;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.blackjack.BlackjackTable;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.game.cards.CardsTable;
@@ -28,8 +27,8 @@ public class TableSit extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "cards." + getAlises().get(0));
     }
 
-    CardsTable cardsTable;
-    double buyin;
+    private CardsTable cardsTable;
+    private double buyin;
 
     @Override
     public boolean conditions() {
@@ -38,7 +37,7 @@ public class TableSit extends PluginCommand {
             if (cardsPlayer == null) {
                 String idString = getArgs()[1];
 
-                int id = 0;
+                int id;
                  try {
                     id = NumberMethods.getPositiveInteger(idString);
                  } catch (NumberFormatException exc) {
@@ -47,9 +46,8 @@ public class TableSit extends PluginCommand {
 
                 // Check ID isn't a number
                 if (id == -99999) {
-                    id = NumberMethods.getInteger(idString);
                     if (CardsTable.isGameType(idString)) {
-                        ArrayList<CardsTable> eligibleTables = new ArrayList<CardsTable>();
+                        ArrayList<CardsTable> eligibleTables = new ArrayList<>();
                         for (CardsTable table : CardsTable.getTables()) {
                             if (table instanceof PokerTable && idString.equalsIgnoreCase("poker")) eligibleTables.add(table);
                             else if (table instanceof BlackjackTable && (idString.equalsIgnoreCase("bj") || idString.equalsIgnoreCase("blackjack"))) eligibleTables.add(table);
@@ -103,7 +101,7 @@ public class TableSit extends PluginCommand {
 
     @Override
     public void perform() throws Exception {
-        if (PluginExecutor.tableTeleport.hasPermission(getPlayer())) {
+        if (getPlayer().hasPermission("ucards") || getPlayer().hasPermission("ucards.cards") || getPlayer().hasPermission("ucards.cards.teleport")) {
             getPlayer().teleport(cardsTable.getSettings().startLocation.getValue());
         }
 

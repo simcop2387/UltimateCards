@@ -32,9 +32,7 @@ public class EvalHand {
     public EvalHand(EvalHand h) {
         cards = new int[MAX_CARDS + 1];
         cards[0] = h.size();
-        for (int i = 1; i <= cards[0]; i++) {
-            cards[i] = h.cards[i];
-        }
+        if (cards[0] >= 0) System.arraycopy(h.cards, 1, cards, 1, cards[0]);
     }
 
     /**
@@ -56,7 +54,7 @@ public class EvalHand {
         }
     }
 
-    public final static int MAX_CARDS = 7;
+    private final static int MAX_CARDS = 7;
 
     private int[] cards;
 
@@ -180,10 +178,10 @@ public class EvalHand {
      */
     @Override
     public String toString() {
-        String s = new String();
+        StringBuilder s = new StringBuilder();
         for (int i = 1; i <= cards[0]; i++) {
-            s += " " + getCard(i).toString();
+            s.append(" ").append(getCard(i).toString());
         }
-        return s;
+        return s.toString();
     }
 }

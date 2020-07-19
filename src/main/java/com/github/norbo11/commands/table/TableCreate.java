@@ -2,7 +2,6 @@ package com.github.norbo11.commands.table;
 
 import com.github.norbo11.UltimateCards;
 import com.github.norbo11.commands.PluginCommand;
-import com.github.norbo11.commands.PluginExecutor;
 import com.github.norbo11.game.blackjack.BlackjackTable;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.game.cards.CardsTable;
@@ -28,8 +27,9 @@ public class TableCreate extends PluginCommand {
         getPermissionNodes().add(PERMISSIONS_BASE_NODE + "table." + getAlises().get(0));
     }
 
-    double buyin;
-    String gameType, tableName;
+    private double buyin;
+    private String gameType;
+    private String tableName;
 
     // table create name buyin poker|blackjack
     @Override
@@ -75,9 +75,9 @@ public class TableCreate extends PluginCommand {
         CardsTable.getTables().add(newTable);
 
         // Send messages
-        newTable.sendTableMessage("&6" + getPlayer().getName() + " &fhas created a &6" + gameType + "&f table named " + "&6'" + newTable.getName() + "'&f, ID " + "&6" + Integer.toString(newTable.getId()));
+        newTable.sendTableMessage("&6" + getPlayer().getName() + " &fhas created a &6" + gameType + "&f table named " + "&6'" + newTable.getName() + "'&f, ID " + "&6" + newTable.getId());
         newTable.sendTableMessage("Bought in for " + "&6" + Formatter.formatMoney(buyin));
-        Messages.sendMessage(getPlayer(), "Edit the rules of your table with " + PluginExecutor.tableSet.getCommandString() + "&f, and open it with " + PluginExecutor.tableOpen.getCommandString() + "&f when ready!");
+        Messages.sendMessage(getPlayer(), "Edit the rules of your table with &6/table set&f, and open it with &6/table open&f when ready!");
 
         // Take money
         UltimateCards.getInstance().getEconomy().withdrawPlayer(getPlayer(), buyin);
