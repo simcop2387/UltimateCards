@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.map.MinecraftFont;
@@ -26,8 +25,8 @@ import com.github.norbo11.game.blackjack.BlackjackPlayer;
 import com.github.norbo11.game.cards.Card;
 import com.github.norbo11.game.poker.PokerPlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class MapMethods {
     private static class BlackjackRenderer extends MapRenderer {
         BlackjackRenderer() {
@@ -202,7 +201,7 @@ public class MapMethods {
         }
     }
 
-    private static UltimateCards plugin = UltimateCards.getInstance();
+    private static final UltimateCards plugin = UltimateCards.getInstance();
     private static BufferedImage poker_base = null;
     private static BufferedImage blackjack_base = null;
     private static BufferedImage blackjack_base_split = null;
@@ -215,6 +214,7 @@ public class MapMethods {
 
     static {
         try {
+            poker_base = ImageIO.read(plugin.getResource("images/poker_base.png"));
             blackjack_base = ImageIO.read(plugin.getResource("images/blackjack_base.png"));
             blackjack_base_split = ImageIO.read(plugin.getResource("images/blackjack_base_split.png"));
             status_normal = ImageIO.read(plugin.getResource("images/player_box_normal.png"));
@@ -228,11 +228,11 @@ public class MapMethods {
         }
     }
 
-    private static ArrayList<Short> createdMaps = new ArrayList<>();
+    private static final ArrayList<Integer> createdMaps = new ArrayList<>();
 
     private static final HashMap<String, Integer> redrawTasks = new HashMap<>();
     private static final HashMap<String, Boolean> redrawsNeeded = new HashMap<>();
-    private static HashMap<String, ItemStack> savedMaps = new HashMap<>();
+    private static final HashMap<String, ItemStack> savedMaps = new HashMap<>();
 
     private static final PokerRenderer pokerRenderer = new PokerRenderer();
     private static final BlackjackRenderer blackjackRenderer = new BlackjackRenderer();
@@ -253,26 +253,22 @@ public class MapMethods {
             PixelGrabber pg = new PixelGrabber(img, 0, 0, width, height, pixels, 0, width);
 
             pg.grabPixels();
-            for (int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++) {
                     // If the pixel isn't a transparancy pixel
-                    if (pixels[i] != 16777215) {
-                        Color c = new Color(img.getRGB(x, y));
-
-                        int red = c.getRed();
-                        int green = c.getGreen();
-                        int blue = c.getBlue();
-
-                        canvas.setPixel(posX + x, posY + y, MapPalette.matchColor(red, green, blue));
-                    }
+                    if (pixels[i] != 16777215)
+                        canvas.setPixelColor(
+                                posX + x,
+                                posY + y,
+                                new Color(img.getRGB(x, y))
+                        );
                     i++;
                 }
-            }
         } catch (InterruptedException ignored) {
         }
     }
 
-    public static ArrayList<Short> getCreatedMaps() {
+    public static ArrayList<Integer> getCreatedMaps() {
         return createdMaps;
     }
 
@@ -283,23 +279,27 @@ public class MapMethods {
     public static void giveMap(final Player player, String renderer) {
         // Create map
         MapView map = Bukkit.getServer().createMap(player.getWorld());
+
         clearRenderers(map);
-        if (renderer.equalsIgnoreCase("poker")) {
+
+        if (renderer.equalsIgnoreCase("poker"))
             map.addRenderer(pokerRenderer);
-        } else if (renderer.equalsIgnoreCase("blackjack")) {
+        else if (renderer.equalsIgnoreCase("blackjack"))
             map.addRenderer(blackjackRenderer);
-        }
 
         // Give map
-        ItemStack mapItem = new ItemStack(Material.MAP, 1);
+        ItemStack mapItem = new ItemStack(Material.FILLED_MAP, 1);
+
         MapMeta meta = (MapMeta) mapItem.getItemMeta();
-        meta.setMapId(map.getId());
+        assert meta != null;
+
+        meta.setMapView(map);
         mapItem.setItemMeta(meta);
 
         // Add to lists
         redrawsNeeded.put(player.getName(), true);
         savedMaps.put(player.getName(), mapItem);
-        createdMaps.add((short) map.getId());
+        createdMaps.add(map.getId());
 
         // Schedule task
         redrawTasks.put(player.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> redrawsNeeded.put(player.getName(), true), 0L, 20L));
@@ -317,16 +317,14 @@ public class MapMethods {
     }
 
     public static String mapExists(ItemStack itemStack) {
-        for (Entry<String, ItemStack> entry : savedMaps.entrySet()) {
+        for (Entry<String, ItemStack> entry : savedMaps.entrySet())
             if (entry.getValue().equals(itemStack)) return entry.getKey();
-        }
         return "";
     }
 
     public static void restoreAllMaps() {
-        for (Entry<String, ItemStack> entry : savedMaps.entrySet()) {
+        for (Entry<String, ItemStack> entry : savedMaps.entrySet())
             restoreMap(entry.getKey(), false);
-        }
         savedMaps.clear();
     }
 
@@ -334,13 +332,26 @@ public class MapMethods {
         ItemStack mapItem = savedMaps.get(playerName);
         Player player = Bukkit.getPlayer(playerName);
 
-        if (player != null) {
-            player.getInventory().remove(mapItem);
-        }
+        if (player != null) player.getInventory().remove(mapItem);
 
-        createdMaps.remove((short) ((MapMeta) mapItem.getItemMeta()).getMapId());
+        Integer mapID = getMapID(mapItem);
+        if (mapID == null) return;
+
+        createdMaps.remove(mapID);
         if (remove) savedMaps.remove(playerName);
         Bukkit.getScheduler().cancelTask(redrawTasks.get(playerName));
         redrawTasks.remove(playerName);
+    }
+
+    @Nullable
+    public static Integer getMapID(ItemStack mapItem) {
+        if (mapItem.getType() != Material.FILLED_MAP) return null;
+
+        MapMeta mapMeta = (MapMeta) mapItem.getItemMeta();
+        if (mapMeta == null || !mapMeta.hasMapView()) return null;
+
+        MapView mapView = mapMeta.getMapView();
+        assert mapView != null;
+        return mapView.getId();
     }
 }

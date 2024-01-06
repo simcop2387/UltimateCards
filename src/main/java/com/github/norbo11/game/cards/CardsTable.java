@@ -1,6 +1,7 @@
 package com.github.norbo11.game.cards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,15 +42,14 @@ public abstract class CardsTable {
     private boolean inProgress; // True if the hand is currently in progress. Its false if the table hasen't even started or is currently in showdown
     private boolean open; // Decides if player can join or not
     private boolean toBeContinued;
-    private static ArrayList<String> allowedDetailTypes;
-
-    static {
-        allowedDetailTypes.add("settings");
-        allowedDetailTypes.add("player");
-        allowedDetailTypes.add("other");
-        allowedDetailTypes.add("general");
-        allowedDetailTypes.add("all");
-    }
+    private static final List<String> allowedDetailTypes =
+            Arrays.asList(
+                    "settings",
+                    "player",
+                    "other",
+                    "general",
+                    "all"
+            );
 
     private ArrayList<CardsPlayer> players = new ArrayList<>();
     private ArrayList<String> bannedList = new ArrayList<>();
@@ -66,7 +66,7 @@ public abstract class CardsTable {
         return false;
     }
 
-    public static ArrayList<String> getAllowedTypes() {
+    public static List<String> getAllowedTypes() {
         return allowedDetailTypes;
     }
 
@@ -138,7 +138,7 @@ public abstract class CardsTable {
 
         Messages.sendMessage(player, "&6" + UltimateCards.LINE_STRING);
         Messages.sendMessage(player, "&6General Details");
-        Messages.sendMessage(player, "Owner: &6" + (!getOwner().equals("") ? getOwner() : "SERVER"));
+        Messages.sendMessage(player, "Owner: &6" + (!getOwner().isEmpty() ? getOwner() : "SERVER"));
         Messages.sendMessage(player, "Hands played: &6" + getHandNumber());
         Messages.sendMessage(player, "Open: &6" + isOpen());
         Messages.sendMessage(player, "In progress: " + "&6" + isInProgress());
@@ -321,7 +321,7 @@ public abstract class CardsTable {
 
     public void removePlayer(CardsPlayer cardsPlayer) {
         players.remove(cardsPlayer);
-        if (players.size() == 0) setOpen(true);
+        if (players.isEmpty()) setOpen(true);
     }
 
     public void restoreAllMaps() {
@@ -426,9 +426,8 @@ public abstract class CardsTable {
     // the player list. This should be called whenever a player is removed.
     protected void shiftIDs() {
         for (int i = 0; i < getPlayers().size(); i++)
-            if (getPlayers().get(i).getID() != i) {
+            if (getPlayers().get(i).getID() != i)
                 getPlayers().get(i).setID(i);
-            }
     }
 
     public void cancelTimerTask() {

@@ -33,9 +33,8 @@ public class UltimateCards extends JavaPlugin {
     }
 
     public static UltimateCards getInstance() {
-        if (instance == null) {
+        if (instance == null)
             instance = JavaPlugin.getPlugin(UltimateCards.class);
-        }
         return instance;
     }
 
@@ -83,7 +82,9 @@ public class UltimateCards extends JavaPlugin {
             PluginConfig.load();
             SavedTables.load();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e.getCause() != null)
+                e.getCause().printStackTrace();
+            else e.printStackTrace();
         }
 
         // Set all commands to the command executor

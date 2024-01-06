@@ -22,7 +22,7 @@ import com.github.norbo11.game.poker.PokerTableSettings;
 import com.github.norbo11.util.NumberMethods;
 
 public class SavedTables {
-    private static UltimateCards plugin = UltimateCards.getInstance();
+    private static final UltimateCards plugin = UltimateCards.getInstance();
     private static final File fileSavedTables = new File(plugin.getDataFolder(), "tables.yml");
 
     static {
@@ -47,15 +47,17 @@ public class SavedTables {
         loadTables();
     }
 
-    /**
-     * @noinspection UnnecessaryLocalVariable
-     */
     private static void loadTables() throws Exception {
         savedTables = new ArrayList<>();
 
         // Poker Tables
         for (String table : config.getKeys(false)) {
             ConfigurationSection tableSection = config.getConfigurationSection(table);
+
+            if (tableSection == null) {
+                System.out.println("Error while loading tables: Invalid config for table '" + table + "'");
+                continue;
+            }
 
             List<String> coords = tableSection.getStringList("startLocation");
             Location startLocation = null;

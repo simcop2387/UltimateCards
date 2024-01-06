@@ -17,6 +17,7 @@ import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.util.MapMethods;
 import com.github.norbo11.util.Messages;
 import com.github.norbo11.util.config.PluginConfig;
+import org.bukkit.map.MapView;
 
 //This class prevents map duping by disallowing inventory clicks, item drops, and item pickups if the map isnt picked up by the player it was supposed to go to.
 public class CardsListener implements Listener {
@@ -91,38 +92,39 @@ public class CardsListener implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
-        if (e.getItemDrop().getItemStack().getType() == Material.MAP) {
-            ItemStack itemStack = MapMethods.getSavedMaps().get(e.getPlayer().getName());
-            if (itemStack != null && e.getItemDrop().getItemStack().equals(itemStack)) {
-                Messages.sendMessage(e.getPlayer(), "You may not drop your cards interface map!");
-                e.setCancelled(true);
-            }
-        }
+        if (e.getItemDrop().getItemStack().getType() != Material.FILLED_MAP) return;
+
+        ItemStack itemStack = MapMethods.getSavedMaps().get(e.getPlayer().getName());
+
+        if (itemStack == null || !e.getItemDrop().getItemStack().equals(itemStack)) return;
+
+        Messages.sendMessage(e.getPlayer(), "You may not drop your cards interface map!");
+        e.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerPickupItem(EntityPickupItemEvent e) {
-        if (!(e.getEntity() instanceof Player)) {
+        if (!(e.getEntity() instanceof Player player) || e.getItem().getItemStack().getType() != Material.FILLED_MAP)
             return;
-        }
-        Player player = (Player) e.getEntity();
-        if (e.getItem().getItemStack().getType() != Material.MAP) {
-            return;
-        }
-        @SuppressWarnings("deprecation")
-        short mapId = (short) ((MapMeta) e.getItem().getItemStack().getItemMeta()).getMapId();
-        if (!MapMethods.getCreatedMaps().contains(mapId)) {
-            return;
-        }
+
+        MapMeta mapMeta = (MapMeta) e.getItem().getItemStack().getItemMeta();
+        if (mapMeta == null) return;
+        MapView mapView = mapMeta.getMapView();
+        if (mapView == null) return;
+
+        int mapId = mapMeta.getMapView().getId();
+        if (!MapMethods.getCreatedMaps().contains(mapId)) return;
+
         // If the player trying to pick up the map is NOT the rightful owner, and the
         // map DOES have an owner
         String mapOwner = MapMethods.mapExists(e.getItem().getItemStack());
-        if (!mapOwner.equals(player.getName()) && !mapOwner.equals("")) {
+
+        if (!mapOwner.equals(player.getName()) && !mapOwner.isEmpty()) {
             e.setCancelled(true);
         } else if (CardsPlayer.getCardsPlayer(player.getName()) == null) {
             e.setCancelled(true);
             e.getItem().remove();
-            MapMethods.getCreatedMaps().remove(mapId);
+            MapMethods.getCreatedMaps().remove((Integer) mapId);
         } // This results in maps that are no longer in use being deleted. Maps being
         // picked up, but still in use, are
         // not deleted, but simply cancelled. (both of this is in the case if the player
