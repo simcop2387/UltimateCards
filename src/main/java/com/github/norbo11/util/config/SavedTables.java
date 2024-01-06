@@ -23,7 +23,7 @@ import com.github.norbo11.util.NumberMethods;
 
 public class SavedTables {
     private static UltimateCards plugin = UltimateCards.getInstance();
-    private static File fileSavedTables = new File(plugin.getDataFolder(), "tables.yml");
+    private static final File fileSavedTables = new File(plugin.getDataFolder(), "tables.yml");
 
     static {
         if (!fileSavedTables.exists()) {
@@ -74,60 +74,62 @@ public class SavedTables {
             }
 
             //If world exists
-            if (startLocation != null && startLocation.getWorld() != null) {
-                String owner = "";
-                if (tableSection.getString("owner") != null) owner = tableSection.getString("owner");
-                String type = tableSection.getString("gameType");
-                String name = table;
+            if (startLocation == null || startLocation.getWorld() == null)
+                return;
+
+            String owner = "";
+            if (tableSection.getString("owner") != null) owner = tableSection.getString("owner");
+
+            String type = tableSection.getString("gameType");
+            String name = table;
 
 
-                CardsTable cardsTable = null;
-                CardsTableSettings tableSettings = null;
-                ConfigurationSection settings = tableSection.getConfigurationSection("settings");
+            CardsTable cardsTable = null;
+            CardsTableSettings tableSettings = null;
+            ConfigurationSection settings = tableSection.getConfigurationSection("settings");
 
-                if (CardsTable.isGameType(type)) {
-                    if (type.equalsIgnoreCase("poker")) {
-                        cardsTable = new PokerTable(owner, name, CardsTable.getFreeTableID(), startLocation);
-                        PokerTableSettings pokerSettings = new PokerTableSettings((PokerTable) cardsTable);
-                        pokerSettings.minRaiseAlwaysBB.setValue(settings.getBoolean("minRaiseIsAlwaysBB", PluginConfig.isMinRaiseAlwaysBB()));
-                        pokerSettings.sb.setValue(settings.getDouble("sb", PluginConfig.getSb()));
-                        pokerSettings.bb.setValue(settings.getDouble("bb", PluginConfig.getBb()));
-                        pokerSettings.ante.setValue(settings.getDouble("ante", PluginConfig.getAnte()));
-                        pokerSettings.dynamicFrequency.setValue(settings.getInt("dynamicFrequency", PluginConfig.getDynamicFrequency()));
-                        pokerSettings.rake.setValue(settings.getDouble("rake", PluginConfig.getRake()));
-                        pokerSettings.minRaise.setValue(settings.getDouble("minRaise", PluginConfig.getMinRaise()));
-                        tableSettings = pokerSettings;
-                    }
-
-                    if (type.equalsIgnoreCase("blackjack") || type.equalsIgnoreCase("bj")) {
-                        cardsTable = new BlackjackTable(owner, name, CardsTable.getFreeTableID(), startLocation);
-                        BlackjackTableSettings blackjackSettings = new BlackjackTableSettings((BlackjackTable) cardsTable);
-                        blackjackSettings.allowDoubleDown.setValue(settings.getBoolean("allowDoubleDown", PluginConfig.isAllowDoubleDown()));
-                        blackjackSettings.minBet.setValue(settings.getDouble("minBet", PluginConfig.getMinBet()));
-                        blackjackSettings.amountOfDecks.setValue(settings.getInt("amountOfDecks", PluginConfig.getAmountOfDecks()));
-                        tableSettings = blackjackSettings;
-                    }
-                } else {
-                    System.out.println("Error while loading tables: Invalid gameType for table '" + table + "'. Use 'poker' or 'blackjack'");
-                    continue;
-                }
-
-                tableSettings.allowRebuys.setValue(settings.getBoolean("allowRebuys", PluginConfig.isAllowRebuys()));
-                tableSettings.displayTurnsPublicly.setValue(settings.getBoolean("displayTurnsPublicly", PluginConfig.isDisplayTurnsPublicly()));
-                tableSettings.autoStart.setValue(settings.getInt("autoStart", PluginConfig.getAutoStart()));
-                tableSettings.turnSeconds.setValue(settings.getInt("turnSeconds", PluginConfig.getTurnSeconds()));
-                tableSettings.minBuy.setValue(settings.getDouble("minBuy", PluginConfig.getMinBuy()));
-                tableSettings.maxBuy.setValue(settings.getDouble("maxBuy", PluginConfig.getMaxBuy()));
-                tableSettings.publicChatRange.setValue(settings.getInt("publicChatRange", PluginConfig.getPublicChatRange()));
-                tableSettings.autoKickOnLeave.setValue(settings.getBoolean("autoKickOnLeave", PluginConfig.isAutoKickOnLeave()));
-                tableSettings.startLocation.setValue(startLocation);
-                tableSettings.leaveLocation.setValue(leaveLocation);
-
-                cardsTable.setCardsTableSettings(tableSettings);
-                cardsTable.setOpen(true);
-                CardsTable.getTables().add(cardsTable);
-                savedTables.add(cardsTable);
+            if (type == null || !CardsTable.isGameType(type)) {
+                System.out.println("Error while loading tables: Invalid gameType for table '" + table + "'. Use 'poker' or 'blackjack'");
+                continue;
             }
+
+            if (type.equalsIgnoreCase("poker")) {
+                cardsTable = new PokerTable(owner, name, CardsTable.getFreeTableID(), startLocation);
+                PokerTableSettings pokerSettings = new PokerTableSettings((PokerTable) cardsTable);
+                pokerSettings.minRaiseAlwaysBB.setValue(settings.getBoolean("minRaiseIsAlwaysBB", PluginConfig.isMinRaiseAlwaysBB()));
+                pokerSettings.sb.setValue(settings.getDouble("sb", PluginConfig.getSb()));
+                pokerSettings.bb.setValue(settings.getDouble("bb", PluginConfig.getBb()));
+                pokerSettings.ante.setValue(settings.getDouble("ante", PluginConfig.getAnte()));
+                pokerSettings.dynamicFrequency.setValue(settings.getInt("dynamicFrequency", PluginConfig.getDynamicFrequency()));
+                pokerSettings.rake.setValue(settings.getDouble("rake", PluginConfig.getRake()));
+                pokerSettings.minRaise.setValue(settings.getDouble("minRaise", PluginConfig.getMinRaise()));
+                tableSettings = pokerSettings;
+            }
+
+            if (type.equalsIgnoreCase("blackjack") || type.equalsIgnoreCase("bj")) {
+                cardsTable = new BlackjackTable(owner, name, CardsTable.getFreeTableID(), startLocation);
+                BlackjackTableSettings blackjackSettings = new BlackjackTableSettings((BlackjackTable) cardsTable);
+                blackjackSettings.allowDoubleDown.setValue(settings.getBoolean("allowDoubleDown", PluginConfig.isAllowDoubleDown()));
+                blackjackSettings.minBet.setValue(settings.getDouble("minBet", PluginConfig.getMinBet()));
+                blackjackSettings.amountOfDecks.setValue(settings.getInt("amountOfDecks", PluginConfig.getAmountOfDecks()));
+                tableSettings = blackjackSettings;
+            }
+
+            tableSettings.allowRebuys.setValue(settings.getBoolean("allowRebuys", PluginConfig.isAllowRebuys()));
+            tableSettings.displayTurnsPublicly.setValue(settings.getBoolean("displayTurnsPublicly", PluginConfig.isDisplayTurnsPublicly()));
+            tableSettings.autoStart.setValue(settings.getInt("autoStart", PluginConfig.getAutoStart()));
+            tableSettings.turnSeconds.setValue(settings.getInt("turnSeconds", PluginConfig.getTurnSeconds()));
+            tableSettings.minBuy.setValue(settings.getDouble("minBuy", PluginConfig.getMinBuy()));
+            tableSettings.maxBuy.setValue(settings.getDouble("maxBuy", PluginConfig.getMaxBuy()));
+            tableSettings.publicChatRange.setValue(settings.getInt("publicChatRange", PluginConfig.getPublicChatRange()));
+            tableSettings.autoKickOnLeave.setValue(settings.getBoolean("autoKickOnLeave", PluginConfig.isAutoKickOnLeave()));
+            tableSettings.startLocation.setValue(startLocation);
+            tableSettings.leaveLocation.setValue(leaveLocation);
+
+            cardsTable.setCardsTableSettings(tableSettings);
+            cardsTable.setOpen(true);
+            CardsTable.getTables().add(cardsTable);
+            savedTables.add(cardsTable);
         }
     }
 
