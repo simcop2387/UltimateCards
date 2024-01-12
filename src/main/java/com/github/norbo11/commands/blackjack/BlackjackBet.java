@@ -66,7 +66,7 @@ public class BlackjackBet extends PluginCommand {
             ErrorMessages.tooSmallBet(getPlayer(), blackjackTable.getSettings().minBet.getValue());
             return false;
         }
-        if (!blackjackTable.isInProgress()) {
+        if (blackjackTable.isInProgress()) {
             ErrorMessages.tableInProgress(getPlayer());
             return false;
         }
