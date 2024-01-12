@@ -7,7 +7,7 @@ import com.github.norbo11.game.cards.Card;
 import com.github.norbo11.game.cards.Hand;
 import com.github.norbo11.util.Formatter;
 import com.github.norbo11.util.MoneyMethods;
-import com.github.norbo11.util.Sound;
+import com.github.norbo11.util.SoundEffect;
 
 public class BlackjackDealer {
     public BlackjackDealer(BlackjackTable table) {
@@ -102,7 +102,7 @@ public class BlackjackDealer {
         }
         // No need to actually give any money here as money has already been received upon /blackjack bet
         table.sendTableMessage("&6" + "The dealer (" + score + ")&f wins &6" + Formatter.formatMoney(hand.getAmountBet()) + "&f from &6" + blackjackPlayer.getPlayerName() + " (" + hand.getScore() + ")");
-        Sound.lost(blackjackPlayer.getPlayer());
+        SoundEffect.lost(blackjackPlayer.getPlayer());
     }
 
     private void recalculateScore() {

@@ -1,17 +1,16 @@
 package com.github.norbo11.util;
 
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
-
 import com.github.norbo11.UltimateCards;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.game.cards.CardsTable;
-import com.github.norbo11.Sounds;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
-public class Sound {
+import java.util.HashMap;
+
+public class SoundEffect {
     private static UltimateCards plugin = UltimateCards.getInstance();
     private static HashMap<String, BukkitTask> soundTasks = new HashMap<>();
 
@@ -23,7 +22,7 @@ public class Sound {
 
                 @Override
                 public void run() {
-                    player.playSound(player.getLocation(), Sounds.NOTE_PIANO.bukkitSound(), 1.0F, pitch);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1.0F, pitch);
                     pitch -= 0.1F;
                     i++;
                     if (i == 7) {
@@ -36,8 +35,8 @@ public class Sound {
 
     private static void otherTurn(final Player player) {
         if (player != null) {
-            player.playSound(player.getLocation(), Sounds.NOTE_BASS_DRUM.bukkitSound(), 1.0F, 1.0F);
-            player.playSound(player.getLocation(), Sounds.NOTE_BASS_DRUM.bukkitSound(), 1.0F, 2.0F);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1.0F, 2.0F);
         }
     }
 
@@ -45,15 +44,15 @@ public class Sound {
     public static void tableTurnSounds(CardsTable table, String player) {
         for (CardsPlayer p : table.getPlayersThisHand()) {
             if (player.equals(p.getPlayerName())) {
-                Sound.otherTurn(p.getPlayer());
+                SoundEffect.otherTurn(p.getPlayer());
             }
         }
     }
 
     public static void turn(Player player) {
         if (player != null) {
-            player.playSound(player.getLocation(), Sounds.NOTE_PIANO.bukkitSound(), 1.0F, 1.0F);
-            player.playSound(player.getLocation(), Sounds.NOTE_PIANO.bukkitSound(), 1.0F, 2.0F);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1.0F, 2.0F);
         }
     }
 
@@ -65,7 +64,7 @@ public class Sound {
 
                 @Override
                 public void run() {
-                    player.playSound(player.getLocation(), Sounds.NOTE_PIANO.bukkitSound(), 1.0F, pitch);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1.0F, pitch);
                     pitch += 0.1F;
                     i++;
                     if (i == 7) {

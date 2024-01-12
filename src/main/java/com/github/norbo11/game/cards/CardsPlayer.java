@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.github.norbo11.util.Messages;
 import com.github.norbo11.util.PlayerControlled;
-import com.github.norbo11.util.Sound;
+import com.github.norbo11.util.SoundEffect;
 
 public abstract class CardsPlayer extends PlayerControlled {
     protected CardsPlayer(Player player) {
@@ -141,8 +141,8 @@ public abstract class CardsPlayer extends PlayerControlled {
             Messages.sendMessage(getPlayer(), message);
         }
 
-        Sound.tableTurnSounds(getTable(), getPlayerName());
-        Sound.turn(getPlayer());
+        SoundEffect.tableTurnSounds(getTable(), getPlayerName());
+        SoundEffect.turn(getPlayer());
         startTurnTimer();
     }
 

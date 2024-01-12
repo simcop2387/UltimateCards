@@ -9,7 +9,7 @@ import com.github.norbo11.game.cards.Card;
 import com.github.norbo11.game.cards.CardsPlayer;
 import com.github.norbo11.util.Formatter;
 import com.github.norbo11.util.MapMethods;
-import com.github.norbo11.util.Sound;
+import com.github.norbo11.util.SoundEffect;
 import com.github.norbo11.util.Timers;
 
 public class BlackjackPlayer extends CardsPlayer {
@@ -186,7 +186,7 @@ public class BlackjackPlayer extends CardsPlayer {
         giveMoney(hand.getAmountBet() * multiplayer);
 
         getTable().sendTableMessage("&6" + getPlayerName() + "&f has won &6" + Formatter.formatMoney(hand.getAmountBet() * multiplayer) + "&f (" + multiplayer + "x) for hand score &6" + hand.getScore());
-        Sound.won(getPlayer());
+        SoundEffect.won(getPlayer());
     }
 
     public boolean playingThisHand() {

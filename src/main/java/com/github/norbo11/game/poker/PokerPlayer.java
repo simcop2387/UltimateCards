@@ -19,7 +19,7 @@ import com.github.norbo11.util.Formatter;
 import com.github.norbo11.util.Log;
 import com.github.norbo11.util.MapMethods;
 import com.github.norbo11.util.Messages;
-import com.github.norbo11.util.Sound;
+import com.github.norbo11.util.SoundEffect;
 import com.github.norbo11.util.Timers;
 
 public class PokerPlayer extends CardsPlayer {
@@ -113,7 +113,7 @@ public class PokerPlayer extends CardsPlayer {
         setFolded(true);
         setTotalBet(0);
         getTable().sendTableMessage("&6" + getPlayerName() + "&f folds.");
-        Sound.lost(getPlayer());
+        SoundEffect.lost(getPlayer());
 
         cancelTurnTimer();
 
@@ -202,7 +202,7 @@ public class PokerPlayer extends CardsPlayer {
             p.setPot(p.getPot() - potToPay);
         }
 
-        Sound.won(getPlayer());
+        SoundEffect.won(getPlayer());
     }
 
     public void phaseOver() {
