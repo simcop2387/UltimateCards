@@ -1,0 +1,12 @@
+steps:
+  builder-image:
+    when: Dockerfile
+    image: buildx
+    settings: "..."
+
+  build-jar:
+    image: gitea.simcop2387.info/simcop2387/openjdk-17-builder:latest
+    commands:
+      - ls -lah
+      - maven build
+
