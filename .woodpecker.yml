@@ -8,5 +8,9 @@ steps:
     image: gitea.simcop2387.info/simcop2387/openjdk-17-builder:latest
     commands:
       - ls -lah
-      - maven build
+      - mvn install
+  publish-github:
+    image: ...
+    files:
+      - target/UltimateCards-*-original.jar
 
